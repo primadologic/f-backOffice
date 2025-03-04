@@ -100,10 +100,15 @@ export default {
 				gray2: "#272727",
 				gray_hover: "#414141",
 				black: "#0f0f0f",
-
-
 			}
-  		}
+  		},
+
+		fontFamily: {
+			space: [
+  				'Space Grotesk',
+  				'serif'
+  			]
+  		},
   	}
   },
   plugins: [

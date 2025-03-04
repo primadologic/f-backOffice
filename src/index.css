@@ -84,6 +84,13 @@
   }
 }
 
+body {
+  font-family: "Space Grotesk", serif;
+  font-optical-sizing: auto;
+}
+
+
+
 @layer base {
   * {
     @apply border-border;
