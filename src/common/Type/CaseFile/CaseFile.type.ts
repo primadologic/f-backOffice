@@ -1,0 +1,39 @@
+import { UserDetailType, } from "@/common/Type/user.type"
+
+  export type CaseFileType = {
+    caseId: string;
+    suspectNumber: string;
+    remark: string;
+    status?: CaseFileStatusType;
+    investigator?: UserDetailType
+    comments?: CommentType[];
+    createdAt?: Date;
+  }
+
+
+  export type CaseFileStatusType = {
+    statusId: string;
+    name?: string;
+    description?: string;
+  }
+
+
+  export type CommentType = {
+    commentId: string;
+    user: UserDetailType,
+    caseFile: CaseFileType,
+    notes: string;
+    dateCreated: Date
+  }
+
+
+  export type UpdateCaseFileType = {
+    statusId: string;
+    remark: string;
+  }
+
+  export type NewCaseFileType = {
+    suspectNumber: string;
+    status: string;
+    remarks: string;
+  };
