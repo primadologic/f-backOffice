@@ -1,5 +1,4 @@
 
-import './App.css'
 import { ThemeProvider } from './components/providers/theme-provider'
 import { Link } from '@tanstack/react-router'
 

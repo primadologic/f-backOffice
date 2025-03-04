@@ -93,7 +93,7 @@ const [pagination, setPagination] = useState({
   return (
     <div className="">
       <Card className="rounded-[1.8rem] border">
-        <div className="w-full flex flex-row justify-between items-center">
+        <div className="w-full flex sm:flex-row flex-col justify-between items-center">
           <CardHeader className="">
             <CardTitle className="text-xl font-semibold">Fraud Numbers List</CardTitle>
             <CardDescription>Keep track of reported fraud numbers and other information</CardDescription>

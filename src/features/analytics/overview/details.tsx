@@ -1,4 +1,5 @@
-import TopNavBar from "@/components/CustomUI/topBarNav";
+
+import TopNavBar from "@/components/custom-ui/topBarNav";
 import AnalyticsLayout from "../layout/analytics-layout";
 import OverviewTabs from "./overview-tabs";
 import { LayoutDashboard } from "lucide-react";

@@ -1,4 +1,5 @@
 import { AppSidebar } from "@/components/app-sidebar"
+import { ModeToggle } from "@/components/custom-ui/theme-toggle"
 
 import { Button } from "@/components/ui/button"
 // import {
@@ -16,7 +17,6 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { Bell } from "lucide-react"
-import { ModeToggle } from "../custom-ui/theme-toggle"
 
 
 interface DashLayoutProps {

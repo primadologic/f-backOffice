@@ -1,15 +1,14 @@
 
-
-import OverviewMainDashboard from "../OverviewMainDashboard"
 import FraudNumbersAnalytics from "../FraudNumbers/details"
 import FraudWallTabAnalytics from "../FraudWallClient/details"
+import OverviewMainDashboard from "../OverviewMainDashboard"
 import VerificationTabAnalytics from "../verification/details"
 import {
     Tabs,
     TabsContent,
     TabsList,
     TabsTrigger,
-  } from "@/components/ui/tabs"
+} from "@/components/ui/tabs"
 
 
 
@@ -36,7 +35,6 @@ export default function OverviewTabs() {
             <TabsContent value="fraudNumbers">
                <FraudNumbersAnalytics />
             </TabsContent>
-
         </Tabs>
     )
     

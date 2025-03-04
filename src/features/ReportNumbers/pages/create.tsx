@@ -1,5 +1,4 @@
 
-import TopNavBar from "@/components/CustomUI/topBarNav";
 import PageLayout from "@/features/layout/PagesLayout";
 import {
     Card,
@@ -20,7 +19,9 @@ import { ReportPlatformData } from "@/data/ReportNumbers/ReportPlatform.table.da
 import { useForm, Controller } from "react-hook-form"
 import { CreateReportNumberType } from "@/data/ReportNumbers/ReportNumbers.type";
 import { Button } from "@/components/ui/button";
-import CustomBackButton from "@/components/CustomUI/back-button";
+import CustomBackButton from "@/components/custom-ui/back-button";
+import TopNavBar from "@/components/custom-ui/topBarNav";
+
 
 
 

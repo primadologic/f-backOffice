@@ -7,7 +7,8 @@ export default {
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/features/**/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/features/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
   	extend: {
@@ -56,6 +57,37 @@ export default {
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
+  			},
+  			sidebar: {
+  				DEFAULT: 'hsl(var(--sidebar-background))',
+  				foreground: 'hsl(var(--sidebar-foreground))',
+  				primary: 'hsl(var(--sidebar-primary))',
+  				'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+  				accent: 'hsl(var(--sidebar-accent))',
+  				'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+  				border: 'hsl(var(--sidebar-border))',
+  				ring: 'hsl(var(--sidebar-ring))'
+  			},
+  			'custom-black': '#000314',
+  			'custom-btn-start': '#f97c3a',
+  			'custom-btn-end': '#fd3266',
+  			'shadcn-black': '#09090b',
+  			'custom-black2': '#010519',
+  			'custom-gray': '#484d5d',
+  			'brand-orange': '#ffa90c',
+  			'btn-border-gray': '#e6e6eb',
+  			button_colors: {
+  				dark_gray: '#313638',
+  				primary: '#FFFFFF',
+  				primary_2: '#F5F6F7',
+  				light_warning: '#FFF4E6',
+  				deep_warning: '#FF9500'
+  			},
+  			status: {
+  				success_500: 'hsl(var(--success-500))',
+  				warning_100: 'hsl(var(--warning-100))',
+  				danger_100: 'hsl(var(--danger-100))',
+  				primary_500: 'hsl(var(--primary-500))'
   			}
   		}
   	}

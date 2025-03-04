@@ -11,8 +11,8 @@ import {
     SidebarMenuButton,
   } from "@/components/ui/sidebar"
 
-import { type LucideIcon } from "lucide-react"
-import { useNavigate } from "@tanstack/react-router"
+  import { type LucideIcon } from "lucide-react"
+import { useRouter } from "@tanstack/react-router"
 
   export function MenuItem({
     items, 
@@ -25,14 +25,13 @@ import { useNavigate } from "@tanstack/react-router"
     }[]
   }) {
 
-
-    const navigate = useNavigate()
+    const router = useRouter();
 
     return (
         <SidebarGroup>
             <SidebarMenu className="gap-4">
                 {items.map((item) => (
-                   <SidebarMenuButton onClick={() => navigate({ to: `${item.url}`})}  key={item.title} tooltip={item.title}>
+                   <SidebarMenuButton onClick={() => router.navigate({ to: `${item.url}` })}  key={item.title} tooltip={item.title}>
                         {item.icon && <item.icon />}
                         <span>{item.title}</span>
                     </SidebarMenuButton>

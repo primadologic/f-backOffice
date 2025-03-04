@@ -1,9 +1,7 @@
+import ListPage from '@/app/dashboard/fraud-numbers/list-page'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/dashboard/fraud-numbers/')({
-  component: RouteComponent,
+  component: ListPage,
 })
 
-function RouteComponent() {
-  return <div className='text-xl font-semibold'>Hello Fraud Number List page "/dashboard/fraud-numbers/"!</div>
-}

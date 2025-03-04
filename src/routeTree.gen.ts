@@ -13,11 +13,11 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
-import { Route as ReportNumbersIndexImport } from './routes/report-numbers/index'
 import { Route as DashboardIndexImport } from './routes/dashboard/index'
-import { Route as ReportNumbersCreateImport } from './routes/report-numbers/create'
+import { Route as DashboardReportNumbersIndexImport } from './routes/dashboard/report-numbers/index'
 import { Route as DashboardFraudNumbersIndexImport } from './routes/dashboard/fraud-numbers/index'
 import { Route as DashboardCaseFilesIndexImport } from './routes/dashboard/case-files/index'
+import { Route as DashboardReportNumbersCreateImport } from './routes/dashboard/report-numbers/create'
 import { Route as DashboardFraudNumbersCreateImport } from './routes/dashboard/fraud-numbers/create'
 import { Route as DashboardCaseFilesCreateImport } from './routes/dashboard/case-files/create'
 
@@ -35,23 +35,18 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const ReportNumbersIndexRoute = ReportNumbersIndexImport.update({
-  id: '/report-numbers/',
-  path: '/report-numbers/',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const DashboardIndexRoute = DashboardIndexImport.update({
   id: '/dashboard/',
   path: '/dashboard/',
   getParentRoute: () => rootRoute,
 } as any)
 
-const ReportNumbersCreateRoute = ReportNumbersCreateImport.update({
-  id: '/report-numbers/create',
-  path: '/report-numbers/create',
-  getParentRoute: () => rootRoute,
-} as any)
+const DashboardReportNumbersIndexRoute =
+  DashboardReportNumbersIndexImport.update({
+    id: '/dashboard/report-numbers/',
+    path: '/dashboard/report-numbers/',
+    getParentRoute: () => rootRoute,
+  } as any)
 
 const DashboardFraudNumbersIndexRoute = DashboardFraudNumbersIndexImport.update(
   {
@@ -66,6 +61,13 @@ const DashboardCaseFilesIndexRoute = DashboardCaseFilesIndexImport.update({
   path: '/dashboard/case-files/',
   getParentRoute: () => rootRoute,
 } as any)
+
+const DashboardReportNumbersCreateRoute =
+  DashboardReportNumbersCreateImport.update({
+    id: '/dashboard/report-numbers/create',
+    path: '/dashboard/report-numbers/create',
+    getParentRoute: () => rootRoute,
+  } as any)
 
 const DashboardFraudNumbersCreateRoute =
   DashboardFraudNumbersCreateImport.update({
@@ -98,25 +100,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutImport
       parentRoute: typeof rootRoute
     }
-    '/report-numbers/create': {
-      id: '/report-numbers/create'
-      path: '/report-numbers/create'
-      fullPath: '/report-numbers/create'
-      preLoaderRoute: typeof ReportNumbersCreateImport
-      parentRoute: typeof rootRoute
-    }
     '/dashboard/': {
       id: '/dashboard/'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardIndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/report-numbers/': {
-      id: '/report-numbers/'
-      path: '/report-numbers'
-      fullPath: '/report-numbers'
-      preLoaderRoute: typeof ReportNumbersIndexImport
       parentRoute: typeof rootRoute
     }
     '/dashboard/case-files/create': {
@@ -133,6 +121,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardFraudNumbersCreateImport
       parentRoute: typeof rootRoute
     }
+    '/dashboard/report-numbers/create': {
+      id: '/dashboard/report-numbers/create'
+      path: '/dashboard/report-numbers/create'
+      fullPath: '/dashboard/report-numbers/create'
+      preLoaderRoute: typeof DashboardReportNumbersCreateImport
+      parentRoute: typeof rootRoute
+    }
     '/dashboard/case-files/': {
       id: '/dashboard/case-files/'
       path: '/dashboard/case-files'
@@ -147,6 +142,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardFraudNumbersIndexImport
       parentRoute: typeof rootRoute
     }
+    '/dashboard/report-numbers/': {
+      id: '/dashboard/report-numbers/'
+      path: '/dashboard/report-numbers'
+      fullPath: '/dashboard/report-numbers'
+      preLoaderRoute: typeof DashboardReportNumbersIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -155,38 +157,38 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/report-numbers/create': typeof ReportNumbersCreateRoute
   '/dashboard': typeof DashboardIndexRoute
-  '/report-numbers': typeof ReportNumbersIndexRoute
   '/dashboard/case-files/create': typeof DashboardCaseFilesCreateRoute
   '/dashboard/fraud-numbers/create': typeof DashboardFraudNumbersCreateRoute
+  '/dashboard/report-numbers/create': typeof DashboardReportNumbersCreateRoute
   '/dashboard/case-files': typeof DashboardCaseFilesIndexRoute
   '/dashboard/fraud-numbers': typeof DashboardFraudNumbersIndexRoute
+  '/dashboard/report-numbers': typeof DashboardReportNumbersIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/report-numbers/create': typeof ReportNumbersCreateRoute
   '/dashboard': typeof DashboardIndexRoute
-  '/report-numbers': typeof ReportNumbersIndexRoute
   '/dashboard/case-files/create': typeof DashboardCaseFilesCreateRoute
   '/dashboard/fraud-numbers/create': typeof DashboardFraudNumbersCreateRoute
+  '/dashboard/report-numbers/create': typeof DashboardReportNumbersCreateRoute
   '/dashboard/case-files': typeof DashboardCaseFilesIndexRoute
   '/dashboard/fraud-numbers': typeof DashboardFraudNumbersIndexRoute
+  '/dashboard/report-numbers': typeof DashboardReportNumbersIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/report-numbers/create': typeof ReportNumbersCreateRoute
   '/dashboard/': typeof DashboardIndexRoute
-  '/report-numbers/': typeof ReportNumbersIndexRoute
   '/dashboard/case-files/create': typeof DashboardCaseFilesCreateRoute
   '/dashboard/fraud-numbers/create': typeof DashboardFraudNumbersCreateRoute
+  '/dashboard/report-numbers/create': typeof DashboardReportNumbersCreateRoute
   '/dashboard/case-files/': typeof DashboardCaseFilesIndexRoute
   '/dashboard/fraud-numbers/': typeof DashboardFraudNumbersIndexRoute
+  '/dashboard/report-numbers/': typeof DashboardReportNumbersIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -194,60 +196,60 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
-    | '/report-numbers/create'
     | '/dashboard'
-    | '/report-numbers'
     | '/dashboard/case-files/create'
     | '/dashboard/fraud-numbers/create'
+    | '/dashboard/report-numbers/create'
     | '/dashboard/case-files'
     | '/dashboard/fraud-numbers'
+    | '/dashboard/report-numbers'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
-    | '/report-numbers/create'
     | '/dashboard'
-    | '/report-numbers'
     | '/dashboard/case-files/create'
     | '/dashboard/fraud-numbers/create'
+    | '/dashboard/report-numbers/create'
     | '/dashboard/case-files'
     | '/dashboard/fraud-numbers'
+    | '/dashboard/report-numbers'
   id:
     | '__root__'
     | '/'
     | '/about'
-    | '/report-numbers/create'
     | '/dashboard/'
-    | '/report-numbers/'
     | '/dashboard/case-files/create'
     | '/dashboard/fraud-numbers/create'
+    | '/dashboard/report-numbers/create'
     | '/dashboard/case-files/'
     | '/dashboard/fraud-numbers/'
+    | '/dashboard/report-numbers/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  ReportNumbersCreateRoute: typeof ReportNumbersCreateRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
-  ReportNumbersIndexRoute: typeof ReportNumbersIndexRoute
   DashboardCaseFilesCreateRoute: typeof DashboardCaseFilesCreateRoute
   DashboardFraudNumbersCreateRoute: typeof DashboardFraudNumbersCreateRoute
+  DashboardReportNumbersCreateRoute: typeof DashboardReportNumbersCreateRoute
   DashboardCaseFilesIndexRoute: typeof DashboardCaseFilesIndexRoute
   DashboardFraudNumbersIndexRoute: typeof DashboardFraudNumbersIndexRoute
+  DashboardReportNumbersIndexRoute: typeof DashboardReportNumbersIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  ReportNumbersCreateRoute: ReportNumbersCreateRoute,
   DashboardIndexRoute: DashboardIndexRoute,
-  ReportNumbersIndexRoute: ReportNumbersIndexRoute,
   DashboardCaseFilesCreateRoute: DashboardCaseFilesCreateRoute,
   DashboardFraudNumbersCreateRoute: DashboardFraudNumbersCreateRoute,
+  DashboardReportNumbersCreateRoute: DashboardReportNumbersCreateRoute,
   DashboardCaseFilesIndexRoute: DashboardCaseFilesIndexRoute,
   DashboardFraudNumbersIndexRoute: DashboardFraudNumbersIndexRoute,
+  DashboardReportNumbersIndexRoute: DashboardReportNumbersIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -262,13 +264,13 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/about",
-        "/report-numbers/create",
         "/dashboard/",
-        "/report-numbers/",
         "/dashboard/case-files/create",
         "/dashboard/fraud-numbers/create",
+        "/dashboard/report-numbers/create",
         "/dashboard/case-files/",
-        "/dashboard/fraud-numbers/"
+        "/dashboard/fraud-numbers/",
+        "/dashboard/report-numbers/"
       ]
     },
     "/": {
@@ -277,14 +279,8 @@ export const routeTree = rootRoute
     "/about": {
       "filePath": "about.tsx"
     },
-    "/report-numbers/create": {
-      "filePath": "report-numbers/create.tsx"
-    },
     "/dashboard/": {
       "filePath": "dashboard/index.tsx"
-    },
-    "/report-numbers/": {
-      "filePath": "report-numbers/index.tsx"
     },
     "/dashboard/case-files/create": {
       "filePath": "dashboard/case-files/create.tsx"
@@ -292,11 +288,17 @@ export const routeTree = rootRoute
     "/dashboard/fraud-numbers/create": {
       "filePath": "dashboard/fraud-numbers/create.tsx"
     },
+    "/dashboard/report-numbers/create": {
+      "filePath": "dashboard/report-numbers/create.tsx"
+    },
     "/dashboard/case-files/": {
       "filePath": "dashboard/case-files/index.tsx"
     },
     "/dashboard/fraud-numbers/": {
       "filePath": "dashboard/fraud-numbers/index.tsx"
+    },
+    "/dashboard/report-numbers/": {
+      "filePath": "dashboard/report-numbers/index.tsx"
     }
   }
 }

@@ -7,7 +7,6 @@ import { PageViewschartData } from "@/data/analytics/PageViews.chart.data"
 
 
 
-
 const PageViewsChartConfig = {
     views: {
         label: "Page Views"

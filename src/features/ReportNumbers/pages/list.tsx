@@ -1,20 +1,21 @@
 
 import { BookOpen, Plus } from "lucide-react";
-import TopNavBar from "@/components/CustomUI/topBarNav";
-import { CustomButton } from "@/components/CustomUI/buttons";
-import { useRouter } from "next/navigation";
+import { CustomButton } from "@/components/custom-ui/buttons";
+import TopNavBar from "@/components/custom-ui/topBarNav";
+
+
 import ReportNumberListTable from "../tables/reportNumbersTable";
 import ReportNumberExport from "../tables/report-number-export";
 import ReportNumberViewSheet from "./DetailView";
 import PageLayout from "@/features/layout/PagesLayout";
-
+import { useNavigate } from "@tanstack/react-router";
 
 
 
 export default function ReportNumberListPage() {
 
 
-    const router = useRouter();
+    const navigate = useNavigate()
 
     return (
        <div className="">
@@ -25,7 +26,7 @@ export default function ReportNumberListPage() {
                         <div className="flex gap-3 justify-center items-center ">
                             <ReportNumberExport />
                             <CustomButton 
-                                onClick={() => router.push('report-numbers/create')} 
+                                onClick={() =>navigate({ to: '/dashboard/report-numbers/create' })} 
                                 size={'sm'}
                                 className="dark:text-primary-foreground dark:hover:bg-primary/85 text-sm font-medium !px-3 bg-primary text-primary-foreground hover:bg-primary/90"
                             >
@@ -34,9 +35,7 @@ export default function ReportNumberListPage() {
                                 
                             </CustomButton>
                             <ReportNumberViewSheet />
-
                         </div>
-                        
                     </div>
                     <div className="">
                         <div className="">

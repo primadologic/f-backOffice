@@ -93,24 +93,24 @@ const [pagination, setPagination] = useState({
   return (
     <div className="">
       <Card className="rounded-[1.8rem] border">
-        <div className="w-full flex flex-row justify-between items-center">
+        <div className="w-full flex sm:flex-row flex-col justify-between items-center">
           <CardHeader className="">
             <CardTitle className="text-xl font-semibold">Case Files List</CardTitle>
             <CardDescription>Keep track of case files and other information</CardDescription>
           </CardHeader>
             <CardContent className="flex gap-3 ">
               <div className="flex items-center gap-4 py-4">
-              <div className="relative w-full max-w-md ">
-                <Search className="absolute left-3 top-2.5 text-muted-foreground" size={18} />
-                <Input
-                  placeholder="Filter investigator..."
-                  value={(table.getColumn("investigator")?.getFilterValue() as string) ?? ""}
-                  onChange={(event) =>
-                    table.getColumn("investigator")?.setFilterValue(event.target.value)
-                  }
-                  className="max-w-sm pl-10 focus-visible:ring-1 focus-visible:ring-gray-400 outline-none focus:ring-1 focus:ring-gray-400 delay-150 transition ease-in-out duration-300"
-                />
-              </div>
+                <div className="relative w-full max-w-md ">
+                  <Search className="absolute left-3 top-2.5 text-muted-foreground" size={18} />
+                  <Input
+                    placeholder="Filter investigator..."
+                    value={(table.getColumn("investigator")?.getFilterValue() as string) ?? ""}
+                    onChange={(event) =>
+                      table.getColumn("investigator")?.setFilterValue(event.target.value)
+                    }
+                    className="max-w-sm pl-10 focus-visible:ring-1 focus-visible:ring-gray-400 outline-none focus:ring-1 focus:ring-gray-400 delay-150 transition ease-in-out duration-300"
+                  />
+                </div>
                 
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild  className="">
