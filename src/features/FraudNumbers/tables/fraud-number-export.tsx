@@ -51,7 +51,7 @@ export const FraudNumberExport = () => {
     ];
   
     return (
-      <div>
+      <div className="container mx-auto">
         <TableExport 
           data={data || []} 
           columns={fraudNumberColumns}

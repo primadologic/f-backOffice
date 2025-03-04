@@ -54,6 +54,7 @@ export default function ReportNumberCreatePage() {
        <div className="">
             <TopNavBar pageName="Reported Number" />
             <PageLayout>
+                <div className="pt-7"/>
                  <Card className="rounded-[1.8rem] border">
                     <div className="w-full flex flex-row justify-between items-center">
                         <CardHeader className="flex flex-row justify-start items-center gap-x-5">
@@ -76,7 +77,7 @@ export default function ReportNumberCreatePage() {
                                             <input 
                                                 type="text" 
                                                 placeholder="+233 000 0000"
-                                                className={`outline-none border px-3 py-3 rounded-md focus:ring-1 focus:ring-gray-400 delay-150 transition ease-in-out duration-300
+                                                className={`form-input
                                                         ${errors.suspectNumber ? "form-validerr-ring" : "form-valid-ring"}
                                                     `} 
                                                 {...register('suspectNumber', {
@@ -97,7 +98,7 @@ export default function ReportNumberCreatePage() {
                                             <input 
                                                 type="text" 
                                                 placeholder="+233 000 0000"
-                                                className={`outline-none border px-3 py-3 rounded-md focus:ring-1 focus:ring-gray-400 delay-150 transition ease-in-out duration-300
+                                                className={`form-input
                                                         ${errors.reporterNumber ? "form-validerr-ring" : "form-valid-ring"}
                                                     `} 
                                                 {...register("reporterNumber", {
@@ -151,7 +152,7 @@ export default function ReportNumberCreatePage() {
                                             <input type="date" placeholder="Date of fraud incident"
                                                 min={getStartYear()}
                                                 max={new Date().toISOString().split('T')[0]}
-                                                className={`outline-none border px-3 py-3 rounded-md focus:ring-1 focus:ring-gray-400 delay-150 transition ease-in-out duration-300
+                                                className={`form-input
                                                         ${errors.incidentDate ? "form-validerr-ring" : "form-valid-ring"}
                                                     `}
                                                 {...register('incidentDate', {
@@ -166,7 +167,7 @@ export default function ReportNumberCreatePage() {
                                         <div className="w-full flex flex-col gap-2">
                                             <label htmlFor="incident_date"  className="form-label">Request Files</label>
                                             <input type="file" multiple placeholder="Show Evidence of fraud incident"
-                                                className={`outline-none border px-3 py-3 rounded-md focus:ring-1 focus:ring-gray-400 delay-150 transition ease-in-out duration-300
+                                                className={`form-input
                                                         ${errors.requestFiles ? "form-validerr-ring" : "form-valid-err"}
                                                     `}
                                             />
@@ -180,7 +181,7 @@ export default function ReportNumberCreatePage() {
                                             <textarea 
                                                 rows={5}
                                                 placeholder="Describe the fraud incident"
-                                                className={`outline-none border px-3 py-3 rounded-md focus:ring-1 focus:ring-gray-400 delay-150 transition ease-in-out duration-300
+                                                className={`form-input
                                                         ${errors.description ? "form-validerr-ring" : "form-valid-err"}
                                                     `}
                                                 {...register('description', {
@@ -195,7 +196,7 @@ export default function ReportNumberCreatePage() {
                                     </div>
 
                                     <div className="w-full flex flex-row">
-                                        <Button className="">
+                                        <Button className="btn-dark-mode">
                                             Submit
                                         </Button>
 

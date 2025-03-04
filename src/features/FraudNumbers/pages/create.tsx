@@ -63,6 +63,7 @@ export default function FraudNumberCreatePage() {
     return (
        <div className="">
             <TopNavBar pageName="Fraud Numbers" />
+            <div className="pt-7"/>
             <PageLayout>
                  <Card className="rounded-[1.8rem] border">
                     <div className="w-full flex flex-row justify-between items-center">
@@ -85,7 +86,7 @@ export default function FraudNumberCreatePage() {
                                             <input 
                                                 type="text" 
                                                 placeholder="+233 000 0000"
-                                                className={`outline-none border px-3 py-3 rounded-md focus:ring-1 focus:ring-gray-400 delay-150 transition ease-in-out duration-300
+                                                className={`form-input
                                                         ${errors.suspectNumber ? "form-validerr-ring" : "form-valid-err"}
                                                     `}
                                                 {...register('suspectNumber', {
@@ -124,7 +125,7 @@ export default function FraudNumberCreatePage() {
                                         </div>
                                     </div>
                                     <div className="w-full flex flex-row">
-                                        <Button className="">
+                                        <Button className="btn-dark-mode">
                                             Submit
                                         </Button>
                                     </div>

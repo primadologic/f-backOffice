@@ -76,6 +76,7 @@ export default {
   			'custom-gray': '#484d5d',
   			'brand-orange': '#ffa90c',
   			'btn-border-gray': '#e6e6eb',
+
   			button_colors: {
   				dark_gray: '#313638',
   				primary: '#FFFFFF',
@@ -88,7 +89,20 @@ export default {
   				warning_100: 'hsl(var(--warning-100))',
   				danger_100: 'hsl(var(--danger-100))',
   				primary_500: 'hsl(var(--primary-500))'
-  			}
+  			},
+
+			custom_theme: {
+				primary_background: "#FFFFFF",
+				primary_foreground: "#181818",
+				dark_gray_1: "#212121",
+				dark_gray_2: "#3D3D3D",
+				gray: "#AAAAAA",
+				gray2: "#272727",
+				gray_hover: "#414141",
+				black: "#0f0f0f",
+
+
+			}
   		}
   	}
   },

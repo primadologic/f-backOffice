@@ -1,5 +1,6 @@
-import DashboardLayout from "@/components/layouts/dashboardLayout";
+
 import ReportNumberCreatePage from "@/features/ReportNumbers/pages/create";
+import DashboardLayout from "../dashBoardLayout";
 
 
 

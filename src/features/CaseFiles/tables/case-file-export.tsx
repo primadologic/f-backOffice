@@ -43,7 +43,7 @@ export default function CaseFileExport() {
   ];
 
   return (
-    <div className="container mx-auto py-10">
+    <div className="container mx-auto ">
       <div className="">
         <TableExport 
           data={getCaseFiles.data || []}

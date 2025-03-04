@@ -57,6 +57,7 @@ export default function CaseFileCreatePage() {
        <div className="">
             <TopNavBar pageName="Case File" />
             <PageLayout>
+                <div className="pt-7"/>
                  <Card className="rounded-[1.8rem] border">
                     <div className="w-full flex flex-row justify-between items-center">
                         <CardHeader className="flex flex-row justify-start items-center gap-x-5">
@@ -81,7 +82,7 @@ export default function CaseFileCreatePage() {
                                             <input 
                                                 type="text" 
                                                 placeholder="+233 000 0000"
-                                                className={`outline-none border px-3 py-3 rounded-md focus:ring-1 focus:ring-gray-400 delay-150 transition ease-in-out duration-300'
+                                                className={`form-input
                                                         ${errors.suspectNumber ? "form-validerr-ring" : "form-valid-ring"}
                                                     `}
                                                 {...register('suspectNumber', {
@@ -112,12 +113,12 @@ export default function CaseFileCreatePage() {
                                                 render={({ field: { onBlur, value, onChange } }) => (
                                                 <Select onValueChange={onChange} defaultValue={value}>
                                                     <SelectTrigger 
-                                                        className={`outline-none border h-[3.2rem] px-3 py-3 rounded-md focus:ring-1 focus:ring-gray-400 delay-150 transition ease-in-out duration-300
+                                                        className={`outline-none border h-[3.2rem] text-sm  px-3 py-3 rounded-md font-medium text-custom_theme-primary_foreground dark:bg-custom_theme-dark_gray_1 dark:text-custom_theme-primary_background focus:ring-1 focus:ring-gray-400 dark:focus:ring-custom_theme-gray delay-150 transition ease-in-out duration-300
                                                                 ${errors.status ? "form-validerr-ring " : "form-valid-ring"}
                                                             `}
                                                         onBlur={onBlur}
                                                     >
-                                                        <SelectValue placeholder="Select Status"  />
+                                                        <SelectValue className="dark:!text-custom_theme-primary_background" placeholder="Select Status"  />
                                                     </SelectTrigger>
                                                     <SelectContent className="w-full">
                                                         {CaseStatusData.map((statusOption: CaseStatusType) => (
@@ -138,7 +139,7 @@ export default function CaseFileCreatePage() {
                                             <textarea 
                                                 rows={5}
                                                 placeholder="Enter the remarks for the case"
-                                                className={`outline-none w-full border px-3 py-3 rounded-md focus:ring-1 focus:ring-gray-400 delay-150 transition ease-in-out duration-300
+                                                className={`form-input
                                                         ${errors.remarks ? "form-validerr-ring" : "form-valid-ring"}
                                                     `}
                                                 {...register("remarks", {
@@ -154,7 +155,7 @@ export default function CaseFileCreatePage() {
                                     </div>
 
                                     <div className="w-full flex flex-row">
-                                        <Button className="">
+                                        <Button className="btn-dark-mode">
                                             Submit
                                         </Button>
                                     </div>

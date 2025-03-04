@@ -5,7 +5,7 @@ export default function PageLayout({children}: {children: React.ReactNode}) {
 
     return (
         <>
-            <section className="my-5">
+            <section className="">
                 {children}
             </section>
         </>

@@ -15,7 +15,7 @@ export default function TopNavBar({pageName, icon: Icon}: TopNavBarType) {
     return (
         <div className="lg:w-full lg:flex lg:flex-col lg:justify-between lg:items-start  w-full  flex flex-col gap-y-2">
             <div className="lg:flex lg:flex-row lg:justify-between lg:gap-10 flex flex-row justify-between">
-                <h2 className="flex flex-row gap-3 items-center text-custom-black2 font-bold capitalize text-[25px] dark:text-primary">
+                <h2 className="flex flex-row gap-3 items-center text-custom-black2 font-bold capitalize text-[25px] dark:text-custom_theme-primary_background">
                     {Icon && <Icon size={24} />}
                     {pageName}
                 </h2>

@@ -10,7 +10,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "capitalize btn-padding font-medium flex flex-row items-center gap-[.2rem]",
+        default: "capitalize btn-dark-mode btn-padding font-medium flex flex-row items-center gap-[.2rem]",
         
       },
       size: {

@@ -17,11 +17,13 @@ export default function FraudNumberListPage() {
        <div className="">
             <TopNavBar pageName="Fraud Numbers" icon={Flag} />
             <PageLayout>
-                <div className="">
+                <div className="space-y-8">
                     <div className="flex justify-end item-end">
                         <div className="flex gap-3 justify-center items-center">
                             <FraudNumberExport />
-                            <CustomButton onClick={() => navigate({ to: '/dashboard/case-files/create' })} size={'sm'} className="dark:text-primary-foreground dark:hover:bg-primary/85 text-sm font-medium !px-3 bg-primary text-primary-foreground hover:bg-primary/90">
+                            <CustomButton onClick={() => navigate({ to: '/dashboard/case-files/create' })} size={'sm'} 
+                                className=""
+                            >
                                 <Plus className="mr-2 h-4 w-4" />
                                 <span className="mr-1">Create Case File</span>
                             </CustomButton>

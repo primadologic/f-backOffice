@@ -1,5 +1,6 @@
-import DashboardLayout from "@/components/layouts/dashboardLayout";
+
 import CaseFileCreatePage from "@/features/CaseFiles/pages/create"
+import DashboardLayout from "../dashBoardLayout"
 
 
 export default function CreatePage() {

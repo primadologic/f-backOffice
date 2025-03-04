@@ -1,13 +1,7 @@
-'use client'
+
 import {
     SidebarGroup,
-    // SidebarGroupLabel,
     SidebarMenu,
-    // SidebarMenuSubButton,
-    // SidebarMenuSubItem,
-    // SidebarMenuSub,
-    // SidebarMenuSubButton,
-    // SidebarMenuSubItem,
     SidebarMenuButton,
   } from "@/components/ui/sidebar"
 
@@ -39,5 +33,5 @@ import { useRouter } from "@tanstack/react-router"
             </SidebarMenu>
         </SidebarGroup>
     )
-
   }
+

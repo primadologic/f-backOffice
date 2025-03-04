@@ -28,7 +28,7 @@ export default function DashboardLayout({children, }: DashLayoutProps) {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex !w-full h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+        <header className="flex  !w-full h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
           {/* <div className="flex items-center gap-2 px-4">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
@@ -66,7 +66,7 @@ export default function DashboardLayout({children, }: DashLayoutProps) {
                 </BreadcrumbList>
               </Breadcrumb> */}
             </div>
-            <div className="px-4 flex flex-row items-center gap-x-5">
+            <div className="px-7 flex flex-row items-center gap-x-5">
               <ModeToggle />
               {/* <h2 className="font-medium">Portal | FraudWall</h2> */}
                 <Button 
@@ -79,7 +79,7 @@ export default function DashboardLayout({children, }: DashLayoutProps) {
             </div>
           </div>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+        <div className="flex flex-1 flex-col gap-4 px-7 dark:bg-custom_theme-black">
         
           { children }
 

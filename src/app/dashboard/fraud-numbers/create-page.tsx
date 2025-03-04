@@ -1,5 +1,6 @@
-import DashboardLayout from "@/components/layouts/dashboardLayout";
+
 import FraudNumberCreatePage from "@/features/FraudNumbers/pages/create";
+import DashboardLayout from "../dashBoardLayout";
 
 
 

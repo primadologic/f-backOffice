@@ -1,6 +1,6 @@
 
-import DashboardLayout from "@/components/layouts/dashboardLayout"
 import CaseFilesListPage from "@/features/CaseFiles/pages/list"
+import DashboardLayout from "../dashBoardLayout"
 
 
 
