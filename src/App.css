@@ -1,4 +1,4 @@
-#root {
+/* #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
@@ -39,4 +39,17 @@
 
 .read-the-docs {
   color: #888;
+} */
+
+
+.password-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.eye-icon {
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
 }
