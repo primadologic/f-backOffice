@@ -11,7 +11,7 @@ import {
 import { useForm } from "react-hook-form"
 import { useLoginService } from "@/service/login.service"
 import Loader from "@/components/custom-ui/loader"
-import { useState } from "react"
+
 
 
 export default function LoginForm() {
@@ -26,12 +26,6 @@ export default function LoginForm() {
     })
 
     const loginService = useLoginService();
-
-    const [passwordType, setPasswordType] = useState<'password' | 'text'>('password');
-
-    const togglePasswordVisibility = () => {
-      setPasswordType((prevType: string) => (prevType === 'password' ? 'text' : 'password'));
-    };
 
 
     const onSubmit = (data: LoginUserType) => {
