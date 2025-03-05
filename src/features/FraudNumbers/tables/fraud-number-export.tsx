@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 
 import TableExport from "@/components/custom-ui/table-export";
-import { getData } from "@/service/fraudNumberService";
+import { getData } from "@/service/fraud-number.service";
 
 // For Fraud Numbers Table
 export const FraudNumberExport = () => {

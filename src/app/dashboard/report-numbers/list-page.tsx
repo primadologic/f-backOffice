@@ -5,11 +5,13 @@ import DashboardLayout from "../dashBoardLayout";
 
 
 
+
 export default function ListPage() {
 
     return (
+
         <DashboardLayout>
-           <ReportNumberListPage />
+            <ReportNumberListPage />
         </DashboardLayout>
     )
     

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { columns } from "./columns"
 import { DataTable } from "./data-table"
-import { getData } from "@/service/reportNumberService";
+import { getData } from "@/service/report-number.service";
 
 
 

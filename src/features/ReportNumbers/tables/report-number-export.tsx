@@ -2,7 +2,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import TableExport from "@/components/custom-ui/table-export";
-import { getData } from "@/service/reportNumberService";
+import { getData } from "@/service/report-number.service";
 
 
 // Your existing getData function...

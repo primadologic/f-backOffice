@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { columns } from "./columns"
 import { DataTable } from "./data-table"
-import { getData } from "@/service/caseFileService"
+import { getData } from "@/service/case.file.service"
 
 
 export default function CaseFileListTable() {

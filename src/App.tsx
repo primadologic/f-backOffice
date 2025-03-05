@@ -1,17 +1,19 @@
 
-import { ThemeProvider } from './components/providers/theme-provider'
-import { Link } from '@tanstack/react-router'
+import Page from './app/login/page'
+import { ModeToggle } from './components/custom-ui/theme-toggle'
+
 
 function App() {
 
   return (
+
     <>
-      <ThemeProvider>
-        <div className="flex flex-col gap-8 w-full min-h-screen  justify-center items-center">
-          <h1>FraudWall Backoffice is under redevelopment</h1>
-          <Link to='.' className="font-medium text-2xl hover:underline">View dashboard</Link>
-        </div>
-      </ThemeProvider>
+      <header className="w-full flex justify-end items-end px-7 py-4">
+        <ModeToggle />
+      </header>
+      <main>
+        <Page />
+      </main>
     </>
 
   )
