@@ -33,6 +33,7 @@ export const useLoginService = () => {
             login(accessToken, refreshToken);
             Cookies.set('refreshToken', refreshToken,  {secure: true, sameSite: 'Strict'})
             router.navigate({ to: '/dashboard' })
+            toast.success('Logged in successfully')
         },
         onError: (error) => {
             console.log("Login failed", error);

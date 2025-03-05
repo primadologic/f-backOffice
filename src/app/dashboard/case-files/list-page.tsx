@@ -1,18 +1,16 @@
 
 import CaseFilesListPage from "@/features/CaseFiles/pages/list"
 import DashboardLayout from "../dashBoardLayout"
-import { ProtectedRoute } from "@/components/providers/protected-route"
-
 
 
 export default function ListPage() {
 
     return (
-        <ProtectedRoute>
-            <DashboardLayout>
+
+        <DashboardLayout>
             <CaseFilesListPage />
-            </DashboardLayout>
-        </ProtectedRoute>
+        </DashboardLayout>
+
     )
     
 };

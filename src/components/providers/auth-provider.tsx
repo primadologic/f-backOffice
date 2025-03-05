@@ -5,6 +5,7 @@ import { AuthContext } from './auth-context';
 import { API_BASE_URL, API_KEY } from '@/lib/env_vars';
 import Cookies from "js-cookie";
 
+
 // Authentication Provider Component
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [token, setToken] = useState<string | null>(Cookies.get("accessToken") ?? null);

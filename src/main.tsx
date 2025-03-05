@@ -9,6 +9,8 @@ import { routeTree } from './routeTree.gen'
 import { ThemeProvider } from './components/providers/theme-provider'
 import { AuthProvider } from './components/providers/auth-provider'
 import { Toaster }  from "sonner"
+import { ErrorBoundary } from 'react-error-boundary'
+import ErrorFallback from './components/custom-ui/error-fallback'
 
 
 
@@ -40,18 +42,21 @@ const rootElement = document.getElementById('root')!
 if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
-    <AuthProvider>
-      <ThemeProvider>
-        <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} />
-            <Toaster 
-              richColors
-              position="top-right" 
-              duration={4000}
-            />
-          <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>,
-      </ThemeProvider>
-    </AuthProvider>
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <AuthProvider>
+        <ThemeProvider>
+          <QueryClientProvider client={queryClient}>
+            <RouterProvider router={router} />
+              <Toaster 
+                richColors
+                position="top-right" 
+                duration={4000}
+                closeButton={true}
+              />
+            <ReactQueryDevtools initialIsOpen={false} />
+          </QueryClientProvider>,
+        </ThemeProvider>
+      </AuthProvider>
+    </ErrorBoundary>
   )
 }
