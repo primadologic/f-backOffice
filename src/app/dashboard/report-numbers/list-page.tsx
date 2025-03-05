@@ -1,6 +1,7 @@
 
 import ReportNumberListPage from "@/features/ReportNumbers/pages/list";
 import DashboardLayout from "../dashBoardLayout";
+import { ProtectedRoute } from "@/components/providers/protected-route";
 
 
 
@@ -8,9 +9,11 @@ import DashboardLayout from "../dashBoardLayout";
 export default function ListPage() {
 
     return (
-        <DashboardLayout>
-           <ReportNumberListPage />
-        </DashboardLayout>
+        <ProtectedRoute>
+            <DashboardLayout>
+                <ReportNumberListPage />
+            </DashboardLayout>
+        </ProtectedRoute>
     )
     
 };

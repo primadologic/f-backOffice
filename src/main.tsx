@@ -6,7 +6,8 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import "@/index.css"
 import { routeTree } from './routeTree.gen'
 import { ThemeProvider } from './components/providers/theme-provider'
-
+import { AuthProvider } from './components/providers/auth-provider'
+import { Toaster }  from "sonner"
 
 
 
@@ -38,12 +39,18 @@ const rootElement = document.getElementById('root')!
 if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
-    <ThemeProvider>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-      
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>,
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider>
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+            <Toaster 
+              richColors
+              position="top-right" 
+              duration={4000}
+            />
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>,
+      </ThemeProvider>
+    </AuthProvider>
   )
 }

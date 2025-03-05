@@ -1,6 +1,7 @@
 
 import ReportNumberCreatePage from "@/features/ReportNumbers/pages/create";
 import DashboardLayout from "../dashBoardLayout";
+import { ProtectedRoute } from "@/components/providers/protected-route";
 
 
 
@@ -8,9 +9,11 @@ import DashboardLayout from "../dashBoardLayout";
 export default function CreatePage() {
 
     return (
-        <DashboardLayout>
-            <ReportNumberCreatePage />
-        </DashboardLayout>
+        <ProtectedRoute>
+            <DashboardLayout>
+                <ReportNumberCreatePage />
+            </DashboardLayout>
+        </ProtectedRoute>
     )
     
 };

@@ -1,6 +1,7 @@
 
 import FraudNumberListPage from "@/features/FraudNumbers/pages/list";
 import DashboardLayout from "../dashBoardLayout";
+import { ProtectedRoute } from "@/components/providers/protected-route";
 
 
 
@@ -8,9 +9,11 @@ import DashboardLayout from "../dashBoardLayout";
 export default function ListPage() {
 
     return (
-        <DashboardLayout>
-            <FraudNumberListPage />
-        </DashboardLayout>
+        <ProtectedRoute>
+            <DashboardLayout>
+                <FraudNumberListPage />
+            </DashboardLayout>
+        </ProtectedRoute>
     )
     
 };
