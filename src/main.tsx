@@ -4,6 +4,7 @@ import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import "@/index.css"
+import "@/App.css"
 import { routeTree } from './routeTree.gen'
 import { ThemeProvider } from './components/providers/theme-provider'
 import { AuthProvider } from './components/providers/auth-provider'

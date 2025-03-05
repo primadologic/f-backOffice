@@ -1,103 +1,98 @@
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { AuthContext } from './auth-context';
 import { API_BASE_URL, API_KEY } from '@/lib/env_vars';
-import Cookies from "js-cookie"
-
-// Create the context with a default value
-
+import Cookies from "js-cookie";
 
 // Authentication Provider Component
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [token, setToken] = useState<string | null>(Cookies.get("accessToken") ?? null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!token);
 
-  // Setup axios interceptors
+  // Function to get token expiration time
+  // const getTokenExpirationTime = (expiresInMinutes: number) => {
+  //   return new Date(new Date().getTime() + expiresInMinutes * 60 * 1000);
+  // };
+
+  // Function to refresh token
+  const refreshAccessToken = async () => {
+    const refreshToken = Cookies.get("refreshToken");
+    if (!refreshToken) return logout();
+
+    try {
+      const response = await axios.get(`${API_BASE_URL}/auth/refresh/token`, {
+        headers: {
+          Authorization: `Bearer ${refreshToken}`,
+          "X-API-KEY": API_KEY,
+        },
+      });
+
+      const { accessToken } = response.data.data; // Backend should return `expiresIn` (in minutes)
+
+      // Store new token with expiration time
+      Cookies.set("accessToken", accessToken, { expires: 30 / 1440, secure: true, sameSite: "Strict" });
+      setToken(accessToken);
+      setIsAuthenticated(true);
+
+      return accessToken;
+    } catch (error) {
+      console.error("Token refresh failed", error);
+      logout();
+      return null;
+    }
+  };
+
+  // Axios Interceptors
   useEffect(() => {
-    // Request interceptor to add token to every request
     const requestInterceptor = axios.interceptors.request.use(
-      (config) => {
-        if (token) {
-          config.headers['Authorization'] = `Bearer ${token}`;
-          config.headers['X-API-KEY'] = ` ${API_KEY}`;
+      async (config) => {
+        let currentToken = Cookies.get("accessToken");
+
+        if (!currentToken) {
+          currentToken = await refreshAccessToken();
         }
+
+        if (currentToken) {
+          config.headers['Authorization'] = `Bearer ${currentToken}`;
+          config.headers['X-API-KEY'] = API_KEY;
+        }
+        
         return config;
       },
       (error) => Promise.reject(error)
     );
 
-    // Response interceptor to handle token refresh
-    const responseInterceptor = axios.interceptors.response.use(
-      (response) => response,
-      async (error) => {
-        const originalRequest = error.config;
-
-        // If the error status is 401 and there is no originalRequest._retry flag
-        if (error.response.status === 401 && !originalRequest._retry) {
-          originalRequest._retry = true;
-
-          try {
-            // Call your refresh token endpoint
-            const refreshResponse = await axios.post(`${API_BASE_URL}/auth/refresh/token`, {
-              // refreshToken: localStorage.getItem('refreshToken')
-              refreshToken: Cookies.get('refreshToken')
-            });
-
-            const { accessToken } = refreshResponse.data;
-
-            // Update token in local storage and state
-            // localStorage.setItem('token', accessToken);
-            Cookies.set('accessToken', accessToken, { secure: true, sameSite: 'Strict' });
-            setToken(accessToken);
-
-            // Retry the original request with new token
-            originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
-            return axios(originalRequest);
-          } catch (refreshError) {
-            // If refresh fails, log out the user
-            logout();
-            return Promise.reject(refreshError);
-          }
-        }
-
-        return Promise.reject(error);
-      }
-    );
-
-    // Cleanup interceptors
     return () => {
       axios.interceptors.request.eject(requestInterceptor);
-      axios.interceptors.response.eject(responseInterceptor);
     };
-  }, [token]);
+  }, []);
 
-  // Login function to set token and authentication state
-  const login = (newToken: string) => {
-    // localStorage.setItem('token', newToken);
-    Cookies.set("accessToken", newToken, {secure: true, sameSite: 'Strict'})
+  // Login function
+  const login = (newToken: string, refreshToken: string) => {
+
+    // Convert expiration time from minutesto days
+    const acceessTokenExpiresInDays = 30 / 1440;
+    const refreshExpiresInDays = 60 / 1440; // Refresh token expires in 1 hour
+    
+    Cookies.set("accessToken", newToken, { expires: acceessTokenExpiresInDays, secure: true, sameSite: "Strict" });
+    Cookies.set("refreshToken", refreshToken, { expires: refreshExpiresInDays, secure: true, sameSite: "Strict" }); 
+
     setToken(newToken);
     setIsAuthenticated(true);
   };
 
-  // Logout function to clear token and authentication state
+  // Logout function
   const logout = () => {
-    // localStorage.removeItem('token');
-    // localStorage.removeItem('refreshToken');
-    Cookies.remove("accessToken")
-    Cookies.remove("refreshToken")
+    Cookies.remove("accessToken");
+    Cookies.remove("refreshToken");
     setToken(null);
     setIsAuthenticated(false);
   };
 
   return (
-    <AuthContext.Provider value={{ 
-      isAuthenticated, 
-      login, 
-      logout, 
-      token 
-    }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, token }}>
       {children}
     </AuthContext.Provider>
   );
 };
-

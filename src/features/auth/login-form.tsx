@@ -11,6 +11,7 @@ import {
 import { useForm } from "react-hook-form"
 import { useLoginService } from "@/service/login.service"
 import Loader from "@/components/custom-ui/loader"
+import { useState } from "react"
 
 
 export default function LoginForm() {
@@ -25,6 +26,12 @@ export default function LoginForm() {
     })
 
     const loginService = useLoginService();
+
+    const [passwordType, setPasswordType] = useState<'password' | 'text'>('password');
+
+    const togglePasswordVisibility = () => {
+      setPasswordType((prevType: string) => (prevType === 'password' ? 'text' : 'password'));
+    };
 
 
     const onSubmit = (data: LoginUserType) => {
@@ -54,6 +61,7 @@ export default function LoginForm() {
                                 <input 
                                     type="email" 
                                     placeholder="m@example.com"
+                                    autoComplete="email"
                                     className={`form-input 
                                         ${errors.email ? 'form-validerr-ring' : 'form-valid-ring'}
                                     `}
@@ -78,9 +86,11 @@ export default function LoginForm() {
                                         Forgotyour password?
                                     </a>
                                 </div>
+                               
                                 <input 
                                     type="password" 
                                     placeholder="Enter your password"
+                                    autoComplete="current-password" 
                                     className={`form-input 
                                         ${errors.password ? 'form-validerr-ring' : 'form-valid-ring'}
                                     `}
@@ -90,7 +100,7 @@ export default function LoginForm() {
                                             value: true,
                                             message: "A password is needed to secure your account."
                                         },
-                                        minLength: { value: 6, message: "Password must be at least 6 characters" },
+                                        minLength: { value: 5, message: "Password must be at least 5 characters" },
                                     })}
                                     onBlur={() => trigger('password')}
                                 />
@@ -121,3 +131,4 @@ export default function LoginForm() {
     )
     
 };
+

@@ -2,7 +2,8 @@
 
 // types/user.type.ts
 
-import { UserRole } from "./user-role.type"
+import { UserRole } from "./UserRole.type";
+
 
 interface UserType {
   id: string;
