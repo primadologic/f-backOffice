@@ -1,41 +1,35 @@
 
-import FraudNumbersAnalytics from "../FraudNumbers/details"
-import FraudWallTabAnalytics from "../FraudWallClient/details"
-import OverviewMainDashboard from "../OverviewMainDashboard"
-import VerificationTabAnalytics from "../verification/details"
+
 import {
     Tabs,
     TabsContent,
     TabsList,
     TabsTrigger,
 } from "@/components/ui/tabs"
+import VerificationTabAnalytics from "../verification/details"
+import OverviewPageAnalytics from "./details"
+
 
 
 
 export default function OverviewTabs() {
 
     return (
+        
         <Tabs defaultValue="overview">
-             <TabsList className="">
+            <TabsList className="">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
-                <TabsTrigger value="fraudwallClient">FraudWall Client</TabsTrigger>
-                <TabsTrigger value="verification">Verification Insights</TabsTrigger>
-                <TabsTrigger value="reportedNumbers">Reported Numbers</TabsTrigger>
-                <TabsTrigger value="fraudNumbers">Fraud Numbers</TabsTrigger>
+                <TabsTrigger value="reports">Insights</TabsTrigger>
             </TabsList>
             <TabsContent value="overview">
-                <OverviewMainDashboard />
+                <OverviewPageAnalytics />
             </TabsContent>
-            <TabsContent value="fraudwallClient">
-                <FraudWallTabAnalytics />
-            </TabsContent>
-            <TabsContent value="verification">
+            
+            <TabsContent value="reports">
                 <VerificationTabAnalytics />
             </TabsContent>
-            <TabsContent value="fraudNumbers">
-               <FraudNumbersAnalytics />
-            </TabsContent>
         </Tabs>
+    
     )
     
 };
