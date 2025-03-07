@@ -15,7 +15,8 @@ export default {
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
-  			sm: 'calc(var(--radius) - 4px)'
+  			sm: 'calc(var(--radius) - 4px)',
+			20: '1.25rem',
   		},
   		colors: {
   			background: 'hsl(var(--background))',
@@ -58,6 +59,15 @@ export default {
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
   			},
+			
+			origin: {
+				'fb': 'hsl(var(--origin-fb))',
+				'ig': 'hsl(var(--origin-ig))',
+				'tg': 'hsl(var(--origin-tg))',
+				'wa': 'hsl(var(--origin-wa))',
+				'portal': 'hsl(var(--origin-portal))',
+			},
+
   			sidebar: {
   				DEFAULT: 'hsl(var(--sidebar-background))',
   				foreground: 'hsl(var(--sidebar-foreground))',
@@ -109,6 +119,14 @@ export default {
   				'serif'
   			]
   		},
+
+		width: {
+			dashCard: "10.69rem"
+		},
+		height: {
+			dashCard: "9.52rem"
+		}
+
   	}
   },
   plugins: [

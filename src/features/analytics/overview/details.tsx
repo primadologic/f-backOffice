@@ -1,8 +1,7 @@
 
-import TopNavBar from "@/components/custom-ui/topBarNav";
+
 import AnalyticsLayout from "../layout/analytics-layout";
-import OverviewTabs from "./overview-tabs";
-import { LayoutDashboard } from "lucide-react";
+import OverviewCards from "./sub-charts/cards";
 
 
 
@@ -11,8 +10,11 @@ export default function OverviewPageAnalytics() {
 
     return (
         <AnalyticsLayout>
-            <TopNavBar pageName="Dashboard" icon={LayoutDashboard}/>
-            <OverviewTabs />
+            <div className=" py-4">
+                <div className="">
+                    <OverviewCards />
+                </div>
+            </div>
         </AnalyticsLayout>
     )
     
