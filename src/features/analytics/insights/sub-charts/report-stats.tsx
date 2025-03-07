@@ -1,7 +1,8 @@
- import { useState, useEffect, useMemo } from 'react';
+
+
+import { useState, useEffect, useMemo } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-import { useVerificationbyOriginReport } from '@/service/stats-verify-report.service';
 import {
     Select,
     SelectContent,
@@ -10,15 +11,15 @@ import {
     SelectValue,
   } from "@/components/ui/select"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+import { useYearlyStatistics } from '@/service/yearly-stats.service';
 
 
 // Define interfaces for our data structure
 interface ApiResponseData {
   year: number;
-  reportOriginCount: number[];
-  verificationOriginCount: number[];
-  platformPercentagesFromReports: Record<string, number>;
-  platformPercentagesFromVerification: Record<string, number>;
+  report: number[];
+  fraudNumbers: number[];
+  platformPercentagesFromReport: Record<string, number>;
 }
 
 interface ApiResponse {
@@ -29,28 +30,28 @@ interface ApiResponse {
 
 interface ChartDataPoint {
   month: string;
-  reportOrigin: number;
-  verificationOrigin: number;
+  report: number;
+  fraudNumbers: number;
 }
 
-type ChartType = "reportOrigin" | "verificationOrigin";
+type ChartType = "report" | "fraudNumbers";
 
 
 
-const YearlyStatisticsbyOriginChart = () => {
+const YearlyReportStatistics = () => {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [yearOptions, setYearOptions] = useState<number[]>([]);
-  const { data: apiResponse, isLoading, isError, error } = useVerificationbyOriginReport(selectedYear);
-  
-  const [activeChart, setActiveChart] = useState<ChartType>("verificationOrigin");
+  const { data: apiResponse, isLoading, isError, error } = useYearlyStatistics(selectedYear);
+
+  const [activeChart, setActiveChart] = useState<ChartType>("fraudNumbers");
   
   const chartConfig = {
-    reportOrigin: {
-      label: "Report Origins",
+    report: {
+      label: "Reports",
       color: "hsl(var(--chart-1))"
     },
-    verificationOrigin: {
-      label: "Verification Origins",
+    fraudNumbers: {
+      label: "Fraud Numbers",
       color: "hsl(var(--chart-2))"
     }
   };
@@ -75,27 +76,27 @@ const YearlyStatisticsbyOriginChart = () => {
     
     return months.map((month, index) => ({
       month,
-      reportOrigin: response.data.reportOriginCount[index] || 0,
-      verificationOrigin: response.data.verificationOriginCount[index] || 0
+      report: response.data.report[index] || 0,
+      fraudNumbers: response.data.fraudNumbers[index] || 0
     }));
   };
 
   const chartData = formatChartData(apiResponse as ApiResponse);
-  const data = apiResponse?.data || { reportOriginCount: [], verificationOriginCount: [] };
+  const data = apiResponse?.data || { report: [], fraudNumbers: [] };
   
   const total = useMemo(
     () => ({
-      reportOrigin: data.reportOriginCount?.reduce((acc: number, curr: number) => acc + curr, 0) || 0,
-      verificationOrigin: data.verificationOriginCount?.reduce((acc: number, curr: number) => acc + curr, 0) || 0,
+      report: data.report?.reduce((acc: number, curr: number) => acc + curr, 0) || 0,
+      fraudNumbers: data.fraudNumbers?.reduce((acc: number, curr: number) => acc + curr, 0) || 0,
     }),
-    [data?.reportOriginCount, data?.verificationOriginCount]
+    [data?.report, data?.fraudNumbers]
   );
 
 
   if (isLoading) {
     return (
-      <Card className="w-full">
-        <CardContent className="flex justify-center items-center h-64">
+      <Card className="w-full h-[15rem]">
+        <CardContent className="flex justify-center items-center h-[15rem] aspect-auto w-full">
           Loading data...
         </CardContent>
       </Card>
@@ -104,8 +105,8 @@ const YearlyStatisticsbyOriginChart = () => {
 
   if (isError) {
     return (
-      <Card className="w-full">
-        <CardContent className="text-red-500">
+      <Card className="w-full h-[15rem]">
+        <CardContent className="text-red-500 h-[15rem] aspect-auto w-full">
           Error loading data: {(error as Error)?.message || "Unknown error"}
         </CardContent>
       </Card>
@@ -117,8 +118,8 @@ const YearlyStatisticsbyOriginChart = () => {
     <Card className="w-full">
       <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
         <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
-          <CardTitle>Monthly Statistics ({selectedYear})</CardTitle>
-          <CardDescription>Showing report origins and verification origins by month</CardDescription>
+          <CardTitle>Report & Fraud Numbers Monthly Statistics ({selectedYear})</CardTitle>
+          <CardDescription>Showing report and fraud numbers statis by month</CardDescription>
         </div>
         <div className="flex">
           {(Object.keys(chartConfig) as Array<keyof typeof chartConfig>).map((key) => (
@@ -206,21 +207,21 @@ const YearlyStatisticsbyOriginChart = () => {
                     <ChartTooltip
                         content={
                             <ChartTooltipContent
-                            className="w-[150px]"
-                            nameKey="views"
-                            labelFormatter={(value) => {
-                                return new Date(value).toLocaleDateString("en-US", {
-                                month: "short",
-                                day: "numeric",
-                                year: "numeric",
-                                })
-                            }}
+                                className="w-[150px]"
+                                nameKey="month"
+                            //     labelFormatter={(value) => {
+                            //         return new Date(value).toLocaleDateString("en-US", {
+                            //         month: "short",
+                            //         day: "numeric",
+                            //         year: "numeric",
+                            //         })
+                            // }}
                         />
                     }
                     />
-                    {/* <Bar dataKey={activeChart} fill={`var(--color-${activeChart})`} /> */}
-                    <Bar dataKey="reportOrigin" name="Report Origins" fill={chartConfig.reportOrigin.color} />
-                    <Bar dataKey="verificationOrigin" name="Verification Origins" fill={chartConfig.verificationOrigin.color} />
+                    <Bar dataKey={activeChart} fill={`var(--color-${activeChart})`} />
+                    {/* <Bar dataKey="report" name="Reports" fill={chartConfig.report.color} />
+                    <Bar dataKey="fraudNumbers" name="Frau" fill={chartConfig.fraudNumbers.color} /> */}
                 </BarChart>
                 </ChartContainer>
             </CardContent>
@@ -230,4 +231,4 @@ const YearlyStatisticsbyOriginChart = () => {
 };
 
 
-export default YearlyStatisticsbyOriginChart;
+export default YearlyReportStatistics;

@@ -24,25 +24,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { useVerificationbyOriginReport } from "@/service/stats-verify-report.service"
-import { CustomLegendContent } from "./platformbyOrigin"
+import { useYearlyStatistics } from "@/service/yearly-stats.service"
 
 // Chart configuration for different platforms
 const chartConfig: Record<string, { label?: string; color?: string }> =  {
-    fraud: {
-        label: "Verifications"
-    },
-    Web: {
-        label: "Web",
-        color: "hsl(var(--origin-wa))"
+    report: {
+        label: "Report platform"
     },
     Telegram: {
         label: "Telegram",
        color: "hsl(var(--origin-tg))"
-    },
-    USSD: {
-        label: "USSD",
-       color: "hsl(var(--chart-3))"
     },
     Instagram: {
         label: "Instagram",
@@ -60,46 +51,63 @@ const chartConfig: Record<string, { label?: string; color?: string }> =  {
         label: "X",
         color: "hsl(var(--chart-2))"
     },
-    Portal: {
-        label: "Portal",
+    Phone_Call: {
+        label: "Phone Call",
         color: "hsl(var(--origin-portal))"
     }
 } satisfies ChartConfig
 
 
-// interface LegendEntry {
-//     payload: {
-//       fill: string;
-//       origin: keyof typeof chartConfig;
-//       fraud: number;
-//     };
-//   }
+interface LegendEntry {
+    payload: {
+      fill: string;
+      platform: keyof typeof chartConfig;
+      report: number;
+    };
+  }
   
-//   interface LegendProps {
-//     payload: LegendEntry[];
-//   }
+  interface LegendProps {
+    payload: LegendEntry[];
+  }
 
-// // Modify the ChartLegendContent component to include the value
-// const CustomLegendContent: React.FC<LegendProps> = ({ payload }) => {
-//     return (
-//       <div className="grid grid-cols-2 gap-x-10 gap-y-2 justify-start items-start">
-//         {payload.map((entry, index) => (
-//           <div key={`item-${index}`} className="flex justify-start items-center gap-1">
-//             <div
-//               className="w-3 h-3 rounded-full"
-//               style={{ backgroundColor: entry.payload.fill }}
-//             ></div>
-//             <span className="text-xs">
-//               {chartConfig[entry.payload.origin]?.label}: {entry.payload.fraud}
-//             </span>
-//           </div>
-//         ))}
-//       </div>
-//     );
-//   };
+// Modify the ChartLegendContent component to include the value
+export const CustomLegendContent: React.FC<LegendProps> = ({ payload }) => {
+   
+    // const leftOrigins = ["Web", "Telegram", "USSD"];
+    const rightOrigins = ["Facebook", "x", "Instagram", "Telegram", "WhatsApp", "Phone_Call"];
+  
+    // const leftItems = payload.filter((item) => leftOrigins.includes(item.payload.origin));
+    const rightItems = payload.filter((item) => rightOrigins.includes(item.payload.platform));
+  
+    
+    return (
+        <div className="flex justify-start items-start gap-x-10">
+      {/* <div className="flex flex-col gap-y-2">
+        {leftItems.map((entry, index) => (
+          <div key={`left-item-${index}`} className="flex justify-start items-center gap-1">
+            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: entry.payload.fill }}></div>
+            <span className="text-xs">
+              {chartConfig[entry.payload.origin]?.label}: {entry.payload.fraud}
+            </span>
+          </div>
+        ))}
+      </div> */}
+      <div className="grid grid-cols-2 gap-4">
+        {rightItems.map((entry, index) => (
+          <div key={`right-item-${index}`} className="flex justify-start items-center gap-1">
+            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: entry.payload.fill }}></div>
+            <span className="text-xs">
+              {chartConfig[entry.payload.platform]?.label}: {entry.payload.report}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+    );
+  };
 
 
-export default function VerificationbyOriginReportChart() {
+export default function YearlyPlatformReport() {
 
 
   const [yearOptions, setYearOptions] = useState<number[]>([])
@@ -107,33 +115,31 @@ export default function VerificationbyOriginReportChart() {
 //   const [loading, setLoading] = useState<boolean>(false)
 //   const [verificationData, setVerificationData] = useState<any>(null)
 
-  const verificationbyOrigin = useVerificationbyOriginReport(selectedYear)
+  const yearlyPlatformReport = useYearlyStatistics(selectedYear)
 
   // Prepare data for the chart
   const chartData = useMemo(() => {
-    if (!verificationbyOrigin?.data?.data) return [];
+    if (!yearlyPlatformReport.data?.data) return [];
   
-    // const { platformPercentagesFromVerification = {}, verificationOriginCount = [] } = verificationbyOrigin.data.data;
-    const { platformPercentagesFromVerification = {}, } = verificationbyOrigin.data.data;
+    const { platformPercentagesFromReport = {} } = yearlyPlatformReport.data.data ?? {};
   
     // const totalCount = verificationOriginCount.reduce((a: number, b: number) => a + b, 0);
   
-    return Object.keys(chartConfig).map((origin) => {
-      const percentage = platformPercentagesFromVerification[origin] || 0;
+    return Object.keys(chartConfig).map((platform) => {
+      const percentage = platformPercentagesFromReport[platform] || 0;
       return {
-        origin,
-        // fraud: Math.round((percentage * totalCount) / 100),
-        fraud: percentage,
-        fill: chartConfig[origin]?.color || "gray",
+        platform,
+        report: percentage,
+        fill: chartConfig[platform]?.color || "gray",
       };
     });
-  }, [verificationbyOrigin.data?.data]);
+  }, [yearlyPlatformReport.data?.data]);
   
 
   // Calculate total verifications
-  const totalVerifications = useMemo(() => {
+  const totalReportsbyPlatfom = useMemo(() => {
     if (!chartData.length) return 0
-    return chartData.reduce((acc, curr) => acc + curr.fraud, 0)
+    return chartData.reduce((acc, curr) => acc + curr.report, 0)
   }, [chartData])
 
   // Generate year options (current year and 4 previous years)
@@ -154,9 +160,9 @@ export default function VerificationbyOriginReportChart() {
     <Card className="sm:w-[35vw] w-full flex flex-col">
       <CardHeader className="pb-0 flex flex-row justify-between items-center">
         <div>
-          <CardTitle>Verification by Origin</CardTitle>
+          <CardTitle>Report Platform by Origin</CardTitle>
           <CardDescription className="text-custom_theme-gray text-sm">
-            {verificationbyOrigin.isLoading ? "Loading..." : `${selectedYear} Statistics`}
+            {yearlyPlatformReport.isLoading ? "Loading..." : `${selectedYear} Statistics`}
           </CardDescription>
         </div>
         <Select
@@ -180,7 +186,7 @@ export default function VerificationbyOriginReportChart() {
         </Select>
       </CardHeader>
       <CardContent className="flex flex-col gap-3">
-        {verificationbyOrigin?.isLoading ? (
+        {yearlyPlatformReport?.isLoading ? (
           <div className="flex items-center justify-center h-[22.5rem]">
             Loading data...
           </div>
@@ -197,10 +203,10 @@ export default function VerificationbyOriginReportChart() {
             
                 <Pie
                     data={chartData}
-                    dataKey="fraud"
-                    nameKey="origin"
+                    dataKey="report"
+                    nameKey="platform"
                     outerRadius={100}
-                    innerRadius={55}
+                    innerRadius={60}
                     strokeWidth={2.5}
                     cornerRadius={5} // Adds rounded corners to each slice
                     paddingAngle={15} // Adds space between slices
@@ -223,13 +229,13 @@ export default function VerificationbyOriginReportChart() {
                         fill="hsla(var(--foreground))"
                         className=""
                         >
-                        {payload.fraud}
+                        {payload.report}
                         </text>
                     )
                     }}
                 >
                     <LabelList
-                    dataKey="origin"
+                    dataKey="platform"
                     className="fill-background"
                     stroke="var(--primary-color)"
                     fontSize={13}
@@ -251,14 +257,14 @@ export default function VerificationbyOriginReportChart() {
                                 y={viewBox.cy}
                                 className="fill-foreground text-3xl font-bold"
                             >
-                                {totalVerifications.toLocaleString()}
+                                {totalReportsbyPlatfom.toLocaleString()}
                             </tspan>
                             <tspan
                                 x={viewBox.cx}
                                 y={(viewBox.cy || 0) + 24}
                                 className="fill-muted-foreground"
                             >
-                                Verifications
+                                Reports by platform
                             </tspan>
                             </text>
                         )
@@ -289,12 +295,12 @@ export default function VerificationbyOriginReportChart() {
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex gap-2 font-medium leading-none">
-          Showing the phone number verification by origin
+          Showing the report platforms by origin
         </div>
         <div className="leading-none text-muted-foreground">
-          {verificationbyOrigin?.isLoading ? 
-            `Data for ${selectedYear} showing ${totalVerifications} total verifications` : 
-            "Select a year to view verification statistics"}
+          {yearlyPlatformReport?.isLoading ? 
+            `Data for ${selectedYear} showing ${totalReportsbyPlatfom} total reports platform` : 
+            "Select a year to view report by platform"}
         </div>
       </CardFooter>
     </Card>
