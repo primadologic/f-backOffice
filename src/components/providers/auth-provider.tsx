@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import { AuthContext } from './auth-context';
 import Cookies from "js-cookie";
 
+
+
 // Authentication Provider Component
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [token, setToken] = useState<string | null>(Cookies.get("access") ?? null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!token);
+
 
   // Login function
   const login = (newToken: string, refreshToken: string) => {

@@ -62,7 +62,7 @@ export default function ModelNameDistributionChartComponent() {
                 </div>
             </CardHeader>
             <CardContent className="px-2 sm:p-6">
-                <ChartContainer config={chartConfig} className="aspect-auto h-[300px] w-full">
+                <ChartContainer config={chartConfig} className="aspect-square h-[22.5rem] w-full">
                 <BarChart
                     accessibilityLayer
                     data={ModelNameDistributionChartData}

@@ -67,6 +67,26 @@ const chartConfig: Record<string, { label: string; color?: string }> =  {
 
 
 
+// Modify the ChartLegendContent component to include the value
+const CustomLegendContent = ({ payload }: any) => {
+    return (
+      <div className="grid grid-cols-2 gap-x-10 gap-y-2 justify-start items-start">
+        {payload.map((entry: any, index: number) => (
+          <div key={`item-${index}`} className="flex justify-start items-center  gap-1">
+            <div
+              className="w-3 h-3 rounded-full"
+              style={{ backgroundColor: entry.payload.fill }}
+            ></div>
+            <span className="text-xs">
+              {chartConfig[entry.payload.origin]?.label}: {entry.payload.fraud}
+            </span>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+
 export default function VerificationbyOriginReportChart() {
 
 
@@ -145,100 +165,106 @@ export default function VerificationbyOriginReportChart() {
           </SelectContent>
         </Select>
       </CardHeader>
-      <CardContent className="flex-1 pb-0">
+      <CardContent className="flex flex-col gap-3">
         {verificationbyOrigin?.isLoading ? (
-          <div className="flex items-center justify-center h-[300px]">
+          <div className="flex items-center justify-center h-[22.5rem]">
             Loading data...
           </div>
         ) : chartData.length > 0 ? (
           <ChartContainer
             config={chartConfig}
-            className="mx-auto aspect-square h-[300px] my-5"
+            className="h-[22.5rem] aspect-square flex flex-col gap-8"
           >
             <PieChart>
               <ChartTooltip
                 cursor={false}
                 content={<ChartTooltipContent hideLabel />}
               />
-              <Pie
-                data={chartData}
-                dataKey="fraud"
-                nameKey="origin"
-                outerRadius={100}
-                innerRadius={55}
-                strokeWidth={2.5}
-                cornerRadius={5} // Adds rounded corners to each slice
-                paddingAngle={15} // Adds space between slices
-                activeIndex={0}
-                activeShape={({
-                  outerRadius = 0,
-                  ...props
-                }: PieSectorDataItem) => (
-                  <Sector {...props} outerRadius={outerRadius + 10} />
-                )}
-                label={({ payload, ...props }) => {
-                  return (
-                    <text
-                      cx={props.cx}
-                      cy={props.cy}
-                      x={props.x}
-                      y={props.y}
-                      textAnchor={props.textAnchor}
-                      dominantBaseline={props.dominantBaseline}
-                      fill="hsla(var(--foreground))"
-                      className=""
-                    >
-                      {payload.fraud}
-                    </text>
-                  )
-                }}
-              >
-                <LabelList
-                  dataKey="origin"
-                  className="fill-background"
-                  stroke="var(--primary-color)"
-                  fontSize={13}
-                  formatter={(value: keyof typeof chartConfig) => chartConfig[value]?.label}
-                />
-
-                <Label
-                  content={({ viewBox }) => {
-                    if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                      return (
+            
+                <Pie
+                    data={chartData}
+                    dataKey="fraud"
+                    nameKey="origin"
+                    outerRadius={100}
+                    innerRadius={55}
+                    strokeWidth={2.5}
+                    cornerRadius={5} // Adds rounded corners to each slice
+                    paddingAngle={15} // Adds space between slices
+                    activeIndex={0}
+                    activeShape={({
+                    outerRadius = 0,
+                    ...props
+                    }: PieSectorDataItem) => (
+                    <Sector {...props} outerRadius={outerRadius + 10} />
+                    )}
+                    label={({ payload, ...props }) => {
+                    return (
                         <text
-                          x={viewBox.cx}
-                          y={viewBox.cy}
-                          textAnchor="middle"
-                          dominantBaseline="middle"
+                        cx={props.cx}
+                        cy={props.cy}
+                        x={props.x}
+                        y={props.y}
+                        textAnchor={props.textAnchor}
+                        dominantBaseline={props.dominantBaseline}
+                        fill="hsla(var(--foreground))"
+                        className=""
                         >
-                          <tspan
+                        {payload.fraud}
+                        </text>
+                    )
+                    }}
+                >
+                    <LabelList
+                    dataKey="origin"
+                    className="fill-background"
+                    stroke="var(--primary-color)"
+                    fontSize={13}
+                    formatter={(value: keyof typeof chartConfig) => chartConfig[value]?.label}
+                    />
+
+                    <Label
+                    content={({ viewBox }) => {
+                        if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                        return (
+                            <text
                             x={viewBox.cx}
                             y={viewBox.cy}
-                            className="fill-foreground text-3xl font-bold"
-                          >
-                            {totalVerifications.toLocaleString()}
-                          </tspan>
-                          <tspan
-                            x={viewBox.cx}
-                            y={(viewBox.cy || 0) + 24}
-                            className="fill-muted-foreground"
-                          >
-                            Verifications
-                          </tspan>
-                        </text>
-                      )
-                    }
-                  }}
+                            textAnchor="middle"
+                            dominantBaseline="middle"
+                            >
+                            <tspan
+                                x={viewBox.cx}
+                                y={viewBox.cy}
+                                className="fill-foreground text-3xl font-bold"
+                            >
+                                {totalVerifications.toLocaleString()}
+                            </tspan>
+                            <tspan
+                                x={viewBox.cx}
+                                y={(viewBox.cy || 0) + 24}
+                                className="fill-muted-foreground"
+                            >
+                                Verifications
+                            </tspan>
+                            </text>
+                        )
+                        }
+                    }}
+                    />
+                </Pie>
+                
+                <ChartLegend
+                        // content={
+                        //     <ChartLegendContent
+                        //       nameKey="origin"
+                        //     />
+                        // }
+                        content={<CustomLegendContent />} 
+                        layout="vertical" align="center" verticalAlign="bottom"
+                        
+                        // className=" max-w-max grid gap-4  sm:grid-cols-3 grid-cols-2"
                 />
-              </Pie>
-              <ChartLegend
-                    content={
-                        <ChartLegendContent
-                          nameKey="origin"
-                        />
-                    }
-                    className="-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center"
-              />
+             
             </PieChart>
           </ChartContainer>
         ) : (
