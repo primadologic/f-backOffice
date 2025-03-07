@@ -25,7 +25,6 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useVerificationbyOriginReport } from "@/service/stats-verify-report.service"
-import { CustomLegendContent } from "./platformbyOrigin"
 
 // Chart configuration for different platforms
 const chartConfig: Record<string, { label?: string; color?: string }> =  {
@@ -67,39 +66,56 @@ const chartConfig: Record<string, { label?: string; color?: string }> =  {
 } satisfies ChartConfig
 
 
-// interface LegendEntry {
-//     payload: {
-//       fill: string;
-//       origin: keyof typeof chartConfig;
-//       fraud: number;
-//     };
-//   }
+interface LegendEntry {
+    payload: {
+      fill: string;
+      origin: keyof typeof chartConfig;
+      fraud: number;
+    };
+  }
   
-//   interface LegendProps {
-//     payload: LegendEntry[];
-//   }
+  interface LegendProps {
+    payload: LegendEntry[];
+  }
 
-// // Modify the ChartLegendContent component to include the value
-// const CustomLegendContent: React.FC<LegendProps> = ({ payload }) => {
-//     return (
-//       <div className="grid grid-cols-2 gap-x-10 gap-y-2 justify-start items-start">
-//         {payload.map((entry, index) => (
-//           <div key={`item-${index}`} className="flex justify-start items-center gap-1">
-//             <div
-//               className="w-3 h-3 rounded-full"
-//               style={{ backgroundColor: entry.payload.fill }}
-//             ></div>
-//             <span className="text-xs">
-//               {chartConfig[entry.payload.origin]?.label}: {entry.payload.fraud}
-//             </span>
-//           </div>
-//         ))}
-//       </div>
-//     );
-//   };
+// Modify the ChartLegendContent component to include the value
+export const CustomLegendContent: React.FC<LegendProps> = ({ payload }) => {
+   
+    const leftOrigins = ["Web", "Telegram", "USSD"];
+    const rightOrigins = ["Facebook", "x", "Instagram", "Portal", "WhatsApp"];
+  
+    const leftItems = payload.filter((item) => leftOrigins.includes(item.payload.origin));
+    const rightItems = payload.filter((item) => rightOrigins.includes(item.payload.origin));
+  
+    
+    return (
+        <div className="flex justify-start items-start gap-x-10">
+      <div className="flex flex-col gap-y-2">
+        {leftItems.map((entry, index) => (
+          <div key={`left-item-${index}`} className="flex justify-start items-center gap-1">
+            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: entry.payload.fill }}></div>
+            <span className="text-xs">
+              {chartConfig[entry.payload.origin]?.label}: {entry.payload.fraud}
+            </span>
+          </div>
+        ))}
+      </div>
+      <div className="flex flex-col gap-y-2">
+        {rightItems.map((entry, index) => (
+          <div key={`right-item-${index}`} className="flex justify-start items-center gap-1">
+            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: entry.payload.fill }}></div>
+            <span className="text-xs">
+              {chartConfig[entry.payload.origin]?.label}: {entry.payload.fraud}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+    );
+  };
 
 
-export default function VerificationbyOriginReportChart() {
+export default function PlatformbyOriginChart() {
 
 
   const [yearOptions, setYearOptions] = useState<number[]>([])
@@ -113,16 +129,14 @@ export default function VerificationbyOriginReportChart() {
   const chartData = useMemo(() => {
     if (!verificationbyOrigin?.data?.data) return [];
   
-    // const { platformPercentagesFromVerification = {}, verificationOriginCount = [] } = verificationbyOrigin.data.data;
-    const { platformPercentagesFromVerification = {}, } = verificationbyOrigin.data.data;
+    const { platformPercentagesFromReports = {} } = verificationbyOrigin.data.data;
   
     // const totalCount = verificationOriginCount.reduce((a: number, b: number) => a + b, 0);
   
     return Object.keys(chartConfig).map((origin) => {
-      const percentage = platformPercentagesFromVerification[origin] || 0;
+      const percentage = platformPercentagesFromReports[origin] || 0;
       return {
         origin,
-        // fraud: Math.round((percentage * totalCount) / 100),
         fraud: percentage,
         fill: chartConfig[origin]?.color || "gray",
       };
@@ -154,7 +168,7 @@ export default function VerificationbyOriginReportChart() {
     <Card className="sm:w-[35vw] w-full flex flex-col">
       <CardHeader className="pb-0 flex flex-row justify-between items-center">
         <div>
-          <CardTitle>Verification by Origin</CardTitle>
+          <CardTitle>Report Platform by Origin</CardTitle>
           <CardDescription className="text-custom_theme-gray text-sm">
             {verificationbyOrigin.isLoading ? "Loading..." : `${selectedYear} Statistics`}
           </CardDescription>
@@ -289,7 +303,7 @@ export default function VerificationbyOriginReportChart() {
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex gap-2 font-medium leading-none">
-          Showing the phone number verification by origin
+          Showing the report platforms by origin
         </div>
         <div className="leading-none text-muted-foreground">
           {verificationbyOrigin?.isLoading ? 
