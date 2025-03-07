@@ -5,7 +5,6 @@ import { useRouter } from "@tanstack/react-router";
 import { useAuth } from "@/hooks/useAuth";
 import { LoginUserType } from "@/common/Type/auth.type";
 import { toast } from "sonner";
-import Cookies from "js-cookie";
 
 
 
@@ -31,7 +30,6 @@ export const useLoginService = () => {
             const { accessToken, refreshToken } = data.data;
 
             login(accessToken, refreshToken);
-            Cookies.set('refreshToken', refreshToken,  {secure: true, sameSite: 'Strict'})
             router.navigate({ to: '/dashboard' })
             toast.success('Logged in successfully')
         },
