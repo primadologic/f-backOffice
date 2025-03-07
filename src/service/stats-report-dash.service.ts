@@ -13,7 +13,7 @@ export const useStatReportDashboard = () => {
                 headers: {
                     'Content-Type': 'application/json',
                     'X-API-KEY': `${API_KEY}`,
-                    'Authorization': `${accessToken}`
+                    'Authorization': `Bearer ${accessToken}`
                 }
             })
 

@@ -6,8 +6,9 @@ import {
     TabsList,
     TabsTrigger,
 } from "@/components/ui/tabs"
-import VerificationTabAnalytics from "../verification/details"
 import OverviewPageAnalytics from "./details"
+import InsightsMainTab from "../insights/detail"
+
 
 
 
@@ -19,14 +20,14 @@ export default function OverviewTabs() {
         <Tabs defaultValue="overview">
             <TabsList className="">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
-                <TabsTrigger value="reports">Insights</TabsTrigger>
+                <TabsTrigger value="insights">Insights</TabsTrigger>
             </TabsList>
             <TabsContent value="overview">
                 <OverviewPageAnalytics />
             </TabsContent>
             
-            <TabsContent value="reports">
-                <VerificationTabAnalytics />
+            <TabsContent value="insights">
+               <InsightsMainTab />
             </TabsContent>
         </Tabs>
     

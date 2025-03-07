@@ -19,7 +19,7 @@ export default function OverviewCards() {
 
     const getReportDashStats = useStatReportDashboard();
 
-    const reportStats = getReportDashStats.data?.data ?? null
+    const reportStats = getReportDashStats.data?.data ?? {}
 
     return (
         <div className="">

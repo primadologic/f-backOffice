@@ -44,7 +44,14 @@
     --success-500: 151 84% 37%;
     --warning-100: 35 100% 40%;
     --danger-100: 0 54% 47%;
-    --primary-500: 216 100% 45%
+    --primary-500: 216 100% 45%;
+
+    --origin-fb: 214 89% 53%;
+    --origin-ig: 340, 79%, 53%;
+    --origin-tg: 200, 100%, 40%;
+    --origin-wa: 150, 65%, 52%;
+    --origin-portal: 0, 89%, 61%
+
 
   }
   .dark {

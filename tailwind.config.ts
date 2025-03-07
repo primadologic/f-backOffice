@@ -59,6 +59,15 @@ export default {
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
   			},
+			
+			origin: {
+				'fb': 'hsl(var(--origin-fb))',
+				'ig': 'hsl(var(--origin-ig))',
+				'tg': 'hsl(var(--origin-tg))',
+				'wa': 'hsl(var(--origin-wa))',
+				'portal': 'hsl(var(--origin-portal))',
+			},
+
   			sidebar: {
   				DEFAULT: 'hsl(var(--sidebar-background))',
   				foreground: 'hsl(var(--sidebar-foreground))',
