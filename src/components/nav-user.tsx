@@ -29,8 +29,6 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { useAuth } from "@/hooks/useAuth"
-import { toast } from "sonner"
 import { useLogout } from "@/hooks/useLogout"
 
 
