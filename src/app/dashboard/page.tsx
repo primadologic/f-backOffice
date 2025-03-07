@@ -9,6 +9,7 @@ export default function Page() {
     return (
       <ProtectedRoute>
         <DashboardLayout>
+          <div className="py-1"></div>
           <OverviewTabs />
         </DashboardLayout>
       </ProtectedRoute>
