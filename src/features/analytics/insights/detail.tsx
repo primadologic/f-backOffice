@@ -1,8 +1,8 @@
 
 import AnalyticsLayout from "../layout/analytics-layout";
-import ModelNameDistributionChartComponent from "./sub-charts/ModelNameDistribution";
 import PlatformbyOriginChart from "./sub-charts/platformbyOrigin";
 import VerificationbyOriginReportChart from "./sub-charts/verifybyOrigin";
+import YearlyStatisticsbyOriginChart from "./sub-charts/report-verify-origin";
 
 
 
@@ -19,7 +19,7 @@ export default function InsightsMainTab() {
                     </div> */}
                     <div className="flex flex-col gap-4">
                         <div className="w-full">
-                            <ModelNameDistributionChartComponent />
+                            <YearlyStatisticsbyOriginChart />
                         </div>
                         <div className="w-full flex justify-between items-center">
                             <PlatformbyOriginChart />
