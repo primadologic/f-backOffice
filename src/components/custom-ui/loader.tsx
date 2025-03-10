@@ -9,7 +9,7 @@ export default function Loader() {
             height="20"
             width="20"
             strokeWidth={4}
-            color="#fff"
+            color="#ffffff"
             ariaLabel="oval-loading"
             wrapperStyle={{}}
             wrapperClass=""

@@ -103,8 +103,8 @@ export default function LoginForm() {
                             <button  
                                 // variant={"outline"}
                                 disabled={!isValid || loginService.isPending}
-                                className={`px-3 py-2 text-base font-medium flex justify-center items-center rounded-md dark:bg-custom_theme-primary_background dark:text-custom_theme-primary_foreground dark:hover:bg-custom_theme-primary_background/85 bg-custom_theme-primary_foreground text-white hover:bg-custom_theme-primary_foreground/85 hover:text-white
-                                        ${!isValid ? "opacity-50 disabled:cursor-not-allowed " : "cursor-pointer"}
+                                className={`px-3 py-2 text-base font-medium flex justify-center items-center rounded-md dark:bg-custom_theme-primary_background dark:text-custom_theme-primary_foreground dark:hover:bg-custom_theme-primary_background/85 bg-custom_theme-primary_foreground text-white hover:bg-custom_theme-primary_foreground/85
+                                        ${!isValid ? " disabled:cursor-not-allowed " : "cursor-pointer"}
                                         ${loginService.isPending ? "opacity-50 disabled:cursor-not-allowed" : "cursor-pointer"}
                                     `}
                             >
