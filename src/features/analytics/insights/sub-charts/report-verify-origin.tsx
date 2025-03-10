@@ -218,9 +218,9 @@ const YearlyStatisticsbyOriginChart = () => {
                         />
                     }
                     />
-                    {/* <Bar dataKey={activeChart} fill={`var(--color-${activeChart})`} /> */}
-                    <Bar dataKey="reportOrigin" name="Report Origins" fill={chartConfig.reportOrigin.color} />
-                    <Bar dataKey="verificationOrigin" name="Verification Origins" fill={chartConfig.verificationOrigin.color} />
+                    <Bar dataKey={activeChart} fill={`var(--color-${activeChart})`} />
+                    {/* <Bar dataKey="reportOrigin" name="Report Origins" fill={chartConfig.reportOrigin.color} />
+                    <Bar dataKey="verificationOrigin" name="Verification Origins" fill={chartConfig.verificationOrigin.color} /> */}
                 </BarChart>
                 </ChartContainer>
             </CardContent>
