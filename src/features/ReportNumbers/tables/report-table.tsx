@@ -1,20 +1,9 @@
 // import { useQuery } from "@tanstack/react-query"
+import { ApiResponse } from "@/common/api-response.type";
 import { columns } from "./columns"
 import { DataTable } from "./data-table"
 // import { getData } from "@/service/report-number.service";
 import { useReportListService } from "@/service/report/service";
-
-
-
-export type ApiResponse = {
-  statusCode: number;
-  message: string;
-  data?: any;
-  error?: string;
-};
-
-
-
 
 
 export default function ReportNumberListTable() {
@@ -35,7 +24,7 @@ export default function ReportNumberListTable() {
   return (
     <div className="container mx-auto ">
       {/* <DataTable columns={columns} data={getCaseFiles.data || []} /> */}
-      <DataTable columns={columns} data={report|| []} />
+      <DataTable columns={columns} data={report || []} />
     </div>
   )
 }

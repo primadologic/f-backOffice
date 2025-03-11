@@ -1,6 +1,4 @@
 
-
-
 import { useReportNumberStore } from "@/hooks/state/reports/report-store"
 import { formatDateTime, maskNumber } from "@/lib/custom";
 import {
@@ -27,13 +25,12 @@ import { ChevronsUpDown } from "lucide-react";
 
 export default function ReportNumberViewSheet() {
     
-    const { isOpen, selectedReportNumber, setIsOpen,  } = useReportNumberStore();
+    const { isOpen, selectedReportNumber, setIsOpen  } = useReportNumberStore();
     const [ open, setOpen ] = useState<boolean>(false)
 
 
     return (
         <>
-
             <div className="">
                 <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
                     <AlertDialogTrigger className="sr-only">Open</AlertDialogTrigger>

@@ -1,6 +1,6 @@
 import { BriefcaseBusiness, Plus } from "lucide-react";
 import { useNavigate } from "@tanstack/react-router";
-import CaseFileListTable from "../tables/CaseFileTables";
+import CaseFileListTable from "../tables/case-file-table";
 import CaseFileExport from "../tables/case-file-export";
 import PageLayout from "@/features/layout/PagesLayout";
 import UpdateCaseFile from "./update";

@@ -1,10 +1,11 @@
 
 // import { useQuery } from "@tanstack/react-query";
 
+import { ApiResponse } from "@/common/api-response.type";
 import TableExport from "@/components/custom-ui/table-export";
 // import { getData } from "@/service/report-number.service";
 import { useReportListService } from "@/service/report/service";
-import { ApiResponse } from "./reportNumbersTable";
+
 
 
 // Your existing getData function...

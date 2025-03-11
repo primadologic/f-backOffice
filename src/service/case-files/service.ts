@@ -5,12 +5,12 @@ import { accessToken } from "@/lib/tokens";
 
 
 
-export const useReportListService = () => {
+export const useCaseFileListService = () => {
 
-    const reportList = useQuery({
-        queryKey: ['report-list'],
+    const caseFileList = useQuery({
+        queryKey: ['case-file-list'],
         queryFn: async () => {
-            const response = await axios.get(`${API_BASE_URL}/report`, {
+            const response = await axios.get(`${API_BASE_URL}/case-file`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${accessToken}`,
@@ -22,12 +22,11 @@ export const useReportListService = () => {
 
         },
 
-        // staleTime: 21600000 , // Cache data for 6 hours
+        staleTime: 21600000 , // Cache data for 6 hours
         refetchOnWindowFocus: false, // Prevent refetching on window focus
         refetchInterval: 86400000, // Refetch every 1 day
-        
     })
 
-    return reportList
+    return caseFileList
 
 }
