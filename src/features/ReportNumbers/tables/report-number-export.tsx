@@ -3,7 +3,7 @@
 
 import TableExport from "@/components/custom-ui/table-export";
 // import { getData } from "@/service/report-number.service";
-import { useReportListService } from "@/service/report/list.sevice";
+import { useReportListService } from "@/service/report/service";
 import { ApiResponse } from "./reportNumbersTable";
 
 

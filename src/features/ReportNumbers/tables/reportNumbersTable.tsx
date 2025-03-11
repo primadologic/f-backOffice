@@ -2,7 +2,7 @@
 import { columns } from "./columns"
 import { DataTable } from "./data-table"
 // import { getData } from "@/service/report-number.service";
-import { useReportListService } from "@/service/report/list.sevice";
+import { useReportListService } from "@/service/report/service";
 
 
 
