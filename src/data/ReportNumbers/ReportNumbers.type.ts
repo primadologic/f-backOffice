@@ -16,6 +16,9 @@ export type ReportNumberType = {
     name: string;
     displayName: string;
     description?: string;
+    dateCreated?: string,
+    dateUpdated?: string,
+    dateDeleted?: string
   };
   
   export type ReportThresholdType = {
@@ -33,4 +36,18 @@ export type ReportNumberType = {
     platFormId: string;
     description: string;
     requestFiles?: File[]
+  }
+
+
+  export interface ReportList {
+    reportId?: string;
+    reporterNumber: string;
+    suspectNumber: string;
+    incidentDate: string;
+    reportPlatForm: ReportNumberPlatformType | null;
+    description: string;
+    reportFiles?: string[] | [];
+    createdAt?: string;
+    archived: boolean
+    reportPlatform: ReportNumberPlatformType
   }
