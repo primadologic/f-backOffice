@@ -24,7 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { useYearlyStatistics } from "@/service/yearly-stats.service"
+import { useYearlyStatistics } from "@/service/analytics/yearly-stats.service"
 
 // Chart configuration for different platforms
 const chartConfig: Record<string, { label?: string; color?: string }> =  {

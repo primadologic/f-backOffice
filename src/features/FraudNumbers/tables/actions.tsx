@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { FraudNumberType } from "@/common/Type/FraudNumber/FraudNumber.type";
+import { FraudNumberType } from "@/common/Type/FraudNumber/fraud-numbers";
 import { useFraudNumberStore } from "@/hooks/state/fraud-numbers/fraudSheet.state";
 
 

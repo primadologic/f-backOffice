@@ -4,6 +4,8 @@ import { ReportNumberType } from "@/data/ReportNumbers/ReportNumbers.type"
 import { ArrowUpDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ActionsCell } from "./actions"
+import { maskNumber } from "@/lib/mask-number"
+import { formatDate, formatDateTime } from "@/lib/format-date"
 
 
 
@@ -51,14 +53,14 @@ export const columns: ColumnDef<ReportNumberType>[] = [
         accessorKey: "reportPlatform",
         header: "Platform",
         cell: ({ row }) => row.original.reportPlatForm?.displayName ?? "N/A",
-        filterFn: (row, columnId, filterValue) => {
-            const reportPlatform = row.original.reportPlatForm?.displayName ?? "";
-            // const archived = row.original.archived ?? "";
-            return (
-                reportPlatform.toLowerCase().includes(filterValue.toLowerCase())
-                // archived
-            )
-        },
+        // filterFn: (row, columnId, filterValue) => {
+        //     const reportPlatform = row.original.reportPlatForm?.displayName ?? "";
+        //     // const archived = row.original.archived ?? "";
+        //     return (
+        //         reportPlatform.toLowerCase().includes(filterValue.toLowerCase())
+        //         // archived
+        //     )
+        // },
       
 
     },
@@ -76,19 +78,24 @@ export const columns: ColumnDef<ReportNumberType>[] = [
                     <ArrowUpDown size={18} /> 
               </Button>
             )
-        }
+        },
+        
+        cell: ({ getValue }) => maskNumber(getValue() as string)
     },
     {
         accessorKey: "reporterNumber",
         header: "Reporter Number",
+        cell: ({ getValue }) => maskNumber(getValue() as string)
     },
     {
         accessorKey: "incidentDate",
         header: "Incident Date",
+        cell: ({ getValue }) => formatDate(getValue() as string)
     },
     {
         accessorKey: "createdAt",
         header: "Date Reported",
+        cell: ({ getValue }) => formatDateTime(getValue() as string)
     },
     {
         accessorKey: "archived",

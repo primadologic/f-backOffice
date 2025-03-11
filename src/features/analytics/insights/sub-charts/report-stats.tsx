@@ -11,7 +11,7 @@ import {
     SelectValue,
   } from "@/components/ui/select"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { useYearlyStatistics } from '@/service/yearly-stats.service';
+import { useYearlyStatistics } from '@/service/analytics/yearly-stats.service';
 
 
 // Define interfaces for our data structure

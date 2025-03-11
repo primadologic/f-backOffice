@@ -3,7 +3,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { ArrowUpDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ActionsCell } from "./actions"
-import { FraudNumberType } from "@/common/Type/FraudNumber/FraudNumber.type"
+import { FraudNumberType } from "@/common/Type/FraudNumber/fraud-numbers"
 
 
 

@@ -24,7 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { useVerificationbyOriginReport } from "@/service/stats-verify-report.service"
+import { useVerificationbyOriginReport } from "@/service/analytics/stats-verify-report.service"
 import { CustomLegendContent } from "./platformbyOrigin"
 
 // Chart configuration for different platforms

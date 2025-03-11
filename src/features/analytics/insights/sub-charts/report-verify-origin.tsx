@@ -1,7 +1,7 @@
  import { useState, useEffect, useMemo } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-import { useVerificationbyOriginReport } from '@/service/stats-verify-report.service';
+import { useVerificationbyOriginReport } from '@/service/analytics/stats-verify-report.service';
 import {
     Select,
     SelectContent,

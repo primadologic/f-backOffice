@@ -24,7 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { useVerificationbyOriginReport } from "@/service/stats-verify-report.service"
+import { useVerificationbyOriginReport } from "@/service/analytics/stats-verify-report.service"
 
 // Chart configuration for different platforms
 const chartConfig: Record<string, { label?: string; color?: string }> =  {
