@@ -138,7 +138,7 @@ body {
   }
 
   .btn-dark-mode {
-    @apply dark:text-custom_theme-primary_background dark:bg-custom_theme-gray2 dark:hover:bg-custom_theme-gray_hover
+    @apply  dark:text-custom_theme-primary_background dark:bg-custom_theme-gray2 dark:hover:bg-custom_theme-gray_hover
   }
 
   .form-input {

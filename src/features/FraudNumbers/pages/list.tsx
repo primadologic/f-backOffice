@@ -21,7 +21,9 @@ export default function FraudNumberListPage() {
                     <div className="flex justify-end item-end">
                         <div className="flex gap-3 justify-center items-center">
                             <FraudNumberExport />
-                            <CustomButton onClick={() => navigate({ to: '/dashboard/case-files/create' })} size={'sm'} 
+                            <CustomButton onClick={() => navigate({ to: '/dashboard/case-files/create' })} 
+                                size={'sm'} 
+                                variant={'create'}
                                 className=""
                             >
                                 <Plus className="mr-2 h-4 w-4" />
