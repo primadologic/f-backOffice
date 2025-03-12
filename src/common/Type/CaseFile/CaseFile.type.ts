@@ -34,6 +34,12 @@ import { UserDetailType, } from "@/common/Type/user.type"
 
   export type NewCaseFileType = {
     suspectNumber: string;
-    status: string;
-    remarks: string;
+    statusId: string;
+    remark: string;
   };
+
+
+  export type EditCaseFileType = {
+    statusId: string;
+    remark: string;
+  }

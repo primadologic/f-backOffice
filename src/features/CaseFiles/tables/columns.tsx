@@ -35,8 +35,8 @@ const statusStyles: Record<StatusType, {bg: string, text: string}> = {
     text: "text-[#742a2a]"     // Dark red text
   },
   archived: {
-    bg: "bg-[#B0C4DE]",
-    text: "text-[#2d3748]"     // Dark gray text
+    bg: "bg-[#795548]",         // B0C4DE
+    text: "text-[#fff]"     // Dark gray text
   }
 }
 
@@ -98,6 +98,14 @@ export const columns: ColumnDef<CaseFileType>[] = [
   {
     accessorKey: "remark",
     header: "Remarks",
+    cell: ({ row }) => {
+      const remarks = row.original?.remark
+        if (!remarks) return "N/A";
+      
+        return (
+          <span className="">{ remarks.slice(0, 40) }...</span>
+        )
+    }
   },
   {
     accessorKey: "createdAt",
@@ -105,11 +113,10 @@ export const columns: ColumnDef<CaseFileType>[] = [
     cell: ({ row }) => {
       const createdAt = row.original?.createdAt;
       
-      if (!createdAt) return true;
+      if (!createdAt) return "N/A";
 
       return formatDateTime(createdAt);
     }
-
 
   },
   {
