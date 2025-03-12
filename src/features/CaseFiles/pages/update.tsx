@@ -33,14 +33,12 @@ export default function UpdateCaseFile() {
     // Service Hooks
     const getCaseFileStatus = useCaseFileStatus().data
 
-    const caseFileStatus: CaseFileStatusType[] = getCaseFileStatus?.data || []
-
-    const investigator: string | null = selectedCaseFile?.investigator?.firstName + " " + selectedCaseFile?.investigator?.lastName;
+    const caseFileStatus: CaseFileStatusType[] = getCaseFileStatus?.data || [];
 
         // Users
     const getusers = useUsers().data
 
-    const users: UserDetailType[] = getusers?.data || []
+    const users: UserDetailType[] = getusers?.data || [];
 
 
     const { register, handleSubmit, control, formState: { errors } } = useForm<CaseFileType>({
