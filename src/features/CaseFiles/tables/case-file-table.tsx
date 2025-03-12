@@ -23,7 +23,7 @@ export default function CaseFileListTable() {
 
   return (
     <div className="container mx-auto">
-      <DataTable columns={columns} data={caseFile|| []} />
+      <DataTable columns={columns} data={ caseFile || []} />
     </div>
   )
 }

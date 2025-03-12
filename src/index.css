@@ -109,7 +109,7 @@ body {
 
 
 
-@layer utilities {
+@layer components {
   .fraudwall-bg {
     @apply bg-gradient-to-r from-[#ffa90b] to-[#f44545];
   }
@@ -152,6 +152,12 @@ body {
     @apply max-w-[10.69rem] rounded-20  text-left flex justify-start items-start
   }
 
+  .btn-default {
+    @apply !h-10 !px-4 !py-2
+  }
+  
+  
+ 
 }
 
 

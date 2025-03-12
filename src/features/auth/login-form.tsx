@@ -29,7 +29,7 @@ export default function LoginForm() {
 
 
     const onSubmit = (data: LoginUserType) => {
-        console.log("Login data", data);
+        // console.log("Login data", data);
         loginService.mutateAsync(data, {
             onSuccess: () => {
                 reset();

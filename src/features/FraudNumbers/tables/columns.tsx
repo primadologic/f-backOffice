@@ -218,6 +218,7 @@ export const columns: ColumnDef<FraudNumberType>[] = [
         }
     },
     {
+        header: "Actions",
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => <ActionsCell fraudNumber={row.original} />,

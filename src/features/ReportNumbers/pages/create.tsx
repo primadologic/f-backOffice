@@ -280,7 +280,7 @@ export default function ReportNumberCreatePage() {
                                                     <Select onValueChange={onChange} defaultValue={value}>
                                                         <SelectTrigger 
                                                             onBlur={onBlur}
-                                                            className={`outline-none border h-[3.2rem] w-full px-3 py-3 text-sm font-medium text-custom_theme-primary_foreground dark:bg-custom_theme-dark_gray_1 dark:text-custom_theme-primary_background focus:ring-1 focus:ring-gray-400 dark:focus:ring-custom_theme-gray delay-150 transition ease-in-out duration-300
+                                                            className={` outline-none border py-3 px-3 !w-full  text-sm font-medium text-custom_theme-primary_foreground dark:bg-custom_theme-dark_gray_1 dark:text-custom_theme-primary_background focus:ring-1 focus:ring-gray-400 dark:focus:ring-custom_theme-gray delay-150 transition ease-in-out duration-300
                                                                     ${errors.platFormId ? "form-validerr-ring " : "form-valid-ring"}
                                                                 `}
                                                         >
@@ -391,7 +391,7 @@ export default function ReportNumberCreatePage() {
 
 
                                     <div className="w-full flex sm:flex-row flex-col sm:gap-10 gap-3">
-                                        <Button type="submit" className="btn-dark-mode sm:max-w-max w-full">
+                                        <Button type="submit" className="">
                                             Submit
                                         </Button>
                                     </div>

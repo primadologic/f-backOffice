@@ -30,3 +30,28 @@ export const useCaseFileListService = () => {
     return caseFileList
 
 }
+
+export const useCaseFileStatus = () => {
+
+    const getCaseFileStatus = useQuery({
+        queryKey: ['case-file-status'],
+        queryFn: async () => {
+            const response = await axios.get(`${API_BASE_URL}/case-file-status`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`,
+                    'X-API-KEY': `${API_KEY}`
+                }
+            });
+
+            return response.data
+
+        },
+
+        staleTime: 604800000, // Cache data for 7 days
+        refetchOnWindowFocus: false, // Prevent refetching on window focus
+        refetchInterval: 604800000, // Refetch every 7 days
+    })
+
+    return getCaseFileStatus
+}

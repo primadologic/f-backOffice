@@ -71,7 +71,7 @@ export const columns: ColumnDef<ReportList>[] = [
             return (
               <Button
                 variant="ghost"
-                onClick={() => {column.toggleSorting(column.getIsSorted() === "asc"); console.log("report platform") }}
+                onClick={() => {column.toggleSorting(column.getIsSorted() === "asc") }}
                 
               >
                     Suspect Number
@@ -122,10 +122,11 @@ export const columns: ColumnDef<ReportList>[] = [
         }
     },
     {
+        header: "Actions",
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => <ActionsCell reportNumber={row.original} />,
-      }
+    }
    
 ]
 

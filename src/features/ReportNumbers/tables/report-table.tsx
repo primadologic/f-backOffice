@@ -24,7 +24,7 @@ export default function ReportNumberListTable() {
   return (
     <div className="container mx-auto ">
       {/* <DataTable columns={columns} data={getCaseFiles.data || []} /> */}
-      <DataTable columns={columns} data={report || []} />
+      <DataTable columns={columns} data={ report || []} />
     </div>
   )
 }

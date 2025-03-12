@@ -7,12 +7,12 @@ import { UserDetailType, } from "@/common/Type/user.type"
     status?: CaseFileStatusType;
     investigator?: UserDetailType
     comments?: CommentType[];
-    createdAt?: Date;
+    createdAt?: string;
   }
 
 
   export type CaseFileStatusType = {
-    statusId: string;
+    statusId: any;
     name?: string;
     description?: string;
   }

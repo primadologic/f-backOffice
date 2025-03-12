@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { useCaseFileStore } from "@/hooks/state/case-files/ui-component";
+import { useCaseFileStore } from "@/hooks/state/case-files/case-file-stiore";
 import { CaseFileType } from "@/common/Type/CaseFile/CaseFile.type";
 
 
