@@ -2,15 +2,18 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { API_BASE_URL, API_KEY } from "@/lib/env_vars";
 import { accessToken } from "@/lib/tokens";
-import { EditCaseFileType } from "@/common/Type/CaseFile/CaseFile.type";
+import { AssignInvestigatorType, EditCaseFileType, NewCaseFileType } from "@/common/Type/CaseFile/CaseFile.type";
 import { toast } from "sonner";
+import { useDeleteCaseFileStore } from "@/hooks/state/case-files/case-file-stiore";
+import { useNavigate } from "@tanstack/react-router";
+
 
 
 
 export const useCaseFileListService = () => {
 
     const caseFileList = useQuery({
-        queryKey: ['case-file-list'],
+        queryKey: ['caseFile-list'],
         queryFn: async () => {
             const response = await axios.get(`${API_BASE_URL}/case-file`, {
                 headers: {
@@ -23,19 +26,83 @@ export const useCaseFileListService = () => {
             return response.data
         },
 
-        staleTime: 21600000 , // Cache data for 6 hours
+        // staleTime: 21600000 , // Cache data for 6 hours
         refetchOnWindowFocus: false, // Prevent refetching on window focus
-        refetchInterval: 86400000, // Refetch every 1 day
+        // refetchInterval: 86400000, // Refetch every 1 day
     })
 
     return caseFileList
 
+};
+
+
+export const useCreateCaseFileService = () => {
+    const queryClient = useQueryClient()
+
+    const navigate = useNavigate()
+
+    const createCaseFile = useMutation({
+        mutationKey: ['create-caseFile'],
+        mutationFn: async (data: NewCaseFileType) => {
+            const response = await axios.post(`${API_BASE_URL}/case-file`, data, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`,
+                    'X-API-KEY': `${API_KEY}`
+                }
+            });
+
+            return response.data;
+        },
+
+        onSuccess: (data) => {
+           const code = data?.statusCode
+
+           if (code === 201) {
+                toast.success("Case File Created successfully")
+                queryClient.invalidateQueries({ queryKey: ['caseFile-list'] })
+                setTimeout(() => {
+                    navigate({ to: '/dashboard/case-files' })
+                }, 2500)
+                
+           }
+        },
+
+        onError: (error) => {
+            if (axios.isAxiosError(error)) {
+                const code = error.response?.status ?? null
+
+                if (code === 400) {
+                    toast.error(`Oops an error occured`, {
+                        description: `${error.response?.data?.message}`
+                    })
+                };
+                if (code === 401) {
+                    toast.error(`Oops an error occured`, {
+                        description: `${error.response?.data?.message}`
+                    })
+                };
+                if (code === 404) {
+                    toast.error(`${error.response?.data?.message}`)
+                };
+                if (code === 500) {
+                    toast.error(`Sorry an unexpected error occured.`, {
+                        description: `${error.response?.data?.message}`
+                    })
+                };
+            }
+        }
+        
+    })
+
+    return createCaseFile;
+
 }
 
-export const useCaseFileStatus = () => {
+export const useCaseFileStatusService = () => {
 
     const getCaseFileStatus = useQuery({
-        queryKey: ['case-file-status'],
+        queryKey: ['caseFile-status'],
         queryFn: async () => {
             const response = await axios.get(`${API_BASE_URL}/case-file-status`, {
                 headers: {
@@ -60,9 +127,10 @@ export const useCaseFileStatus = () => {
 export const useUpdateCaseFileService = (caseId: string | undefined) => {
 
     const queryClient = useQueryClient()
+    const { setIsOpen } = useDeleteCaseFileStore();
 
     const updateCaseFile = useMutation({
-        mutationKey: ['patch-case-file', caseId],
+        mutationKey: ['patch-caseFile', caseId],
         mutationFn: async (formData: EditCaseFileType) => {
             const response = await axios.patch(`${API_BASE_URL}/case-file/${caseId}`, formData, {
                 headers: {
@@ -77,7 +145,8 @@ export const useUpdateCaseFileService = (caseId: string | undefined) => {
 
         onSuccess: () => {
             toast.success('Updated case file successfully')
-            queryClient.invalidateQueries({ queryKey: ['case-file-list'] })
+            queryClient.invalidateQueries({ queryKey: ['caseFile-list'] })
+            setIsOpen(false)
         },
 
         onError: (error) => {
@@ -101,13 +170,13 @@ export const useUpdateCaseFileService = (caseId: string | undefined) => {
     
     return updateCaseFile;
 
-}
+};
 
 
 export const useRetrieveCaseFileService = (caseFileId: string | undefined) => {
 
     const retrieveCaseFile = useMutation({
-        mutationKey: ['retrieve-case-file', caseFileId],
+        mutationKey: ['retrieve-caseFile', caseFileId],
         mutationFn: async (caseFileId: string) => {
             const response = await axios.get(`${API_BASE_URL}/case-file/${caseFileId}`, {
                 headers: {
@@ -152,14 +221,18 @@ export const useRetrieveCaseFileService = (caseFileId: string | undefined) => {
 
     return retrieveCaseFile;
 
-}
+};
 
 
-export const useDeletCaseFileService = (caseFileId: string | undefined) => {
+export const useDeletCaseFileService = (caseFileId: string | null) => {
+
+    const queryClient = useQueryClient()
+
+    const { setIsOpen } = useDeleteCaseFileStore();
 
     const deleteCaseFile = useMutation({
-        mutationKey: ['delete-case-file', caseFileId],
-        mutationFn: async (caseFileId: string) => {
+        mutationKey: ['delete-caseFile', caseFileId],
+        mutationFn: async (caseFileId: string | null) => {
             const response = await axios.delete(`${API_BASE_URL}/case-file/${caseFileId}`, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -175,6 +248,8 @@ export const useDeletCaseFileService = (caseFileId: string | undefined) => {
             const message = data?.message
             if (data?.statusCode === 204) {
                 toast.success(`${message}`)
+                queryClient.invalidateQueries({ queryKey: ['caseFile-list'] })
+                setIsOpen(false)
             }
         },
 
@@ -192,10 +267,83 @@ export const useDeletCaseFileService = (caseFileId: string | undefined) => {
                         description: `${error.response?.data?.message}`
                     })
                 };
+
+                if (code === 404) {
+                    toast.error(`Sorry, this case file does not exist.`, {
+                        description: `${error.response?.data?.message}`
+                    })
+                };
+                if (code === 500) {
+                    toast.error(`Sorry an unexpected error occured.`, {
+                        description: `${error.response?.data?.message}`
+                    })
+                };
             }
         }
     });
 
     return deleteCaseFile;
 
+};
+
+
+export const useAssignInvestigatorService = (data: AssignInvestigatorType) => {
+
+    const { setIsOpen } = useDeleteCaseFileStore();
+
+    const assignInvestigator = useMutation({
+        mutationKey: ['delete-caseFile', data.caseId],
+        mutationFn: async (data: AssignInvestigatorType) => {
+            const response = await axios.patch(`${API_BASE_URL}/case-file/assign/investigator/${data.caseId}`, {
+                data: {
+                    investigatorId: data.investigatorId
+                },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`,
+                    'X-API-KEY': `${API_KEY}`
+                }
+            });
+
+            return response.data
+        },
+
+        onSuccess: (data) => {
+            const message = data?.message
+            if (data?.statusCode === 204) {
+                toast.success(`${message}`)
+                setIsOpen(false)
+
+            }
+        },
+
+        onError: (error) => {
+            if (axios.isAxiosError(error)) {
+                const code = error.response?.status ?? null
+
+                if (code === 400) {
+                    toast.error(`Oops an error occured`, {
+                        description: `${error.response?.data?.message}`
+                    })
+                };
+                if (code === 401) {
+                    toast.error(`Oops an error occured`, {
+                        description: `${error.response?.data?.message}`
+                    })
+                };
+                if (code === 404) {
+                    toast.error(`${error.response?.data?.message}`)
+                };
+                if (code === 500) {
+                    toast.error(`Sorry an unexpected error occured.`, {
+                        description: `${error.response?.data?.message}`
+                    })
+                };
+            }
+        }
+    });
+
+    return assignInvestigator;
+
 }
+

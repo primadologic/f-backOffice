@@ -9,12 +9,10 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-
 import { useDeletCaseFileService } from "@/service/case-files/service"
 import Loader from "@/components/custom-ui/loader"
 import { CustomCloseButton } from "@/components/custom-ui/custom-buttons"
-
-
+import { maskNumber } from "@/lib/custom"
 
 
 
@@ -25,32 +23,26 @@ export default function DeleteCaseFileDialog() {
     // Service Hooks
 
         // Delete Case File
-    const caseId:  string | undefined = deleteSeletedCaseFile?.caseId
-    const deletCaseFileMutation = useDeletCaseFileService(caseId)
-
-
+    const caseId: string | null = deleteSeletedCaseFile?.caseId ?? null
+    const deleteCaseFileMutation = useDeletCaseFileService(caseId)
+    
     // Selectors
     const investigator: string | null = deleteSeletedCaseFile?.investigator?.firstName + " " + deleteSeletedCaseFile?.investigator?.lastName
-    if (!investigator) return "";
+    // if (!investigator) return "";
     const suspectNumber: string | null = deleteSeletedCaseFile?.suspectNumber ?? null
-    if (!suspectNumber) return "";
+    // if (!suspectNumber) return "";
     const remark: string | null = deleteSeletedCaseFile?.remark ?? null
-    if (!remark) return "";
+    // if (!remark) return "";
     const status: string | null = deleteSeletedCaseFile?.status?.name ?? null
-    if (!status) return "";
-    
-    
+    // if (!status) return "" ;
+    // const investigatorId: string = deleteSeletedCaseFile?.investigator?.userId ?? null;
 
-
-    
-    const deleteHandler = async () => {
-        setTimeout(() => {
-            console.log("Some delay");
-        }, 5000)
-
-        console.log("Delelte Case File");
+    const deleteHandler =  () => {
+        deleteCaseFileMutation.mutateAsync(caseId)
        
     }
+    
+    
 
     return (
         <>
@@ -74,7 +66,7 @@ export default function DeleteCaseFileDialog() {
                             <div className="max-w-max">
                                 <div className="flex flex-col gap-y-1">
                                     <div className="flex flex-row gap-3">
-                                        <p className="form-label">Investigator:</p>
+                                        <p className="form-label">Suspect Number:</p>
                                         <data 
                                             value={suspectNumber || "Suspect Number"}
                                             className="custom-txt"
@@ -83,12 +75,12 @@ export default function DeleteCaseFileDialog() {
                                         </data>
                                     </div>
                                     <div className="flex flex-row gap-3">
-                                        <p className="form-label">Suspect Number:</p>
+                                        <p className="form-label">Investigator:</p>
                                         <data 
-                                            value={investigator || "investigater"}
+                                            value={investigator || "investigator"}
                                             className="custom-txt capitalize"
                                         >
-                                            {investigator || "N/A"} 
+                                            {maskNumber(investigator) || "N/A"}
                                         </data>
                                     </div>
                                     <div className="flex flex-row gap-3">
@@ -100,30 +92,39 @@ export default function DeleteCaseFileDialog() {
                                             {status || "N/A"} 
                                         </data>
                                     </div>
+                                    <div className="flex flex-row gap-3">
+                                        <p className="form-label">Remark:</p>
+                                        <data 
+                                            value={remark || "remark"}
+                                            className="custom-txt "
+                                        >
+                                            {remark || "N/A"} 
+                                        </data>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                    
-                        <div className="w-full flex sm:flex-row gap-x-6 gap-y-3 py-3 flex-col">
+                        <div className="w-full flex sm:flex-row gap-x-6 gap-y-3 py-3 flex-col-reverse">
                             <CustomCloseButton />
 
                             <Button
-                                type="submit"
+                                type="button"
                                 variant={"destructive"}
                                 onClick={deleteHandler}
-                                className={`btn-default min-w-[100px] ${
-                                    deletCaseFileMutation.isPending ? "" : "max-w-max"
+                                className={`btn-default sm:min-w-[6.25rem]  ${
+                                    deleteCaseFileMutation.isPending ? "sm:min-w-[6.25rem]" : "sm:max-w-max w-full"
                                 }`}
                             >
-                                {deletCaseFileMutation.isPending ? (
-                                    <span className="flex items-center justify-center w-[100px]"> {/* Ensure the span has the desired width */}
+                                {deleteCaseFileMutation.isPending ? (
+                                    <span className="flex items-center justify-center sm:w-[6.25rem]"> 
+                                        {/* Ensure the span has the desired width */}
                                         <Loader />
                                     </span>
                                 ) : (
                                     <span>Confirm</span>
                                 )}
                             </Button>
-                            
                         </div>
                        
                 </AlertDialogContent>

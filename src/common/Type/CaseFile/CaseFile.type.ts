@@ -43,3 +43,9 @@ import { UserDetailType, } from "@/common/Type/user.type"
     statusId: string;
     remark: string;
   }
+
+
+  export type AssignInvestigatorType = {
+    caseId: string,
+    investigatorId: string
+  }

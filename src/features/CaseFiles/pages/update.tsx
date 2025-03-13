@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Controller, useForm } from "react-hook-form"
 import { CaseFileStatusType, CaseFileType, EditCaseFileType } from "@/common/Type/CaseFile/CaseFile.type"
-import { useCaseFileStatus, useUpdateCaseFileService,  } from "@/service/case-files/service"
+import { useCaseFileStatusService, useUpdateCaseFileService,  } from "@/service/case-files/service"
 import { useUsers } from "@/service/users/service"
 import { UserDetailType } from "@/common/Type/user.type"
 import Loader from "@/components/custom-ui/loader"
@@ -41,7 +41,7 @@ export default function UpdateCaseFileDialog() {
     // Service Hooks
 
         // Case File       
-    const getCaseFileStatus = useCaseFileStatus().data
+    const getCaseFileStatus = useCaseFileStatusService().data
     const caseFileStatus: CaseFileStatusType[] = getCaseFileStatus?.data || [];
     const caseId:  string | undefined = selectedCaseFile?.caseId
 
@@ -202,21 +202,21 @@ export default function UpdateCaseFileDialog() {
                                     })}
                                 />
                             </div>
-                           <div className="w-full flex sm:flex-row gap-x-6 gap-y-3 py-3 flex-col">
+                            <div className="w-full flex sm:flex-row gap-x-6 gap-y-3 py-3 flex-col-reverse">
                                 <Button  
                                     type="submit" 
-                                    className={`btn-default min-w-[100px] ${caseFileMutation.isPending ? "" : "max-w-max"}`}
+                                    className={`btn-default sm:min-w-[100px] w-full ${caseFileMutation.isPending ? "" : "max-w-max"}`}
                                 >
-                                {caseFileMutation.isPending ? (
-                                    <span className="flex items-center justify-center w-[100px]"> 
-                                        <Loader /> 
-                                    </span>
-                                ) : (
-                                    <span>Save Changes</span>
-                                )}
-                            </Button>
-                            <CustomCloseButton />
-                           </div>
+                                    {caseFileMutation.isPending ? (
+                                        <span className="flex items-center justify-center sm:w-[6.25rem] w-full"> 
+                                            <Loader /> 
+                                        </span>
+                                    ) : (
+                                        <span>Save Changes</span>
+                                    )}
+                                </Button>
+                                <CustomCloseButton />
+                            </div>
                         </form>
                     </div>
                 </AlertDialogContent>

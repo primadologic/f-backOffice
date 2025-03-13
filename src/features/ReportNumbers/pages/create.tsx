@@ -393,17 +393,14 @@ export default function ReportNumberCreatePage() {
 
 
                                     <div className="w-full flex sm:flex-row flex-col sm:gap-10 gap-3">
-                                        <Button type="submit" className="">
-                                            Submit
-                                        </Button>
                                         <Button
                                             type="submit"
-                                            className={`btn-default min-w-[100px] ${
-                                                reportMutation.isPending ? "" : "max-w-max"
+                                            className={`btn-default sm:min-w-[6.25rem] w-full ${
+                                                reportMutation.isPending ? "sm:min-w-[6.25rem]" : "sm:max-w-max w-full"
                                             }`}
                                         >
                                             {reportMutation.isPending ? (
-                                                <span className="flex items-center justify-center w-[100px]"> {/* Ensure the span has the desired width */}
+                                                <span className="flex items-center justify-center sm:w-[6.25rem]"> {/* Ensure the span has the desired width */}
                                                     <Loader />
                                                 </span>
                                             ) : (

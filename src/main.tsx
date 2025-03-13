@@ -49,7 +49,7 @@ if (!rootElement.innerHTML) {
             <RouterProvider router={router} />
               <Toaster 
                 richColors
-                position="bottom-right" 
+                position="bottom-left" 
                 duration={5500}
                 closeButton={true}
               />
