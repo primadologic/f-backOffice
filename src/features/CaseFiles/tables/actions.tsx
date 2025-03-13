@@ -1,5 +1,5 @@
 
-import { Copy, MoreHorizontal, SquarePen, Trash2 } from "lucide-react";
+import { Copy, MoreHorizontal, SquarePen, Trash2, UserRoundCheck } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { useCaseFileStore, useDeleteCaseFileStore } from "@/hooks/state/case-files/case-file-stiore";
+import { useAssignInvestigatorStore, useCaseFileStore, useDeleteCaseFileStore } from "@/hooks/state/case-files/case-file-store";
 import { CaseFileType } from "@/common/Type/CaseFile/CaseFile.type";
 
 
@@ -18,16 +18,23 @@ export const ActionsCell = ({ caseFile }: { caseFile: CaseFileType }) => {
   const { setIsOpen, setSelectedCaseFile } = useCaseFileStore();
   
   const { setIsOpen: setIsDeleteOpen, setSelectedCaseFile: setSelectedDeleteCaseFile } = useDeleteCaseFileStore();
+  const { setIsOpen: setIsAssignOpen, setSelectedCaseFile: setSelectedAssignCaseFile } = useAssignInvestigatorStore();
   
   const handleEditClick = () => {
-    setSelectedCaseFile(caseFile)
-    setIsOpen(true)
-  }
+    setSelectedCaseFile(caseFile);
+    setIsOpen(true);
+  };
 
   const handleDeleteClick = () => {
-    setSelectedDeleteCaseFile(caseFile)
-    setIsDeleteOpen(true)
+    setSelectedDeleteCaseFile(caseFile);
+    setIsDeleteOpen(true);
+  };
+
+  const handleAssignInvestigator = () => {
+    setSelectedAssignCaseFile(caseFile);
+    setIsAssignOpen(true)
   }
+
 
   return (
     <DropdownMenu>
@@ -48,6 +55,7 @@ export const ActionsCell = ({ caseFile }: { caseFile: CaseFileType }) => {
           <span><Copy /></span>
           <span>Copy suspect number</span>
         </DropdownMenuItem>
+
         <DropdownMenuSeparator />
 
         <DropdownMenuItem 
@@ -56,6 +64,16 @@ export const ActionsCell = ({ caseFile }: { caseFile: CaseFileType }) => {
         >
           <span><SquarePen /></span>
           <span>Edit</span>
+        </DropdownMenuItem>
+
+        <DropdownMenuSeparator />
+
+        <DropdownMenuItem 
+          onClick={handleAssignInvestigator}
+          className="space-x-1"
+        >
+          <span><UserRoundCheck /></span>
+          <span>Assign Investigator</span>
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />

@@ -7,6 +7,7 @@ import { CustomButton } from "@/components/custom-ui/buttons";
 import TopNavBar from "@/components/custom-ui/topBarNav";
 import UpdateCaseFileDialog from "./update";
 import DeleteCaseFileDialog from "./delete-caseFile";
+import AssignInvestigatorDialog from "./assign-investigator";
 
 
 
@@ -36,6 +37,7 @@ export default function CaseFilesListPage() {
                            <>
                                 <UpdateCaseFileDialog />
                                 <DeleteCaseFileDialog />
+                                <AssignInvestigatorDialog />
                            </>
                         </div>
                     </div>

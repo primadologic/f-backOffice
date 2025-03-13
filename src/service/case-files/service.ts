@@ -4,7 +4,7 @@ import { API_BASE_URL, API_KEY } from "@/lib/env_vars";
 import { accessToken } from "@/lib/tokens";
 import { AssignInvestigatorType, EditCaseFileType, NewCaseFileType } from "@/common/Type/CaseFile/CaseFile.type";
 import { toast } from "sonner";
-import { useDeleteCaseFileStore } from "@/hooks/state/case-files/case-file-stiore";
+import { useDeleteCaseFileStore } from "@/hooks/state/case-files/case-file-store";
 import { useNavigate } from "@tanstack/react-router";
 
 
@@ -294,10 +294,9 @@ export const useAssignInvestigatorService = (data: AssignInvestigatorType) => {
     const assignInvestigator = useMutation({
         mutationKey: ['delete-caseFile', data.caseId],
         mutationFn: async (data: AssignInvestigatorType) => {
-            const response = await axios.patch(`${API_BASE_URL}/case-file/assign/investigator/${data.caseId}`, {
-                data: {
-                    investigatorId: data.investigatorId
-                },
+            const response = await axios.patch(`${API_BASE_URL}/case-file/assign/investigator/${data.caseId}`, 
+                data.investigatorId, {
+                    
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${accessToken}`,
@@ -310,7 +309,7 @@ export const useAssignInvestigatorService = (data: AssignInvestigatorType) => {
 
         onSuccess: (data) => {
             const message = data?.message
-            if (data?.statusCode === 204) {
+            if (data?.statusCode === 200) {
                 toast.success(`${message}`)
                 setIsOpen(false)
 

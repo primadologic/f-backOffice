@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { CaseFileType } from "@/common/Type/CaseFile/CaseFile.type";
-import { useCaseFileStore } from "@/hooks/state/case-files/case-file-stiore";
+import { useCaseFileStore } from "@/hooks/state/case-files/case-file-store";
 
 
 export const ActionsCell = ({ caseFile }: { caseFile: CaseFileType }) => {

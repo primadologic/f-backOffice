@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button"
-import { useDeleteCaseFileStore } from "@/hooks/state/case-files/case-file-stiore"
+import { useDeleteCaseFileStore } from "@/hooks/state/case-files/case-file-store"
 import {
   AlertDialog,
   AlertDialogContent,

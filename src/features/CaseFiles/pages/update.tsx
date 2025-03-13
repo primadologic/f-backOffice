@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button"
-import { useCaseFileStore } from "@/hooks/state/case-files/case-file-stiore"
+import { useCaseFileStore } from "@/hooks/state/case-files/case-file-store"
 import {
     Select,
     SelectContent,
@@ -31,7 +31,8 @@ import { CustomCloseButton } from "@/components/custom-ui/custom-buttons"
 export default function UpdateCaseFileDialog() {
     
     const { register, handleSubmit, control, formState: { errors } } = useForm<EditCaseFileType & CaseFileType>({
-        criteriaMode: "firstError"
+        criteriaMode: 'all',
+        mode: 'onChange'
     })
 
  

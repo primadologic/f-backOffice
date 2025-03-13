@@ -46,6 +46,6 @@ import { UserDetailType, } from "@/common/Type/user.type"
 
 
   export type AssignInvestigatorType = {
-    caseId: string,
-    investigatorId: string
+    caseId?: string,
+    investigatorId?: string
   }
