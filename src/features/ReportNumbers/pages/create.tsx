@@ -19,7 +19,7 @@ import { ReportPlatformData } from "@/data/ReportNumbers/ReportPlatform.table.da
 import { useForm, Controller } from "react-hook-form"
 import { CreateReportNumberType } from "@/data/ReportNumbers/ReportNumbers.type";
 import { Button } from "@/components/ui/button";
-import CustomBackButton from "@/components/custom-ui/back-button";
+
 import TopNavBar from "@/components/custom-ui/topBarNav";
 import { useState } from "react";
 import { useDropzone } from 'react-dropzone';
@@ -32,6 +32,8 @@ import { toast } from "sonner";
 import { useNavigate } from "@tanstack/react-router";
 import axios from "axios";
 import Cookies from "js-cookie"
+import Loader from "@/components/custom-ui/loader";
+import { CustomBackButton } from "@/components/custom-ui/custom-buttons";
 
 
 
@@ -393,6 +395,20 @@ export default function ReportNumberCreatePage() {
                                     <div className="w-full flex sm:flex-row flex-col sm:gap-10 gap-3">
                                         <Button type="submit" className="">
                                             Submit
+                                        </Button>
+                                        <Button
+                                            type="submit"
+                                            className={`btn-default min-w-[100px] ${
+                                                reportMutation.isPending ? "" : "max-w-max"
+                                            }`}
+                                        >
+                                            {reportMutation.isPending ? (
+                                                <span className="flex items-center justify-center w-[100px]"> {/* Ensure the span has the desired width */}
+                                                    <Loader />
+                                                </span>
+                                            ) : (
+                                                <span>Submit</span>
+                                            )}
                                         </Button>
                                     </div>
                                 </div>

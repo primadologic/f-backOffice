@@ -155,6 +155,10 @@ body {
   .btn-default {
     @apply !h-10 !px-4 !py-2
   }
+
+  .custom-txt {
+    @apply text-sm font-medium text-custom_theme-gray2 dark:text-custom_theme-primary_background
+  }
   
   
  

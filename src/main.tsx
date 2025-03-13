@@ -49,8 +49,8 @@ if (!rootElement.innerHTML) {
             <RouterProvider router={router} />
               <Toaster 
                 richColors
-                position="top-right" 
-                duration={4000}
+                position="bottom-right" 
+                duration={5500}
                 closeButton={true}
               />
             <ReactQueryDevtools initialIsOpen={false} />

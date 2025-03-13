@@ -1,4 +1,4 @@
-import CustomBackButton from "@/components/custom-ui/back-button";
+
 import TopNavBar from "@/components/custom-ui/topBarNav";
 import PageLayout from "@/features/layout/PagesLayout";
 import { Separator } from "@radix-ui/react-separator";
@@ -26,6 +26,7 @@ import { NewCaseFileType } from "@/common/Type/CaseFile/CaseFile.type";
 import { CaseStatusType,   } from "@/common/Type/CaseFile/CaseStatus.type";
 // Data
 import { CaseStatusData } from "@/data/CaseFiles/CaseStatus.table.data";
+import { CustomBackButton } from "@/components/custom-ui/custom-buttons";
 
 
 
@@ -37,8 +38,8 @@ export default function CaseFileCreatePage() {
     const { register, handleSubmit, trigger, control, formState: { errors } } = useForm<NewCaseFileType>({
         defaultValues: {
             suspectNumber: "",
-            status: "",
-            remarks: ""
+            statusId: "",
+            remark: ""
         },
         criteriaMode: "firstError"
     })
@@ -102,7 +103,7 @@ export default function CaseFileCreatePage() {
                                         <div className="w-full flex flex-col gap-2 ">
                                             <label htmlFor="Status" className="form-label">Status</label>
                                             <Controller
-                                                name="status"
+                                                name="statusId"
                                                 control={control}
                                                 rules={{
                                                     required: {
@@ -114,7 +115,7 @@ export default function CaseFileCreatePage() {
                                                 <Select onValueChange={onChange} defaultValue={value}>
                                                     <SelectTrigger 
                                                         className={`outline-none border h-[3.2rem] text-sm  px-3 py-3 rounded-md font-medium text-custom_theme-primary_foreground dark:bg-custom_theme-dark_gray_1 dark:text-custom_theme-primary_background focus:ring-1 focus:ring-gray-400 dark:focus:ring-custom_theme-gray delay-150 transition ease-in-out duration-300
-                                                                ${errors.status ? "form-validerr-ring " : "form-valid-ring"}
+                                                                ${errors.statusId ? "form-validerr-ring " : "form-valid-ring"}
                                                             `}
                                                         onBlur={onBlur}
                                                     >
@@ -128,7 +129,7 @@ export default function CaseFileCreatePage() {
                                                 </Select>
                                                 )}
                                             />
-                                            {errors.status && <p className="form-error-msg">{errors.status.message}</p>}
+                                            {errors.statusId && <p className="form-error-msg">{errors.statusId.message}</p>}
                                         
                                         </div>
                                     </div>
@@ -140,17 +141,17 @@ export default function CaseFileCreatePage() {
                                                 rows={5}
                                                 placeholder="Enter the remarks for the case"
                                                 className={`form-input
-                                                        ${errors.remarks ? "form-validerr-ring" : "form-valid-ring"}
+                                                        ${errors.remark ? "form-validerr-ring" : "form-valid-ring"}
                                                     `}
-                                                {...register("remarks", {
+                                                {...register("remark", {
                                                     required: {
                                                         value: true,
                                                         message: "Remarks are required"
                                                     }
                                                 })}
-                                                onBlur={() => trigger('remarks')}
+                                                onBlur={() => trigger('remark')}
                                             ></textarea>
-                                            {errors.remarks && <p className="form-error-msg">{errors.remarks.message}</p>}
+                                            {errors.remark && <p className="form-error-msg">{errors.remark.message}</p>}
                                         </div>
                                     </div>
 

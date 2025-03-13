@@ -13,8 +13,9 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { useForm, Controller } from "react-hook-form"
 import { CreateFraudNumberType } from "@/common/Type/FraudNumber/fraud-numbers";
 import { Button } from "@/components/ui/button";
-import CustomBackButton from "@/components/custom-ui/back-button";
+
 import TopNavBar from "@/components/custom-ui/topBarNav";
+import { CustomBackButton } from "@/components/custom-ui/custom-buttons";
 
 
 

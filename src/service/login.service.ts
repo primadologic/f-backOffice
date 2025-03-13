@@ -31,7 +31,9 @@ export const useLoginService = () => {
 
             login(accessToken, refreshToken);
             router.navigate({ to: '/dashboard' })
-            toast.success('Logged in successfully')
+            toast.success('Logged in successfully', {
+                description: "Welcome back"
+            })
         },
         onError: (error) => {
             console.log("Login failed", error);

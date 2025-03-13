@@ -10,10 +10,8 @@ import {
   } from "@/components/ui/select"
 import {
   AlertDialog,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
-  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
@@ -24,12 +22,13 @@ import { useCaseFileStatus, useUpdateCaseFileService,  } from "@/service/case-fi
 import { useUsers } from "@/service/users/service"
 import { UserDetailType } from "@/common/Type/user.type"
 import Loader from "@/components/custom-ui/loader"
+import { CustomCloseButton } from "@/components/custom-ui/custom-buttons"
 
 
 
 
 
-export default function UpdateCaseFile() {
+export default function UpdateCaseFileDialog() {
     
     const { register, handleSubmit, control, formState: { errors } } = useForm<EditCaseFileType & CaseFileType>({
         criteriaMode: "firstError"
@@ -206,23 +205,17 @@ export default function UpdateCaseFile() {
                            <div className="w-full flex sm:flex-row gap-x-6 gap-y-3 py-3 flex-col">
                                 <Button  
                                     type="submit" 
-                                    className={`btn-default min-w-[100px] ${caseFileMutation.isPending ? "max-w-full" : "max-w-max"}`}
+                                    className={`btn-default min-w-[100px] ${caseFileMutation.isPending ? "" : "max-w-max"}`}
                                 >
                                 {caseFileMutation.isPending ? (
-                                    <span className="flex items-center justify-center"> 
+                                    <span className="flex items-center justify-center w-[100px]"> 
                                         <Loader /> 
                                     </span>
                                 ) : (
                                     <span>Save Changes</span>
                                 )}
                             </Button>
-                               <AlertDialogFooter>
-                                     
-                                    <AlertDialogCancel className="btn-default btn-dark-mode">
-                                        Close
-                                    </AlertDialogCancel>
-
-                               </AlertDialogFooter>
+                            <CustomCloseButton />
                            </div>
                         </form>
                     </div>

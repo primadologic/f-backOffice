@@ -3,9 +3,10 @@ import { useNavigate } from "@tanstack/react-router";
 import CaseFileListTable from "../tables/case-file-table";
 import CaseFileExport from "../tables/case-file-export";
 import PageLayout from "@/features/layout/PagesLayout";
-import UpdateCaseFile from "./update";
 import { CustomButton } from "@/components/custom-ui/buttons";
 import TopNavBar from "@/components/custom-ui/topBarNav";
+import UpdateCaseFileDialog from "./update";
+import DeleteCaseFileDialog from "./delete-caseFile";
 
 
 
@@ -32,7 +33,10 @@ export default function CaseFilesListPage() {
                                 <Plus className="mr-2 h-4 w-4" />
                                 <span className="mr-1">Create Case File</span>
                             </CustomButton>
-                            <UpdateCaseFile />
+                           <>
+                                <UpdateCaseFileDialog />
+                                <DeleteCaseFileDialog />
+                           </>
                         </div>
                     </div>
                     <div className="">

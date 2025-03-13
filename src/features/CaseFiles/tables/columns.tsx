@@ -73,7 +73,7 @@ export const columns: ColumnDef<CaseFileType>[] = [
   {
     accessorKey: "investigator",
     // header: "Investigator",
-    cell: ({ row }) => row.original.investigator?.firstName ?? "N/A",
+    cell: ({ row }) =>  row.original?.investigator ? row.original.investigator?.firstName + " " + row.original.investigator?.lastName : "N/A" ,
     filterFn: (row, columnId, filterValue) => {
       const firstName = row.original.investigator?.firstName ?? "";
       const lastName =  row.original.investigator?.lastName ?? "";

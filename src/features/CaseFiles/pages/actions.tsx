@@ -1,5 +1,5 @@
 'use client'
-import { MoreHorizontal } from "lucide-react";
+import { MoreHorizontal, Trash2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -40,8 +40,17 @@ export const ActionsCell = ({ caseFile }: { caseFile: CaseFileType }) => {
         <DropdownMenuSeparator />
         <DropdownMenuItem 
             onClick={handleEditClick}
+              className="space-x-3"
         >
           Edit case file
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem 
+            // onClick={handleEditClick}
+            className="space-x-3"
+        >
+         <span><Trash2 /></span>
+         <span>Remove</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

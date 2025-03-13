@@ -3,10 +3,8 @@ import { useReportNumberStore } from "@/hooks/state/reports/report-store"
 import { formatDateTime, maskNumber } from "@/lib/custom";
 import {
     AlertDialog,
-    AlertDialogCancel,
     AlertDialogContent,
     AlertDialogDescription,
-    AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
@@ -19,6 +17,7 @@ import {
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronsUpDown } from "lucide-react";
+import { CustomCloseButton } from "@/components/custom-ui/custom-buttons";
 
   
 
@@ -147,9 +146,7 @@ export default function ReportNumberViewSheet() {
                                 </div>
                             </form>
                         </div>
-                        <AlertDialogFooter>
-                            <AlertDialogCancel>Close</AlertDialogCancel>
-                        </AlertDialogFooter>
+                        <CustomCloseButton />
                     </AlertDialogContent>
                 </AlertDialog>
 
