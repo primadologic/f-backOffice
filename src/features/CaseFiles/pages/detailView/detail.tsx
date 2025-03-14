@@ -1,22 +1,14 @@
 
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"  
 import { Separator } from "@/components/ui/separator"
 import { useDetailCaseFile } from "@/hooks/state/case-files/case-file-store"
 import { formatDateTime } from "@/lib/custom";
+import {
+    Card,
+    CardContent,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card"  
+import { CustomBackButton } from "@/components/custom-ui/custom-buttons";
 
 
 export default function CaseFileDetail() {
@@ -28,15 +20,18 @@ export default function CaseFileDetail() {
     return (
         <div className="">
             <div className="">
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Case File Detail</CardTitle>
-                        {/* <CardDescription>Detail View for </CardDescription> */}
-                    </CardHeader>
+                <Card className="rounded-[1.8rem] border">
+                    <div className="w-full flex flex-row justify-start items-center">
+                        <CardHeader className="flex flex-row justify-center items-center gap-x-5">
+                            <CustomBackButton />
+                            <CardTitle>Case File Detail</CardTitle>
+                            {/* <CardDescription>Detail View for </CardDescription> */}
+                        </CardHeader>
+                    </div>
                     <Separator orientation="horizontal" className="my-2" />
-                    <CardContent>
+                    <CardContent className="my-2">
                         <div className="">
-                            <form action="" className="">
+                            <form action="" className="flex flex-col gap-6">
                                 <div className="w-full flex sm:flex-row gap-6 flex-col">
                                     <div className="w-full flex flex-col gap-2">
                                         <label htmlFor="suspect-number" className="form-label">
