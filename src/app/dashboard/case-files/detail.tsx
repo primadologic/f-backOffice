@@ -1,5 +1,7 @@
+import CaseFileDetailMain from "@/features/CaseFiles/pages/detailView/detail-main"
 import DashboardLayout from "../dashBoardLayout"
-import CaseFileDetailMain from "@/features/CaseFiles/pages/detail-main"
+import DetailViewTabs from "@/features/CaseFiles/pages/detailView/detail-tabs"
+
 
 
 export default function DetailViewPage() {
@@ -8,8 +10,10 @@ export default function DetailViewPage() {
 
         <DashboardLayout>
             <CaseFileDetailMain />
+            <div className="flex flex-col ">
+                <DetailViewTabs />
+            </div>
         </DashboardLayout>
 
-    )
-    
+    )  
 };
