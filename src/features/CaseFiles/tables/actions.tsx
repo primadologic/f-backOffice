@@ -1,5 +1,5 @@
 
-import { Copy, MoreHorizontal, SquarePen, Trash2, UserRoundCheck } from "lucide-react";
+import { Copy, Eye, MoreHorizontal, SquarePen, Trash2, UserRoundCheck } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,16 +9,20 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { useAssignInvestigatorStore, useUpdateCaseFileStore, useDeleteCaseFileStore } from "@/hooks/state/case-files/case-file-store";
+import { useAssignInvestigatorStore, useUpdateCaseFileStore, useDeleteCaseFileStore, useDetailCaseFile,  } from "@/hooks/state/case-files/case-file-store";
 import { CaseFileType } from "@/common/Type/CaseFile/CaseFile.type";
+import { useNavigate } from "@tanstack/react-router";
 
 
 export const ActionsCell = ({ caseFile }: { caseFile: CaseFileType }) => {
     
-  const { setIsOpen, setSelectedCaseFile } = useUpdateCaseFileStore()
+  const { setIsOpen, setSelectedCaseFile } = useUpdateCaseFileStore();
+  const navigate = useNavigate()
   
   const { setIsOpen: setIsDeleteOpen, setSelectedCaseFile: setSelectedDeleteCaseFile } = useDeleteCaseFileStore();
   const { setIsOpen: setIsAssignOpen, setSelectedCaseFile: setSelectedAssignCaseFile } = useAssignInvestigatorStore();
+
+  const {  setSelectedCaseFile: setDetailSelectedCaseFile, selectedCaseFile: detailSelectedCaseFile } = useDetailCaseFile();
   
   const handleEditClick = () => {
     setSelectedCaseFile(caseFile);
@@ -33,6 +37,13 @@ export const ActionsCell = ({ caseFile }: { caseFile: CaseFileType }) => {
   const handleAssignInvestigator = () => {
     setSelectedAssignCaseFile(caseFile);
     setIsAssignOpen(true)
+  }
+
+  
+  const handleNavigate = () => {
+    setDetailSelectedCaseFile(caseFile);
+    const caseFileId = detailSelectedCaseFile?.caseId ?? ""
+    navigate({ to: '/dashboard/case-files/$caseId', params: { caseId: caseFileId }  })
   }
 
 
@@ -64,6 +75,16 @@ export const ActionsCell = ({ caseFile }: { caseFile: CaseFileType }) => {
         >
           <span><SquarePen /></span>
           <span>Edit</span>
+        </DropdownMenuItem>
+
+        <DropdownMenuSeparator />
+
+        <DropdownMenuItem 
+          onClick={handleNavigate}
+          className="space-x-1"
+        >
+          <span><Eye /></span>
+          <span>View</span>
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />

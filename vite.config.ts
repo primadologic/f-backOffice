@@ -20,7 +20,7 @@ export default defineConfig({
   server: {
     cors: {
       // the origin you will be accessing via browser
-      origin: "https://fraudwall-api-dev.azurewebsites.net",
+      origin: "https://dev-api.fraudwall.ai/api",
     },
   },
 
