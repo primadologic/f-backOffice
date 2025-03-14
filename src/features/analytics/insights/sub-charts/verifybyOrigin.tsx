@@ -289,7 +289,7 @@ export default function VerificationbyOriginReportChart() {
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex gap-2 font-medium leading-none">
-          Showing the phone number verification by origin
+          Showing phone number verifications by origin
         </div>
         <div className="leading-none text-muted-foreground">
           {verificationbyOrigin?.isLoading ? 
