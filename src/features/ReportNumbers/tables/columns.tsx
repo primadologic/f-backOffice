@@ -80,12 +80,26 @@ export const columns: ColumnDef<ReportList>[] = [
             )
         },
         
-        cell: ({ getValue }) => maskNumber(getValue() as string)
+        cell: ({ getValue }) => {
+
+            const suspectNumber = maskNumber(getValue() as string) as string
+
+            return (
+                <span className="">{suspectNumber.substring(0, 12)}</span>
+            )
+        }
     },
     {
         accessorKey: "reporterNumber",
         header: "Reporter Number",
-        cell: ({ getValue }) => maskNumber(getValue() as string)
+        cell: ({ getValue }) => {
+
+            const reporterNumber = maskNumber(getValue() as string)
+
+            return (
+                <span>{reporterNumber.substring(0, 12)}</span>
+            )
+        }
     },
     {
         accessorKey: "incidentDate",
