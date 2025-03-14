@@ -33,7 +33,7 @@ interface ChartDataPoint {
   verificationOrigin: number;
 }
 
-type ChartType = "reportOrigin" | "verificationOrigin";
+// type ChartType = "reportOrigin" | "verificationOrigin";
 
 
 
@@ -42,7 +42,8 @@ const YearlyStatisticsbyOriginChart = () => {
   const [yearOptions, setYearOptions] = useState<number[]>([]);
   const { data: apiResponse, isLoading, isError, error } = useVerificationbyOriginReport(selectedYear);
   
-  const [activeChart, setActiveChart] = useState<ChartType>("verificationOrigin");
+  // const [activeChart, setActiveChart] = useState<ChartType>("verificationOrigin");
+  const [activeChart, setActiveChart] = useState<keyof typeof chartConfig>("verificationOrigin");
   
   const chartConfig = {
     reportOrigin: {
@@ -117,8 +118,8 @@ const YearlyStatisticsbyOriginChart = () => {
     <Card className="w-full">
       <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
         <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
-          <CardTitle>Monthly Statistics ({selectedYear})</CardTitle>
-          <CardDescription>Showing report origins and verification origins by month</CardDescription>
+          <CardTitle>Reports & Verifications Monthly Statistics ({selectedYear})</CardTitle>
+          <CardDescription>Showing report and verification origins by month</CardDescription>
         </div>
         <div className="flex">
           {(Object.keys(chartConfig) as Array<keyof typeof chartConfig>).map((key) => (
@@ -207,18 +208,24 @@ const YearlyStatisticsbyOriginChart = () => {
                         content={
                             <ChartTooltipContent
                             className="w-[150px]"
-                            nameKey="views"
-                            labelFormatter={(value) => {
-                                return new Date(value).toLocaleDateString("en-US", {
-                                month: "short",
-                                day: "numeric",
-                                year: "numeric",
-                                })
-                            }}
+                            nameKey="months"
+                            label={chartConfig[activeChart]?.label }
+                            // labelFormatter={(value) => {
+                            //     return new Date(value).toLocaleDateString("en-US", {
+                            //     month: "short",
+                            //     day: "numeric",
+                            //     year: "numeric",
+                            //     })
+                            // }}
                         />
                     }
                     />
-                    <Bar dataKey={activeChart} fill={`var(--color-${activeChart})`} />
+                    <Bar 
+                      dataKey={activeChart} 
+                      // fill={`var(--color-${activeChart})`} 
+                      fill={`${chartConfig[activeChart].color}`} // Use the color from config instead of a string template
+                      name={chartConfig[activeChart].label} // Add this line to set the name that appears in tooltip
+                    />
                     {/* <Bar dataKey="reportOrigin" name="Report Origins" fill={chartConfig.reportOrigin.color} />
                     <Bar dataKey="verificationOrigin" name="Verification Origins" fill={chartConfig.verificationOrigin.color} /> */}
                 </BarChart>
