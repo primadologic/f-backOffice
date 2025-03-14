@@ -103,7 +103,7 @@ export const columns: ColumnDef<CaseFileType>[] = [
         if (!remarks) return "N/A";
       
         return (
-          <span className="">{ remarks.slice(0, 40) }...</span>
+          <span className="">{ remarks }...</span>
         )
     }
   },

@@ -37,10 +37,16 @@ export default function DeleteCaseFileDialog() {
     // if (!status) return "" ;
     // const investigatorId: string = deleteSeletedCaseFile?.investigator?.userId ?? null;
 
-    const deleteHandler =  () => {
-        deleteCaseFileMutation.mutateAsync(caseId)
-       
-    }
+    // const [ isLoading, setIsLoading ] = useState(false)
+
+       const deleteHandler = () => {
+         deleteCaseFileMutation.mutateAsync(caseId)
+        // setIsLoading(true);
+        // setTimeout(() => {
+        //   console.log("Delete");
+        //   setIsLoading(false); // Move setIsLoading(false) here
+        // }, 125000); // 125 seconds
+      };
     
     
 

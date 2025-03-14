@@ -40,8 +40,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { ChevronDown, ListFilter, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
-
-
+import { useCaseFileListService } from "@/service/case-files/service"
 
 
 
@@ -89,6 +88,8 @@ const [pagination, setPagination] = useState({
       pagination
     },
   });
+
+  const caseFileQuery = useCaseFileListService()
 
   return (
     <div className="">
@@ -204,7 +205,7 @@ const [pagination, setPagination] = useState({
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No results.
+                  {caseFileQuery.isFetching ? "Loading..." : "No results."}
                 </TableCell>
               </TableRow>
             )}

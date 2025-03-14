@@ -37,21 +37,19 @@ export default function AssignInvestigatorDialog() {
 
     const { isOpen, setIsOpen, selectedCaseFile } = useAssignInvestigatorStore();
 
-    const caseId= selectedCaseFile?.caseId
-
+    const caseId = selectedCaseFile?.caseId ?? ""; // Ensures caseId is always a string
+ 
     const getusers = useUsers().data
     const users: UserDetailType[] = getusers?.data || [];
 
-    const assignInvestigatorMutation = useAssignInvestigatorService({ caseId })
+    const assignInvestigatorMutation = useAssignInvestigatorService(caseId)
 
     const onSubmit = (data: AssignInvestigatorType) => {
         // console.log("Assign investigator", {
         //     "investigator": data.investigatorId
         // });
 
-        assignInvestigatorMutation.mutateAsync({
-            investigatorId: data.investigatorId
-        })
+        assignInvestigatorMutation.mutateAsync(data.investigatorId)
     }
 
     return (
@@ -115,19 +113,21 @@ export default function AssignInvestigatorDialog() {
                             </div>
                            
                             <div className="w-full flex sm:flex-row gap-x-6 gap-y-3 py-3 flex-col-reverse">
+                                <CustomCloseButton />
                                 <Button  
                                     type="submit" 
-                                    className={`btn-default sm:min-w-[100px] w-full ${assignInvestigatorMutation.isPending ? "" : "max-w-max"}`}
+                                    className={`btn-default sm:min-w-[6.25rem]  
+                                        ${assignInvestigatorMutation.isPending ? "sm:min-w-[6.25rem]" : "sm:max-w-max w-full"}`}
                                 >
                                     {assignInvestigatorMutation.isPending ? (
-                                        <span className="flex items-center justify-center sm:w-[6.25rem] w-full"> 
+                                        <span className="flex items-center justify-center sm:w-[6.25rem] "> 
                                             <Loader /> 
                                         </span>
                                     ) : (
                                         <span>Save Changes</span>
                                     )}
                                 </Button>
-                                <CustomCloseButton />
+                               
                             </div>
                         </form>
                     </div>

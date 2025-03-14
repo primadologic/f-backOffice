@@ -9,13 +9,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { useAssignInvestigatorStore, useCaseFileStore, useDeleteCaseFileStore } from "@/hooks/state/case-files/case-file-store";
+import { useAssignInvestigatorStore, useUpdateCaseFileStore, useDeleteCaseFileStore } from "@/hooks/state/case-files/case-file-store";
 import { CaseFileType } from "@/common/Type/CaseFile/CaseFile.type";
 
 
 export const ActionsCell = ({ caseFile }: { caseFile: CaseFileType }) => {
     
-  const { setIsOpen, setSelectedCaseFile } = useCaseFileStore();
+  const { setIsOpen, setSelectedCaseFile } = useUpdateCaseFileStore()
   
   const { setIsOpen: setIsDeleteOpen, setSelectedCaseFile: setSelectedDeleteCaseFile } = useDeleteCaseFileStore();
   const { setIsOpen: setIsAssignOpen, setSelectedCaseFile: setSelectedAssignCaseFile } = useAssignInvestigatorStore();

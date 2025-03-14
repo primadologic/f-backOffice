@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button"
-import { useCaseFileStore } from "@/hooks/state/case-files/case-file-store"
+import { useUpdateCaseFileStore } from "@/hooks/state/case-files/case-file-store"
 import {
     Select,
     SelectContent,
@@ -19,8 +19,6 @@ import {
 import { Controller, useForm } from "react-hook-form"
 import { CaseFileStatusType, CaseFileType, EditCaseFileType } from "@/common/Type/CaseFile/CaseFile.type"
 import { useCaseFileStatusService, useUpdateCaseFileService,  } from "@/service/case-files/service"
-import { useUsers } from "@/service/users/service"
-import { UserDetailType } from "@/common/Type/user.type"
 import Loader from "@/components/custom-ui/loader"
 import { CustomCloseButton } from "@/components/custom-ui/custom-buttons"
 
@@ -35,9 +33,9 @@ export default function UpdateCaseFileDialog() {
         mode: 'onChange'
     })
 
- 
+    // const [ isLoading, setIsLoading ] = useState(false)
 
-    const { isOpen, selectedCaseFile, setIsOpen } = useCaseFileStore();
+    const { isOpen, selectedCaseFile, setIsOpen } = useUpdateCaseFileStore()
 
     // Service Hooks
 
@@ -47,28 +45,28 @@ export default function UpdateCaseFileDialog() {
     const caseId:  string | undefined = selectedCaseFile?.caseId
 
         // Users
-    const getusers = useUsers().data
-    const users: UserDetailType[] = getusers?.data || [];
+    // const getusers = useUsers().data
+    // const users: UserDetailType[] = getusers?.data || [];
 
         // Patch Case File
-    const caseFileMutation = useUpdateCaseFileService(caseId)
+    const updateCaseFileMutation = useUpdateCaseFileService(caseId)
    
+
 
 
     
     const onSubmit = async (data: any) => {
-        console.log("Edit Case File", {
-            "statusId": data.statusId,
-            "remark": data.remark,
-        });
+        // setIsLoading(true)
+        // setTimeout(() => {
+        //   console.log("Delete");
+        //   setIsLoading(false); // Move setIsLoading(false) here
+        // }, 125000); // 125 seconds
 
-     
-        caseFileMutation.mutateAsync({
+        updateCaseFileMutation.mutateAsync({
             "statusId": data.statusId,
             "remark": data.remark,
         });
       
-       
     }
 
     return (
@@ -168,11 +166,19 @@ export default function UpdateCaseFileDialog() {
                                                <SelectValue placeholder="Select investigator" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                {users.map((user) => (
+                                                {/* {users.map((user) => (
                                                     <SelectItem key={user.userId} value={user.userId}>
                                                         {user.firstName} {user.lastName}
                                                     </SelectItem>
-                                                ))}
+                                                ))} */}
+                                                
+                                                <SelectItem 
+                                                    key={selectedCaseFile?.investigator?.userId}
+                                                    value={selectedCaseFile?.investigator?.userId}
+                                                >
+                                                    {selectedCaseFile?.investigator?.firstName} {' '} {selectedCaseFile?.investigator?.firstName} 
+                                                    </SelectItem>
+
                                             </SelectContent>
                                         </Select>
                                     )}
@@ -204,19 +210,20 @@ export default function UpdateCaseFileDialog() {
                                 />
                             </div>
                             <div className="w-full flex sm:flex-row gap-x-6 gap-y-3 py-3 flex-col-reverse">
+                                <CustomCloseButton />
                                 <Button  
                                     type="submit" 
-                                    className={`btn-default sm:min-w-[100px] w-full ${caseFileMutation.isPending ? "" : "max-w-max"}`}
+                                    className={`btn-default sm:min-w-[6.25rem]  ${ updateCaseFileMutation.isPending ? "sm:min-w-[6.25rem]" : "sm:max-w-max w-full"}`}
                                 >
-                                    {caseFileMutation.isPending ? (
-                                        <span className="flex items-center justify-center sm:w-[6.25rem] w-full"> 
+                                    {updateCaseFileMutation.isPending ? (
+                                        <span className="flex items-center justify-center sm:w-[6.25rem]"> 
                                             <Loader /> 
                                         </span>
                                     ) : (
                                         <span>Save Changes</span>
                                     )}
                                 </Button>
-                                <CustomCloseButton />
+                                
                             </div>
                         </form>
                     </div>

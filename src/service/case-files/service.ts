@@ -2,9 +2,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { API_BASE_URL, API_KEY } from "@/lib/env_vars";
 import { accessToken } from "@/lib/tokens";
-import { AssignInvestigatorType, EditCaseFileType, NewCaseFileType } from "@/common/Type/CaseFile/CaseFile.type";
+import { EditCaseFileType, NewCaseFileType } from "@/common/Type/CaseFile/CaseFile.type";
 import { toast } from "sonner";
-import { useDeleteCaseFileStore } from "@/hooks/state/case-files/case-file-store";
+import { useAssignInvestigatorStore, useDeleteCaseFileStore, useUpdateCaseFileStore } from "@/hooks/state/case-files/case-file-store";
 import { useNavigate } from "@tanstack/react-router";
 
 
@@ -126,8 +126,8 @@ export const useCaseFileStatusService = () => {
 
 export const useUpdateCaseFileService = (caseId: string | undefined) => {
 
-    const queryClient = useQueryClient()
-    const { setIsOpen } = useDeleteCaseFileStore();
+    const queryClient = useQueryClient();
+    const { setIsOpen } = useUpdateCaseFileStore()
 
     const updateCaseFile = useMutation({
         mutationKey: ['patch-caseFile', caseId],
@@ -201,6 +201,7 @@ export const useRetrieveCaseFileService = (caseFileId: string | undefined) => {
             }
 
         },
+
         onError: (error) => {
             if (axios.isAxiosError(error)) {
                 const code = error.response?.status ?? null
@@ -287,15 +288,17 @@ export const useDeletCaseFileService = (caseFileId: string | null) => {
 };
 
 
-export const useAssignInvestigatorService = (data: AssignInvestigatorType) => {
+export const useAssignInvestigatorService = (caseFileId: string | undefined) => {
 
-    const { setIsOpen } = useDeleteCaseFileStore();
+    const { setIsOpen } = useAssignInvestigatorStore()
+    const queryClient = useQueryClient()
 
     const assignInvestigator = useMutation({
-        mutationKey: ['delete-caseFile', data.caseId],
-        mutationFn: async (data: AssignInvestigatorType) => {
-            const response = await axios.patch(`${API_BASE_URL}/case-file/assign/investigator/${data.caseId}`, 
-                data.investigatorId, {
+        mutationKey: ['assign-caseFile', caseFileId],
+        mutationFn: async (investigatorId: string) => {
+            const response = await axios.patch(`${API_BASE_URL}/case-file/assign/investigator/${caseFileId}`, {
+                "investigatorId": investigatorId
+            } , {
                     
                 headers: {
                     'Content-Type': 'application/json',
@@ -309,10 +312,10 @@ export const useAssignInvestigatorService = (data: AssignInvestigatorType) => {
 
         onSuccess: (data) => {
             const message = data?.message
-            if (data?.statusCode === 200) {
+            if (data?.statusCode === 204) {
                 toast.success(`${message}`)
                 setIsOpen(false)
-
+                queryClient.invalidateQueries({ queryKey: ['caseFile-list'] })
             }
         },
 

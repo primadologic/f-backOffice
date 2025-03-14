@@ -19,6 +19,16 @@ export const useCaseFileStore = create<CaseFileStore>((set) => ({
   reset: () => set({ isOpen: false, selectedCaseFile: null })
 }))
 
+
+export const useUpdateCaseFileStore = create<CaseFileStore>((set) => ({
+  isOpen: false,
+  selectedCaseFile: null,
+  setIsOpen: (isOpen) => set({ isOpen }),
+  setSelectedCaseFile: (suspectNumber) => set({ selectedCaseFile: suspectNumber }),
+  
+  reset: () => set({ isOpen: false, selectedCaseFile: null })
+}))
+
 export const useDeleteCaseFileStore = create<CaseFileStore>((set) => ({
   isOpen: false,
   selectedCaseFile: null,

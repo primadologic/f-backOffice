@@ -41,6 +41,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { ChevronDown, ListFilter, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { useReportListService } from "@/service/report/service"
 
 
 
@@ -100,6 +101,9 @@ const [pagination, setPagination] = useState({
       pagination
     },
   });
+
+
+  const reportListQuery = useReportListService()
 
   return (
     <div className="">
@@ -217,7 +221,7 @@ const [pagination, setPagination] = useState({
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No results.
+                  {reportListQuery.isFetching ? "Loading..." : "No results."}
                 </TableCell>
               </TableRow>
             )}
