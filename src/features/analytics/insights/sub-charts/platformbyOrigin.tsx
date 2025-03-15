@@ -28,8 +28,8 @@ import { useVerificationbyOriginReport } from "@/service/analytics/stats-verify-
 
 // Chart configuration for different platforms
 const chartConfig: Record<string, { label?: string; color?: string }> =  {
-    fraud: {
-        label: "Verifications"
+    reports: {
+        label: "Reports"
     },
     Web: {
         label: "Web",
@@ -70,13 +70,13 @@ interface LegendEntry {
     payload: {
       fill: string;
       origin: keyof typeof chartConfig;
-      fraud: number;
+      reports: number;
     };
   }
   
-  interface LegendProps {
-    payload: LegendEntry[];
-  }
+interface LegendProps {
+  payload: LegendEntry[];
+}
 
 // Modify the ChartLegendContent component to include the value
 export const CustomLegendContent: React.FC<LegendProps> = ({ payload }) => {
@@ -95,7 +95,7 @@ export const CustomLegendContent: React.FC<LegendProps> = ({ payload }) => {
           <div key={`left-item-${index}`} className="flex justify-start items-center gap-1">
             <div className="w-3 h-3 rounded-full" style={{ backgroundColor: entry.payload.fill }}></div>
             <span className="text-xs">
-              {chartConfig[entry.payload.origin]?.label}: {entry.payload.fraud}
+              {chartConfig[entry.payload.origin]?.label}: {entry.payload.reports}
             </span>
           </div>
         ))}
@@ -137,7 +137,7 @@ export default function PlatformbyOriginChart() {
       const percentage = platformPercentagesFromReports[origin] || 0;
       return {
         origin,
-        fraud: percentage,
+        reports: percentage,
         fill: chartConfig[origin]?.color || "gray",
       };
     });
@@ -147,7 +147,7 @@ export default function PlatformbyOriginChart() {
   // Calculate total verifications
   const totalVerifications = useMemo(() => {
     if (!chartData.length) return 0
-    return chartData.reduce((acc, curr) => acc + curr.fraud, 0)
+    return chartData.reduce((acc, curr) => acc + curr.reports, 0)
   }, [chartData])
 
   // Generate year options (current year and 4 previous years)
@@ -211,7 +211,7 @@ export default function PlatformbyOriginChart() {
             
                 <Pie
                     data={chartData}
-                    dataKey="fraud"
+                    dataKey="reports"
                     nameKey="origin"
                     outerRadius={100}
                     innerRadius={55}
@@ -237,7 +237,7 @@ export default function PlatformbyOriginChart() {
                         fill="hsla(var(--foreground))"
                         className=""
                         >
-                        {payload.fraud}
+                        {payload.reports}
                         </text>
                     )
                     }}
@@ -272,7 +272,8 @@ export default function PlatformbyOriginChart() {
                                 y={(viewBox.cy || 0) + 24}
                                 className="fill-muted-foreground"
                             >
-                                Verifications
+                                {/* Verifications */}
+                                Reports
                             </tspan>
                             </text>
                         )
@@ -287,7 +288,7 @@ export default function PlatformbyOriginChart() {
                         //       nameKey="origin"
                         //     />
                         // }
-                        content={<CustomLegendContent payload={chartData.map(item => ({payload: item}))} />} // Pass the payload here
+                        content={<CustomLegendContent payload={chartData.map(item => ({payload: item.reports}))} />} // Pass the payload here
                         layout="vertical" align="center" verticalAlign="bottom"
                         
                         // className=" max-w-max grid gap-4  sm:grid-cols-3 grid-cols-2"
