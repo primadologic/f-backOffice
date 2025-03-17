@@ -1,11 +1,14 @@
+import { useAuth } from "@/hooks/useAuth";
 import { API_BASE_URL, API_KEY } from "@/lib/env_vars";
-import { accessToken } from "@/lib/tokens";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 
 
+
 export const useUsers = () => {
+
+    const { token: access } = useAuth();
 
     const users = useQuery({
         queryKey: ['users'],
@@ -13,7 +16,7 @@ export const useUsers = () => {
             const response = await axios.get(`${API_BASE_URL}/users`, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken}`,
+                    'Authorization': `Bearer ${ access }`,
                     'X-API-KEY': `${API_KEY}`
                 }
             });

@@ -1,11 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { API_BASE_URL, API_KEY } from "@/lib/env_vars";
-import { accessToken } from "@/lib/tokens";
+import { useAuth } from "@/hooks/useAuth";
 
 
 
 export const useReportListService = () => {
+    
+    const { token: access } = useAuth();
 
     const reportList = useQuery({
         queryKey: ['report-list'],
@@ -13,7 +15,7 @@ export const useReportListService = () => {
             const response = await axios.get(`${API_BASE_URL}/report`, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken}`,
+                    'Authorization': `Bearer ${ access }`,
                     'X-API-KEY': `${API_KEY}`
                 }
             });

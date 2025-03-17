@@ -1,16 +1,18 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { API_BASE_URL, API_KEY } from "@/lib/env_vars";
-import { accessToken } from "@/lib/tokens";
 import { EditCaseFileType, NewCaseFileType } from "@/common/Type/CaseFile/CaseFile.type";
 import { toast } from "sonner";
 import { useAssignInvestigatorStore, useDeleteCaseFileStore, useUpdateCaseFileStore } from "@/hooks/state/case-files/case-file-store";
 import { useNavigate } from "@tanstack/react-router";
+import { useAuth } from "@/hooks/useAuth";
 
 
 
 
 export const useCaseFileListService = () => {
+
+    const { token: access } = useAuth();
 
     const caseFileList = useQuery({
         queryKey: ['caseFile-list'],
@@ -18,7 +20,7 @@ export const useCaseFileListService = () => {
             const response = await axios.get(`${API_BASE_URL}/case-file`, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken}`,
+                    'Authorization': `Bearer ${ access }`,
                     'X-API-KEY': `${API_KEY}`
                 }
             });
@@ -37,6 +39,9 @@ export const useCaseFileListService = () => {
 
 
 export const useCreateCaseFileService = () => {
+
+    const { token: access } = useAuth();
+
     const queryClient = useQueryClient()
 
     const navigate = useNavigate()
@@ -47,7 +52,7 @@ export const useCreateCaseFileService = () => {
             const response = await axios.post(`${API_BASE_URL}/case-file`, data, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken}`,
+                    'Authorization': `Bearer ${ access }`,
                     'X-API-KEY': `${API_KEY}`
                 }
             });
@@ -100,13 +105,15 @@ export const useCreateCaseFileService = () => {
 
 export const useCaseFileStatusService = () => {
 
+    const { token: access } = useAuth();
+
     const getCaseFileStatus = useQuery({
         queryKey: ['caseFile-status'],
         queryFn: async () => {
             const response = await axios.get(`${API_BASE_URL}/case-file-status`, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken}`,
+                    'Authorization': `Bearer ${ access }`,
                     'X-API-KEY': `${API_KEY}`
                 }
             });
@@ -126,6 +133,8 @@ export const useCaseFileStatusService = () => {
 
 export const useUpdateCaseFileService = (caseId: string | undefined) => {
 
+    const { token: access } = useAuth();
+
     const queryClient = useQueryClient();
     const { setIsOpen } = useUpdateCaseFileStore()
 
@@ -135,7 +144,7 @@ export const useUpdateCaseFileService = (caseId: string | undefined) => {
             const response = await axios.patch(`${API_BASE_URL}/case-file/${caseId}`, formData, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken}`,
+                    'Authorization': `Bearer ${ access }`,
                     'X-API-KEY': `${API_KEY}`
                 }
             });
@@ -174,6 +183,7 @@ export const useUpdateCaseFileService = (caseId: string | undefined) => {
 
 
 export const useRetrieveCaseFileService = (caseFileId: string | null) => {
+    const { token: access } = useAuth();
 
     const retrieveCaseFile = useQuery({
         queryKey: ['retrieve-caseFile', caseFileId],
@@ -181,7 +191,7 @@ export const useRetrieveCaseFileService = (caseFileId: string | null) => {
             const response = await axios.get(`${API_BASE_URL}/case-file/${caseFileId}`, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken}`,
+                    'Authorization': `Bearer ${ access }`,
                     'X-API-KEY': `${API_KEY}`
                 }
             });
@@ -235,6 +245,8 @@ export const useRetrieveCaseFileService = (caseFileId: string | null) => {
 
 export const useDeletCaseFileService = (caseFileId: string | null) => {
 
+    const { token: access } = useAuth();
+
     const queryClient = useQueryClient()
 
     const { setIsOpen } = useDeleteCaseFileStore();
@@ -245,7 +257,7 @@ export const useDeletCaseFileService = (caseFileId: string | null) => {
             const response = await axios.delete(`${API_BASE_URL}/case-file/${caseFileId}`, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken}`,
+                    'Authorization': `Bearer ${ access }`,
                     'X-API-KEY': `${API_KEY}`
                 }
             });
@@ -298,6 +310,8 @@ export const useDeletCaseFileService = (caseFileId: string | null) => {
 
 export const useAssignInvestigatorService = (caseFileId: string | undefined) => {
 
+    const { token: access } = useAuth();
+
     const { setIsOpen } = useAssignInvestigatorStore()
     const queryClient = useQueryClient()
 
@@ -310,7 +324,7 @@ export const useAssignInvestigatorService = (caseFileId: string | undefined) => 
                     
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken}`,
+                    'Authorization': `Bearer ${ access }`,
                     'X-API-KEY': `${API_KEY}`
                 }
             });
