@@ -9,17 +9,27 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { FraudNumberType } from "@/common/Type/FraudNumber/fraud-numbers";
+import { FraudNumberNewType } from "@/common/Type/FraudNumber/fraud-numbers";
 import { useFraudNumberStore } from "@/hooks/state/fraud-numbers/fraudSheet.state";
+import { useFraudNumberListService } from "@/service/fraud-numbers/service";
 
 
-export const ActionsCell = ({ fraudNumber }: { fraudNumber: FraudNumberType }) => {
+export const ActionsCell = ({ fraudNumber }: { fraudNumber: FraudNumberNewType }) => {
     
-    const { setIsOpen, setSelectedFraudNumber } = useFraudNumberStore()
+  const { setIsOpen, setSelectedFraudNumber } = useFraudNumberStore()
+
+  const fraudNumberData = useFraudNumberListService();
+  const response: FraudNumberNewType[] = fraudNumberData.data?.data ?? [];
+
+  const currentFraudNumber = response.find((cf) => cf.fraudNumberId === fraudNumber.fraudNumberId);
   
+
+
   const handleEditClick = () => {
-    setSelectedFraudNumber(fraudNumber)
-    setIsOpen(true)
+    if (currentFraudNumber) {
+      setSelectedFraudNumber(currentFraudNumber)
+      setIsOpen(true)
+    }
   }
 
   return (

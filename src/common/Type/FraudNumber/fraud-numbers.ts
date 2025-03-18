@@ -1,3 +1,4 @@
+import { ReportNumberPlatformType } from "../ReportNumbers/report-number";
 
 export type FraudNumberType = {
     fraudNumberId: string;
@@ -52,3 +53,18 @@ export type FraudNumberType = {
     displayName: string;
     description: string;
   }
+
+
+export type FraudNumberGetType = {
+  fraudNumberId: string;
+  fraudNumber: string;
+  visibility: boolean;
+  reported: boolean;
+  investigated: boolean;
+  approved: boolean;
+  score: number;
+  modifiedAt: string;
+  createdAt?: string;
+  riskLevel?: RiskLevel;
+  reports?: ReportNumberPlatformType[]
+}

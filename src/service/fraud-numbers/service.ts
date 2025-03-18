@@ -5,7 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 
 
 
-export const useReportListService = () => {
+export const useFraudNumberListService = () => {
     
     const { token: access } = useAuth();
 
@@ -24,7 +24,7 @@ export const useReportListService = () => {
 
         },
 
-        // staleTime: 21600000 , // Cache data for 6 hours
+        staleTime: 21600000, // Cache data for 6 hours
         refetchOnWindowFocus: false, // Prevent refetching on window focus
         refetchInterval: 86400000, // Refetch every 1 day
         
@@ -33,3 +33,29 @@ export const useReportListService = () => {
     return fraudNumberList
 
 }
+
+
+export const useRetrieveFraudNumber = (fraudNumberId: string) => {
+    const { token: access } = useAuth();
+
+    const retrieveFraudNumber = useQuery({
+        queryKey: ['retrieve-caseFile', fraudNumberId],
+        queryFn: async () => {
+            const response = await axios.get(`${API_BASE_URL}/api/fraud-number/${fraudNumberId}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${ access }`,
+                    'X-API-KEY': `${API_KEY}`
+                }
+            });
+
+            return response.data
+        },
+    });
+
+    return retrieveFraudNumber;
+
+};
+
+
+export const use

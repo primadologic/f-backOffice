@@ -89,7 +89,7 @@ export const columns: ColumnDef<CaseFileType>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           
         >
-          Investigator
+            Investigator
           <ArrowUpDown size={18} /> 
         </Button>
       )
@@ -127,7 +127,7 @@ export const columns: ColumnDef<CaseFileType>[] = [
 
         const status = row.original.status?.name?.toLowerCase() as StatusType
         
-        if (!status) return "N/A"
+        if (!status) return "N/A";
 
         return (
           <div className="flex justify-start w-full min-w-[120px]">

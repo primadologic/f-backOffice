@@ -3,7 +3,8 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { ArrowUpDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ActionsCell } from "./actions"
-import { FraudNumberType } from "@/common/Type/FraudNumber/fraud-numbers"
+import { FraudNumberNewType } from "@/common/Type/FraudNumber/fraud-numbers"
+import { maskNumber } from "@/lib/custom"
 
 
 
@@ -71,7 +72,7 @@ const rickLevelStyles: Record<RiskLevelType, {bg: string, text: string}> = {
 
 
 
-export const columns: ColumnDef<FraudNumberType>[] = [
+export const columns: ColumnDef<FraudNumberNewType>[] = [
 
     {
         id: "select",
@@ -110,11 +111,20 @@ export const columns: ColumnDef<FraudNumberType>[] = [
               </Button>
             )
         },
-        cell: ({ row }) => row.original.fraudNumber ?? "N/A",
+        cell: ({ getValue }) => {
+
+            const fraudNumber = maskNumber(getValue() as string)
+
+            return (
+                <span>{fraudNumber.substring(0, 12)}</span>
+            )
+        },
+
         filterFn: (row, columnId, filterValue) => {
             const fraudNumber = row.original.fraudNumber ?? "";
             // const archived = row.original.archived ?? "";
             return (
+
                 fraudNumber.toLowerCase().includes(filterValue.toLowerCase())
                 // archived
             )
