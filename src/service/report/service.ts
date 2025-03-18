@@ -12,7 +12,7 @@ export const useReportListService = () => {
     const reportList = useQuery({
         queryKey: ['report-list'],
         queryFn: async () => {
-            const response = await axios.get(`${API_BASE_URL}/report`, {
+            const response = await axios.get(`${API_BASE_URL}/api/report`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${ access }`,

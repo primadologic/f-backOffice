@@ -15,7 +15,7 @@ export const useYearlyStatistics = (selectedYear: number) => {
     const yearStatistics = useQuery({
         queryKey: ['yearly-statistics', selectedYear],
         queryFn: async () => {
-            const response = await axios.get(`${API_BASE_URL}//statistics/yearly`, {
+            const response = await axios.get(`${API_BASE_URL}/api/statistics/yearly`, {
                 params: {
                     year: selectedYear
                 },

@@ -16,7 +16,7 @@ export const useLoginService = () => {
     const loginMutation = useMutation({
         mutationKey: ['loginService'],
         mutationFn: async (credentials: LoginUserType) => {
-            const response = await axios.post(`${API_BASE_URL}/auth/user/login`, credentials, {
+            const response = await axios.post(`${API_BASE_URL}/api/auth/user/login`, credentials, {
                 headers: {
                     'Content-Type': 'application/json',
                     'X-API-KEY': `${API_KEY}`

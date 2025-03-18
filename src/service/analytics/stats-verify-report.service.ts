@@ -15,7 +15,7 @@ export const useVerificationbyOriginReport = (selectedYear: number) => {
     const verificationbyOriginRport = useQuery({
         queryKey: ['verification-origin-report', selectedYear],
         queryFn: async () => {
-            const response = await axios.get(`${API_BASE_URL}/statistics/yearly/verification/report/origin`, {
+            const response = await axios.get(`${API_BASE_URL}/api/statistics/yearly/verification/report/origin`, {
                 params: {
                     year: selectedYear
                 },

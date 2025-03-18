@@ -11,7 +11,7 @@ export const useStatReportDashboard = () => {
     const getStatsReportDashboard = useQuery({
         queryKey: ['stats-report-dashboard'],
         queryFn: async () => {
-            const response = await axios.get(`${API_BASE_URL}/statistics/report/dashboard`, {
+            const response = await axios.get(`${API_BASE_URL}/api/statistics/report/dashboard`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'X-API-KEY': `${API_KEY}`,

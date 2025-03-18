@@ -1,19 +1,18 @@
-import { useAuth } from "@/hooks/useAuth";
-import { API_BASE_URL, API_KEY } from "@/lib/env_vars";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { API_BASE_URL, API_KEY } from "@/lib/env_vars";
+import { useAuth } from "@/hooks/useAuth";
 
 
 
-
-export const useUsers = () => {
-
+export const useReportListService = () => {
+    
     const { token: access } = useAuth();
 
-    const users = useQuery({
-        queryKey: ['users'],
+    const fraudNumberList = useQuery({
+        queryKey: ['report-list'],
         queryFn: async () => {
-            const response = await axios.get(`${API_BASE_URL}/api/users`, {
+            const response = await axios.get(`${API_BASE_URL}/api/fraud-number`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${ access }`,
@@ -31,5 +30,6 @@ export const useUsers = () => {
         
     })
 
-    return users
+    return fraudNumberList
+
 }

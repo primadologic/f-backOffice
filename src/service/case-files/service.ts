@@ -17,7 +17,7 @@ export const useCaseFileListService = () => {
     const caseFileList = useQuery({
         queryKey: ['caseFile-list'],
         queryFn: async () => {
-            const response = await axios.get(`${API_BASE_URL}/case-file`, {
+            const response = await axios.get(`${API_BASE_URL}/api/case-file`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${ access }`,
@@ -49,7 +49,7 @@ export const useCreateCaseFileService = () => {
     const createCaseFile = useMutation({
         mutationKey: ['create-caseFile'],
         mutationFn: async (data: NewCaseFileType) => {
-            const response = await axios.post(`${API_BASE_URL}/case-file`, data, {
+            const response = await axios.post(`${API_BASE_URL}/api/case-file`, data, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${ access }`,
@@ -110,7 +110,7 @@ export const useCaseFileStatusService = () => {
     const getCaseFileStatus = useQuery({
         queryKey: ['caseFile-status'],
         queryFn: async () => {
-            const response = await axios.get(`${API_BASE_URL}/case-file-status`, {
+            const response = await axios.get(`${API_BASE_URL}/api/case-file-status`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${ access }`,
@@ -141,7 +141,7 @@ export const useUpdateCaseFileService = (caseId: string | undefined) => {
     const updateCaseFile = useMutation({
         mutationKey: ['patch-caseFile', caseId],
         mutationFn: async (formData: EditCaseFileType) => {
-            const response = await axios.patch(`${API_BASE_URL}/case-file/${caseId}`, formData, {
+            const response = await axios.patch(`${API_BASE_URL}/api/case-file/${caseId}`, formData, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${ access }`,
@@ -188,7 +188,7 @@ export const useRetrieveCaseFileService = (caseFileId: string | null) => {
     const retrieveCaseFile = useQuery({
         queryKey: ['retrieve-caseFile', caseFileId],
         queryFn: async () => {
-            const response = await axios.get(`${API_BASE_URL}/case-file/${caseFileId}`, {
+            const response = await axios.get(`${API_BASE_URL}/api/case-file/${caseFileId}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${ access }`,
@@ -254,7 +254,7 @@ export const useDeletCaseFileService = (caseFileId: string | null) => {
     const deleteCaseFile = useMutation({
         mutationKey: ['delete-caseFile', caseFileId],
         mutationFn: async (caseFileId: string | null) => {
-            const response = await axios.delete(`${API_BASE_URL}/case-file/${caseFileId}`, {
+            const response = await axios.delete(`${API_BASE_URL}/api/case-file/${caseFileId}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${ access }`,
@@ -318,7 +318,7 @@ export const useAssignInvestigatorService = (caseFileId: string | undefined) => 
     const assignInvestigator = useMutation({
         mutationKey: ['assign-caseFile', caseFileId],
         mutationFn: async (investigatorId: string) => {
-            const response = await axios.patch(`${API_BASE_URL}/case-file/assign/investigator/${caseFileId}`, {
+            const response = await axios.patch(`${API_BASE_URL}/api/case-file/assign/investigator/${caseFileId}`, {
                 "investigatorId": investigatorId
             } , {
                     

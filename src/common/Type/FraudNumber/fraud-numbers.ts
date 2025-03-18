@@ -1,3 +1,4 @@
+
 export type FraudNumberType = {
     fraudNumberId: string;
     fraudNumber: string;
@@ -23,4 +24,31 @@ export type FraudNumberType = {
     approved: boolean;
     investigated: boolean;
     visibility: boolean
+  }
+
+
+
+  
+ export type FraudNumberNewType = {
+    fraudNumberId: string;
+    fraudNumber: string;
+    visibility: boolean;
+    reported: boolean;
+    investigated: boolean;
+    approved: boolean;
+    score: number;
+    modifiedAt: string;
+    createdAt?: string;
+    riskLevel?: RiskLevel;
+}
+
+  export  type RiskLevel = {
+    dateCreated: string;
+    dateUpdated: string;
+    dateDeleted: string | null;
+    id: string;
+    name: string;
+    reportCount: number;
+    displayName: string;
+    description: string;
   }
