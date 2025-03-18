@@ -22,7 +22,7 @@ interface TableExportProps {
 
 const TableExport = ({ 
   data = [], 
-  filename = 'report-table-export',
+  filename = 'table-export',
   columns 
 }: TableExportProps) => {
   
