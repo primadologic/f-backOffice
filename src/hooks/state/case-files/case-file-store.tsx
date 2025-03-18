@@ -1,5 +1,5 @@
-import { create } from 'zustand'
 import { CaseFileType } from '@/common/Type/CaseFile/CaseFile.type'
+import { create } from 'zustand'
 
 
 interface CaseFileStore {

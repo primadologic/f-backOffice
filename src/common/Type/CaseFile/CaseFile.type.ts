@@ -1,4 +1,5 @@
 import { UserDetailType, } from "@/common/Type/user.type"
+import { ReportNumberType } from "../ReportNumbers/report-number";
 
   export type CaseFileType = {
     caseId: string;
@@ -8,6 +9,7 @@ import { UserDetailType, } from "@/common/Type/user.type"
     investigator?: UserDetailType
     comments?: CommentType[];
     createdAt?: string;
+    reports?: ReportNumberType[]
   }
 
 
@@ -48,3 +50,4 @@ import { UserDetailType, } from "@/common/Type/user.type"
   export type AssignInvestigatorType = {
     investigatorId: string
   }
+

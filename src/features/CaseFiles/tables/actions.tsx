@@ -10,8 +10,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { useAssignInvestigatorStore, useUpdateCaseFileStore, useDeleteCaseFileStore, useDetailCaseFile,  } from "@/hooks/state/case-files/case-file-store";
-import { CaseFileType } from "@/common/Type/CaseFile/CaseFile.type";
+
 import { useNavigate } from "@tanstack/react-router";
+import { useCaseFileListService } from "@/service/case-files/service";
+import { CaseFileType } from "@/common/Type/CaseFile/CaseFile.type";
+
 
 
 export const ActionsCell = ({ caseFile }: { caseFile: CaseFileType }) => {
@@ -22,29 +25,46 @@ export const ActionsCell = ({ caseFile }: { caseFile: CaseFileType }) => {
   const { setIsOpen: setIsDeleteOpen, setSelectedCaseFile: setSelectedDeleteCaseFile } = useDeleteCaseFileStore();
   const { setIsOpen: setIsAssignOpen, setSelectedCaseFile: setSelectedAssignCaseFile } = useAssignInvestigatorStore();
 
-  const {  setSelectedCaseFile: setDetailSelectedCaseFile, selectedCaseFile: detailSelectedCaseFile } = useDetailCaseFile();
+  const {  setSelectedCaseFile: setDetailSelectedCaseFile } = useDetailCaseFile();
+
+  // Fetch case file list data
+  const caseFileListData = useCaseFileListService();
+  const caseFileData: CaseFileType[] = caseFileListData.data?.data ?? [];
+
+  // Find the matching case file in the list
+  const currentCaseFile = caseFileData.find((cf) => cf.caseId === caseFile.caseId);
+
   
   const handleEditClick = () => {
-    setSelectedCaseFile(caseFile);
-    setIsOpen(true);
+    if (currentCaseFile) {
+      setSelectedCaseFile(currentCaseFile);
+      setIsOpen(true);
+    }
+   
   };
 
   const handleDeleteClick = () => {
-    setSelectedDeleteCaseFile(caseFile);
-    setIsDeleteOpen(true);
+    if (currentCaseFile) {
+      setSelectedDeleteCaseFile(currentCaseFile);
+      setIsDeleteOpen(true);
+    }
+  
   };
 
   const handleAssignInvestigator = () => {
-    setSelectedAssignCaseFile(caseFile);
-    setIsAssignOpen(true)
+    if (currentCaseFile) {
+      setSelectedAssignCaseFile(caseFile);
+      setIsAssignOpen(true)
+    }
   }
 
   
   const handleNavigate = () => {
-    setDetailSelectedCaseFile(caseFile);
-    const caseFileId = detailSelectedCaseFile?.caseId ?? ""
-    navigate({ to: '/dashboard/case-files/$caseId', params: { caseId: caseFileId }  })
-  }
+    if (currentCaseFile) {
+      setDetailSelectedCaseFile(currentCaseFile);
+      navigate({ to: `/dashboard/case-files/${currentCaseFile.caseId}` });
+    }
+  };
 
 
   return (

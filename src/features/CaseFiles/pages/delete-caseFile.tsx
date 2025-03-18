@@ -28,16 +28,13 @@ export default function DeleteCaseFileDialog() {
     
     // Selectors
     const investigator: string | null = deleteSeletedCaseFile?.investigator?.firstName + " " + deleteSeletedCaseFile?.investigator?.lastName
-    // if (!investigator) return "";
+    
     const suspectNumber: string | null = deleteSeletedCaseFile?.suspectNumber ?? null
-    // if (!suspectNumber) return "";
-    const remark: string | null = deleteSeletedCaseFile?.remark ?? null
-    // if (!remark) return "";
-    const status: string | null = deleteSeletedCaseFile?.status?.name ?? null
-    // if (!status) return "" ;
-    // const investigatorId: string = deleteSeletedCaseFile?.investigator?.userId ?? null;
 
-    // const [ isLoading, setIsLoading ] = useState(false)
+    const remark: string | null = deleteSeletedCaseFile?.remark ?? null
+   
+    const status: string | null = deleteSeletedCaseFile?.status?.name ?? null
+
 
        const deleteHandler = () => {
          deleteCaseFileMutation.mutateAsync(caseId)

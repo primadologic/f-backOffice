@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/tabs"
 import DetailReportTab from "../../tables/detail-view/reports"
 import DetailViewFilesTab from "../../tables/detail-view/files"
+import DetailViewCommentTab from "../../tables/detail-view/notes"
 
 
 
@@ -29,7 +30,7 @@ export default function DetailViewTabs() {
                     <DetailViewFilesTab />
                 </TabsContent>
                 <TabsContent value="notes">
-                    <div className="text-base font-medium text-left">Notes of case files</div>
+                    <DetailViewCommentTab />
                 </TabsContent>
             </Tabs>
         </div>

@@ -1,6 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { Checkbox } from "@/components/ui/checkbox"
-import { ReportList } from "@/data/ReportNumbers/ReportNumbers.type"
+import { ReportNumberType } from "@/data/ReportNumbers/ReportNumbers.type"
 import { ArrowUpDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ActionsCell } from "./actions"
@@ -23,7 +23,7 @@ const archivedStyles: Record<ArchivedType, {bg: string, text: string}> = {
 
 }
 
-export const columns: ColumnDef<ReportList>[] = [
+export const columns: ColumnDef<ReportNumberType>[] = [
 
     {
         id: "select",

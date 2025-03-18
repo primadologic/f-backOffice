@@ -1,13 +1,13 @@
-import { ReportList } from '@/data/ReportNumbers/ReportNumbers.type'
+import { ReportNumberType } from '@/data/ReportNumbers/ReportNumbers.type'
 import { create } from 'zustand'
 
 
 
 interface ReportNumberStore {
   isOpen: boolean
-  selectedReportNumber: ReportList | null
+  selectedReportNumber: ReportNumberType | null
   setIsOpen: (isOpen: boolean) => void
-  setSelectedReportNumber: (reportNumber: ReportList | null) => void
+  setSelectedReportNumber: (reportNumber: ReportNumberType | null) => void
 //   updateStatus: (statusId: string) => void
   reset: () => void
 }

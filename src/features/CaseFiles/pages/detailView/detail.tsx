@@ -1,6 +1,5 @@
 
 import { Separator } from "@/components/ui/separator"
-import { useDetailCaseFile } from "@/hooks/state/case-files/case-file-store"
 import { formatDateTime } from "@/lib/custom";
 import {
     Card,
@@ -9,13 +8,22 @@ import {
     CardTitle,
 } from "@/components/ui/card"  
 import { CustomBackButton } from "@/components/custom-ui/custom-buttons";
+import { useRetrieveCaseFileService } from "@/service/case-files/service";
+import { CaseFileType } from "@/common/Type/CaseFile/CaseFile.type";
+import { useParams } from "@tanstack/react-router";
 
 
 export default function CaseFileDetail() {
 
-    const { selectedCaseFile } = useDetailCaseFile();
+    const { caseId } = useParams({ from: "/dashboard/case-files/$caseId" });  // Get caseId from URL
 
-    const investigatorFullname: string = selectedCaseFile?.investigator?.firstName + " " + selectedCaseFile?.investigator?.lastName 
+    const caseFileData = useRetrieveCaseFileService(caseId); 
+    const response: CaseFileType = caseFileData.data?.data;
+
+    const createdAt = response?.createdAt
+    ? formatDateTime(response?.createdAt)
+    : "N/A";
+
 
     return (
         <div className="">
@@ -39,17 +47,19 @@ export default function CaseFileDetail() {
                                         </label>
                                         <input 
                                             type="text" 
+                                            disabled={true}
                                             className="form-input" 
-                                            defaultValue={selectedCaseFile?.suspectNumber}
+                                            defaultValue={response?.suspectNumber}
                                         />
                                     </div>
                                     <div className="w-full flex flex-col gap-2">
                                         <label htmlFor="investigator-name" className="form-label">Investigator</label>
                                         <input 
                                             type="text" 
+                                            disabled={true}
                                             className="form-input"
-                                            key={selectedCaseFile?.investigator?.userId}
-                                            defaultValue={investigatorFullname}
+                                            key={response?.investigator?.userId}
+                                            defaultValue={response?.investigator?.firstName + " " + response?.investigator?.lastName}
                                         />
                                     </div>
                                 </div>
@@ -59,16 +69,18 @@ export default function CaseFileDetail() {
                                         <input 
                                             type="text" 
                                             className="form-input"
-                                            key={selectedCaseFile?.status?.statusId}
-                                            defaultValue={selectedCaseFile?.status?.name}
+                                            disabled={true}
+                                            key={response?.status?.name}
+                                            defaultValue={response?.status?.name}
                                         />
                                     </div>
                                     <div className="w-full flex flex-col gap-2">
                                         <label htmlFor="date-created" className="form-label">Date Created</label>
                                         <input 
                                             type="text"
+                                            disabled={true}
                                             className="form-input" 
-                                            defaultValue={formatDateTime(selectedCaseFile?.createdAt)}
+                                            defaultValue={createdAt}
                                         />
                                     </div>
                                 </div>
@@ -76,9 +88,10 @@ export default function CaseFileDetail() {
                                     <label htmlFor="remark" className="form-label">Remark</label>
                                     <textarea
                                         rows={5}
+                                        disabled={true}
                                         placeholder="Case file remark"
                                         className="form-input"
-                                        defaultValue={selectedCaseFile?.remark}
+                                        defaultValue={response?.remark}
                                     >
                                     </textarea>
                                 </div>

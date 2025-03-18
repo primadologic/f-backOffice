@@ -6,7 +6,7 @@ export type ReportNumberType = {
     incidentDate: string;
     reportPlatForm: ReportNumberPlatformType | null;
     description: string;
-    reportFiles?: File[];
+    reportFiles?: File[] | string[] | [] ;
     createdAt?: string;
     archived: boolean
   };

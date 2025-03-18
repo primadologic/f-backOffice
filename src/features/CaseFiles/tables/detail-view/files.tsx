@@ -1,20 +1,20 @@
 
-import { ApiResponse } from "@/common/api-response.type";
+import { CaseFileType } from "@/common/Type/CaseFile/CaseFile.type";
 import { ReportNumberType } from "@/common/Type/ReportNumbers/report-number";
-import { useDetailCaseFile } from "@/hooks/state/case-files/case-file-store";
 import { useRetrieveCaseFileService } from "@/service/case-files/service";
+import { useParams } from "@tanstack/react-router";
 
 
 
 export default function DetailViewFilesTab() {
 
-    const { selectedCaseFile } = useDetailCaseFile();
   
-    const caseId: string | null = selectedCaseFile?.caseId ?? ""
+    const { caseId } = useParams({ from: "/dashboard/case-files/$caseId" });  // Get caseId from URL
+   
+    const caseFileData = useRetrieveCaseFileService(caseId); 
+    const response: CaseFileType = caseFileData.data?.data;
 
-    const caseFileData: ApiResponse = useRetrieveCaseFileService(caseId).data;
-
-    const caseFileReports: ReportNumberType[] = caseFileData?.data?.reports || []
+    const caseFileReports: ReportNumberType[] = response?.reports || []
     
     const allReportFiles: string[] = caseFileReports
     .flatMap((report) => report?.reportFiles || [])  // Flatten all reportFiles
@@ -29,7 +29,7 @@ export default function DetailViewFilesTab() {
                 </label>
                 <div className="">
                  
-                        <div className="flex items-center justify-between space-x-4 px-4 py-3">
+                        {/* <div className="flex items-center justify-between space-x-4 px-4 py-3">
                             <h4 className="text-sm font-semibold sm:block hidden">
                                 Click to view files
                             </h4>
@@ -37,19 +37,26 @@ export default function DetailViewFilesTab() {
                                 Tap to view files
                             </h4>
                             
-                        </div>
+                        </div> */}
 
-                        {allReportFiles.length > 0 && (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"> 
-                                {allReportFiles.map((data, index) => (
-                                    <div
-                                        key={index}
-                                        className="rounded-md border px-4 py-2 font-mono text-sm shadow-sm"
-                                    >
-                                        <a href={data} target="_blank" className="block w-full truncate">Evidence {index + 1}</a>
-                                    </div>
-                                ))}
-                            </div>
+                       
+                        {allReportFiles.length > 0 ? (
+                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                            {allReportFiles.map((data, index) => (
+                              <div
+                                key={index}
+                                className="rounded-md border px-4 py-2 font-mono text-sm shadow-sm"
+                              >
+                                <a href={data} target="_blank" className="block w-full truncate">
+                                  Evidence {index + 1}
+                                </a>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="px-4 py-3 text-sm text-gray-500">
+                            No files available.
+                          </div>
                         )}
 
                 

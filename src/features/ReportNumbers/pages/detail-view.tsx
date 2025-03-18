@@ -9,14 +9,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
   } from "@/components/ui/alert-dialog"
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible"
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { ChevronsUpDown } from "lucide-react";
+
 import { CustomCloseButton } from "@/components/custom-ui/custom-buttons";
 
   
@@ -25,7 +18,12 @@ import { CustomCloseButton } from "@/components/custom-ui/custom-buttons";
 export default function ReportNumberViewSheet() {
     
     const { isOpen, selectedReportNumber, setIsOpen  } = useReportNumberStore();
-    const [ open, setOpen ] = useState<boolean>(false)
+
+   // Filter reportFiles to only include strings
+  const allReportFiles: string[] =
+  (selectedReportNumber?.reportFiles?.filter(
+    (file): file is string => typeof file === "string" && file.startsWith("http")
+  ) || []);
 
 
     return (
@@ -112,36 +110,38 @@ export default function ReportNumberViewSheet() {
                                        Report Files
                                     </label>
                                     <div className="">
-                                        <Collapsible
-                                            open={open}
-                                            onOpenChange={setOpen}
-                                            className="w-full"
-                                        >
-                                            <div className="flex items-center justify-between space-x-4 px-4">
+                 
+                                            {/* <div className="flex items-center justify-between space-x-4 px-4 py-3">
                                                 <h4 className="text-sm font-semibold sm:block hidden">
                                                     Click to view files
                                                 </h4>
                                                 <h4 className="text-sm font-semibold sm:hidden block">
                                                     Tap to view files
                                                 </h4>
-                                                <CollapsibleTrigger asChild>
-                                                    <Button variant="ghost" size="sm">
-                                                        <ChevronsUpDown className="h-4 w-4" />
-                                                        <span className="sr-only">Toggle</span>
-                                                    </Button>
-                                                </CollapsibleTrigger>
-                                            </div>
-                                            {selectedReportNumber?.reportFiles?.map((file: string, index: number) => (
-                                                <CollapsibleContent key={index + 1} className="space-y-2 max-w-max">
-                                                    <div className="rounded-md border px-4 py-2 font-mono text-sm shadow-sm">
-                                                        <a href={file} target="_blank">
-                                                            <span className="font-bold">Evidence {index + 1}</span>
-                                                        </a>
-                                                    </div>
-                                                </CollapsibleContent>
-                                            ))}
+                                                
+                                            </div> */}
+
                                             
-                                        </Collapsible>
+                                            {allReportFiles.length > 0 ? (
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                                {allReportFiles.map((data, index) => (
+                                                <div
+                                                    key={index}
+                                                    className="rounded-md w-[8rem]  border px-4 py-2 font-mono text-sm shadow-sm"
+                                                >
+                                                    <a href={data} target="_blank" className="block w-full truncate">
+                                                        Evidence {index + 1}
+                                                    </a>
+                                                </div>
+                                                ))}
+                                            </div>
+                                            ) : (
+                                            <div className="px-4 py-3 text-sm text-gray-500">
+                                                No files available.
+                                            </div>
+                                            )}
+
+                                    
                                     </div>
                                 </div>
                             </form>

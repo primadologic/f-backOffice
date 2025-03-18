@@ -9,13 +9,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { ReportList } from "@/data/ReportNumbers/ReportNumbers.type";
+import { ReportNumberType } from "@/data/ReportNumbers/ReportNumbers.type";
 import { useReportNumberStore } from "@/hooks/state/reports/report-store";
 
 
-export const ActionsCell = ({ reportNumber }: { reportNumber: ReportList }) => {
+export const ActionsCell = ({ reportNumber }: { reportNumber: ReportNumberType }) => {
     
-    const { setIsOpen, setSelectedReportNumber } = useReportNumberStore()
+  const { setIsOpen, setSelectedReportNumber } = useReportNumberStore()
+
+    
   
   const handleEditClick = () => {
     setSelectedReportNumber(reportNumber)
