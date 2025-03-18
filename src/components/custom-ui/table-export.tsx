@@ -1,4 +1,4 @@
-import React from 'react';
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,7 +22,7 @@ interface TableExportProps {
 
 const TableExport = ({ 
   data = [], 
-  filename = 'table-export',
+  filename = 'report-table-export',
   columns 
 }: TableExportProps) => {
   

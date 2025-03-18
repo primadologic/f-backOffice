@@ -11,17 +11,12 @@ import { useReportListService } from "@/service/report/service";
 // Your existing getData function...
 
 export default function ReportNumberExport() {
-  // const getCaseFiles = useQuery({
-  //   queryKey: ['reportNumberList'],
-  //   queryFn: async () => {
-  //     return await getData();
-  //   }
-  // });
+
 
   const response: ApiResponse = useReportListService()?.data
 
   const report = response?.data || []
-  
+
 
   const reportNumberColumns = [
     {
@@ -50,7 +45,7 @@ export default function ReportNumberExport() {
       value: 'description'
     },
     {
-      label: 'Status',
+      label: 'Archived',
       value: 'archived',
       transform: (value: boolean) => value ? 'Archived' : 'Active'
     },
