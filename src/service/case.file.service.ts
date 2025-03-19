@@ -94,5 +94,20 @@ export async function getData(): Promise<CaseFileType[]> {
         description: ""
       }
     },
+    {
+      caseId: "7",
+      suspectNumber: '0531002000',
+      investigator: {
+        userId: "7",
+        email: "example@gmail.com",
+        firstName: "Yaw"
+      },
+      remark: 'Hello user 4',
+      status: {
+        statusId: "7",
+        name: "closed",
+        description: ""
+      }
+    },
   ]
 }

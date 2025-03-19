@@ -1,4 +1,4 @@
-import { FraudNumberType } from "@/common/Type/FraudNumber/FraudNumber.type";
+import { FraudNumberType } from "@/common/Type/FraudNumber/fraud-numbers";
 
 
 

@@ -1,4 +1,4 @@
-import { ReportNumberType } from "@/common/Type/ReportNumbers/ReportNumbers.type";
+import { ReportNumberType } from "@/common/Type/ReportNumbers/report-number";
 
 
 

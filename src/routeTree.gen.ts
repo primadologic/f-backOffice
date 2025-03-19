@@ -20,6 +20,7 @@ import { Route as DashboardCaseFilesIndexImport } from './routes/dashboard/case-
 import { Route as DashboardReportNumbersCreateImport } from './routes/dashboard/report-numbers/create'
 import { Route as DashboardFraudNumbersCreateImport } from './routes/dashboard/fraud-numbers/create'
 import { Route as DashboardCaseFilesCreateImport } from './routes/dashboard/case-files/create'
+import { Route as DashboardCaseFilesCaseIdImport } from './routes/dashboard/case-files/$caseId'
 
 // Create/Update Routes
 
@@ -82,6 +83,12 @@ const DashboardCaseFilesCreateRoute = DashboardCaseFilesCreateImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const DashboardCaseFilesCaseIdRoute = DashboardCaseFilesCaseIdImport.update({
+  id: '/dashboard/case-files/$caseId',
+  path: '/dashboard/case-files/$caseId',
+  getParentRoute: () => rootRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -105,6 +112,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/dashboard/case-files/$caseId': {
+      id: '/dashboard/case-files/$caseId'
+      path: '/dashboard/case-files/$caseId'
+      fullPath: '/dashboard/case-files/$caseId'
+      preLoaderRoute: typeof DashboardCaseFilesCaseIdImport
       parentRoute: typeof rootRoute
     }
     '/dashboard/case-files/create': {
@@ -158,6 +172,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/dashboard': typeof DashboardIndexRoute
+  '/dashboard/case-files/$caseId': typeof DashboardCaseFilesCaseIdRoute
   '/dashboard/case-files/create': typeof DashboardCaseFilesCreateRoute
   '/dashboard/fraud-numbers/create': typeof DashboardFraudNumbersCreateRoute
   '/dashboard/report-numbers/create': typeof DashboardReportNumbersCreateRoute
@@ -170,6 +185,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/dashboard': typeof DashboardIndexRoute
+  '/dashboard/case-files/$caseId': typeof DashboardCaseFilesCaseIdRoute
   '/dashboard/case-files/create': typeof DashboardCaseFilesCreateRoute
   '/dashboard/fraud-numbers/create': typeof DashboardFraudNumbersCreateRoute
   '/dashboard/report-numbers/create': typeof DashboardReportNumbersCreateRoute
@@ -183,6 +199,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/case-files/$caseId': typeof DashboardCaseFilesCaseIdRoute
   '/dashboard/case-files/create': typeof DashboardCaseFilesCreateRoute
   '/dashboard/fraud-numbers/create': typeof DashboardFraudNumbersCreateRoute
   '/dashboard/report-numbers/create': typeof DashboardReportNumbersCreateRoute
@@ -197,6 +214,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/dashboard'
+    | '/dashboard/case-files/$caseId'
     | '/dashboard/case-files/create'
     | '/dashboard/fraud-numbers/create'
     | '/dashboard/report-numbers/create'
@@ -208,6 +226,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/dashboard'
+    | '/dashboard/case-files/$caseId'
     | '/dashboard/case-files/create'
     | '/dashboard/fraud-numbers/create'
     | '/dashboard/report-numbers/create'
@@ -219,6 +238,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/dashboard/'
+    | '/dashboard/case-files/$caseId'
     | '/dashboard/case-files/create'
     | '/dashboard/fraud-numbers/create'
     | '/dashboard/report-numbers/create'
@@ -232,6 +252,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
+  DashboardCaseFilesCaseIdRoute: typeof DashboardCaseFilesCaseIdRoute
   DashboardCaseFilesCreateRoute: typeof DashboardCaseFilesCreateRoute
   DashboardFraudNumbersCreateRoute: typeof DashboardFraudNumbersCreateRoute
   DashboardReportNumbersCreateRoute: typeof DashboardReportNumbersCreateRoute
@@ -244,6 +265,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   DashboardIndexRoute: DashboardIndexRoute,
+  DashboardCaseFilesCaseIdRoute: DashboardCaseFilesCaseIdRoute,
   DashboardCaseFilesCreateRoute: DashboardCaseFilesCreateRoute,
   DashboardFraudNumbersCreateRoute: DashboardFraudNumbersCreateRoute,
   DashboardReportNumbersCreateRoute: DashboardReportNumbersCreateRoute,
@@ -265,6 +287,7 @@ export const routeTree = rootRoute
         "/",
         "/about",
         "/dashboard/",
+        "/dashboard/case-files/$caseId",
         "/dashboard/case-files/create",
         "/dashboard/fraud-numbers/create",
         "/dashboard/report-numbers/create",
@@ -281,6 +304,9 @@ export const routeTree = rootRoute
     },
     "/dashboard/": {
       "filePath": "dashboard/index.tsx"
+    },
+    "/dashboard/case-files/$caseId": {
+      "filePath": "dashboard/case-files/$caseId.tsx"
     },
     "/dashboard/case-files/create": {
       "filePath": "dashboard/case-files/create.tsx"

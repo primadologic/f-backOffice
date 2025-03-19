@@ -9,18 +9,41 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { FraudNumberType } from "@/common/Type/FraudNumber/FraudNumber.type";
-import { useFraudNumberStore } from "@/hooks/state/fraud-numbers/fraudSheet.state";
+import { FraudNumberNewType } from "@/common/Type/FraudNumber/fraud-numbers";
+import { useDeleteFraudNumberStore, useFraudNumberStore } from "@/hooks/state/fraud-numbers/fraudSheet.state";
+import { useFraudNumberListService } from "@/service/fraud-numbers/service";
+import { toast } from "sonner";
 
 
-export const ActionsCell = ({ fraudNumber }: { fraudNumber: FraudNumberType }) => {
+export const ActionsCell = ({ fraudNumber }: { fraudNumber: FraudNumberNewType }) => {
     
-    const { setIsOpen, setSelectedFraudNumber } = useFraudNumberStore()
+  const { setIsOpen, setSelectedFraudNumber } = useFraudNumberStore();
+
+  const { setIsOpen: setIsDeleteOpen, setSelectedFraudNumber: setDeletedFraudNumber } = useDeleteFraudNumberStore()
+
+  const fraudNumberData = useFraudNumberListService();
+  const response: FraudNumberNewType[] = fraudNumberData.data?.data ?? [];
+
+  const currentFraudNumber = response.find((cf) => cf.fraudNumberId === fraudNumber.fraudNumberId);
   
+
+
   const handleEditClick = () => {
-    setSelectedFraudNumber(fraudNumber)
-    setIsOpen(true)
+    if (currentFraudNumber) {
+      setSelectedFraudNumber(currentFraudNumber)
+      setIsOpen(true)
+    }
   }
+
+
+  
+  const handleDeleteClick = () => {
+    if (currentFraudNumber) {
+      setDeletedFraudNumber(currentFraudNumber);
+      setIsDeleteOpen(true);
+    }
+  
+  };
 
   return (
     <DropdownMenu>
@@ -33,16 +56,26 @@ export const ActionsCell = ({ fraudNumber }: { fraudNumber: FraudNumberType }) =
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <DropdownMenuItem
-          onClick={() => navigator.clipboard.writeText(fraudNumber.fraudNumber)}
+          onClick={() => {
+            navigator.clipboard.writeText(fraudNumber.fraudNumber);
+            toast.info("Copied", {duration: 2000})
+          }}
         >
           Copy fraud number
         </DropdownMenuItem>
+
         <DropdownMenuSeparator />
-        <DropdownMenuItem 
-            onClick={handleEditClick}
-        >
+
+        <DropdownMenuItem onClick={handleEditClick}>
           Edit
         </DropdownMenuItem>
+
+        <DropdownMenuSeparator />
+
+        <DropdownMenuItem onClick={handleDeleteClick}>
+          Remove
+        </DropdownMenuItem>
+
       </DropdownMenuContent>
     </DropdownMenu>
   );

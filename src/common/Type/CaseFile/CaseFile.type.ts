@@ -1,4 +1,5 @@
 import { UserDetailType, } from "@/common/Type/user.type"
+import { ReportNumberType } from "../ReportNumbers/report-number";
 
   export type CaseFileType = {
     caseId: string;
@@ -7,12 +8,13 @@ import { UserDetailType, } from "@/common/Type/user.type"
     status?: CaseFileStatusType;
     investigator?: UserDetailType
     comments?: CommentType[];
-    createdAt?: Date;
+    createdAt?: string;
+    reports?: ReportNumberType[]
   }
 
 
   export type CaseFileStatusType = {
-    statusId: string;
+    statusId: any;
     name?: string;
     description?: string;
   }
@@ -34,6 +36,18 @@ import { UserDetailType, } from "@/common/Type/user.type"
 
   export type NewCaseFileType = {
     suspectNumber: string;
-    status: string;
-    remarks: string;
+    statusId: string;
+    remark: string;
   };
+
+
+  export type EditCaseFileType = {
+    statusId: string;
+    remark: string;
+  }
+
+
+  export type AssignInvestigatorType = {
+    investigatorId: string
+  }
+

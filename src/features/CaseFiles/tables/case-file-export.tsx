@@ -1,18 +1,19 @@
 
-import { useQuery } from "@tanstack/react-query";
 
+import { ApiResponse } from "@/common/api-response.type";
 import TableExport from "@/components/custom-ui/table-export";
-import { getData } from "@/service/case.file.service";
+import { useCaseFileListService } from "@/service/case-files/service";
+
 
 // Your existing getData function...
 
 export default function CaseFileExport() {
-  const getCaseFiles = useQuery({
-    queryKey: ['caseFilesList'],
-    queryFn: async () => {
-      return await getData();
-    }
-  });
+  // const getCaseFiles = useQuery({
+  //   queryKey: ['caseFilesList'],
+  //   queryFn: async () => {
+  //     return await getData();
+  //   }
+  // });
 
   const caseFileColumns = [
     {
@@ -24,8 +25,16 @@ export default function CaseFileExport() {
       value: 'suspectNumber'
     },
     {
-      label: 'Investigator Name',
+      label: 'Investigator Id',
+      value: 'investigator.userId'
+    },
+    {
+      label: 'Investigator First Name',
       value: 'investigator.firstName'
+    },
+    {
+      label: 'Investigator Last Name',
+      value: 'investigator.lastName'
     },
     {
       label: 'Investigator Email',
@@ -36,17 +45,41 @@ export default function CaseFileExport() {
       value: 'remark'
     },
     {
+      label: 'Modified At',
+      value: 'modifiedAt'
+    },
+    {
+      label: 'Created At',
+      value: 'createdAt'
+    },
+    {
       label: 'Status',
       value: 'status.name',
-      transform: (value: string) => value.charAt(0).toUpperCase() + value.slice(1)
-    }
+      transform: (value: string | null) =>
+        value ? value.charAt(0).toUpperCase() + value.slice(1) : "N/A"
+    },
+    {
+      label: 'Status Date Deleted',
+      value: 'status.dateDeleted',
+      transform: (value: string | null) =>
+        value ? value.charAt(0).toUpperCase() + value.slice(1) : "N/A"
+    },
+    {
+      label: 'Description',
+      value: 'status.description'
+    },
   ];
+
+
+  const response: ApiResponse = useCaseFileListService()?.data
+
+  const caseFile = response?.data || []
 
   return (
     <div className="container mx-auto ">
       <div className="">
         <TableExport 
-          data={getCaseFiles.data || []}
+          data={caseFile || []}
           columns={caseFileColumns}
           filename="case-files-export"
         />

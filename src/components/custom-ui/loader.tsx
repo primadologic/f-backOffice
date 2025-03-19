@@ -8,8 +8,8 @@ export default function Loader() {
             visible={true}
             height="20"
             width="20"
-            strokeWidth={4}
-            color="#fff"
+            strokeWidth={7}
+            color="#ffffff"
             ariaLabel="oval-loading"
             wrapperStyle={{}}
             wrapperClass=""

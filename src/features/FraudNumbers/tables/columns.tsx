@@ -3,7 +3,8 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { ArrowUpDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ActionsCell } from "./actions"
-import { FraudNumberType } from "@/common/Type/FraudNumber/FraudNumber.type"
+import { FraudNumberNewType } from "@/common/Type/FraudNumber/fraud-numbers"
+import { maskNumber } from "@/lib/custom"
 
 
 
@@ -71,7 +72,7 @@ const rickLevelStyles: Record<RiskLevelType, {bg: string, text: string}> = {
 
 
 
-export const columns: ColumnDef<FraudNumberType>[] = [
+export const columns: ColumnDef<FraudNumberNewType>[] = [
 
     {
         id: "select",
@@ -110,12 +111,21 @@ export const columns: ColumnDef<FraudNumberType>[] = [
               </Button>
             )
         },
-        cell: ({ row }) => row.original.fraudNumber ?? "N/A",
+        cell: ({ getValue }) => {
+
+            const fraudNumber = maskNumber(getValue() as string)?.substring(0, 12)
+
+            return (
+                <span>{fraudNumber}</span>
+            )
+        },
+
         filterFn: (row, columnId, filterValue) => {
             const fraudNumber = row.original.fraudNumber ?? "";
             // const archived = row.original.archived ?? "";
             return (
-                fraudNumber.toLowerCase().includes(filterValue.toLowerCase())
+
+                fraudNumber?.toLowerCase()?.includes(filterValue.toLowerCase())
                 // archived
             )
         },
@@ -125,7 +135,7 @@ export const columns: ColumnDef<FraudNumberType>[] = [
         accessorKey: "visibility",
         header: "Visibility",
         cell: ({ row }) => {
-            const visibility = row.original.visibility.toString() as VisibilityType;
+            const visibility = row.original.visibility?.toString() as VisibilityType;
 
             if (!visibility) return "N/A";
 
@@ -149,7 +159,7 @@ export const columns: ColumnDef<FraudNumberType>[] = [
         accessorKey: "reported",
         header: "Investigated",
         cell: ({ row }) => {
-            const investigated = row.original.investigated.toString() as InvestigatedType;
+            const investigated = row.original.investigated?.toString() as InvestigatedType;
 
             if (!investigated) return "N/A";
 
@@ -173,7 +183,7 @@ export const columns: ColumnDef<FraudNumberType>[] = [
         accessorKey: "approved",
         header: "Approved",
         cell: ({ row }) => {
-            const approved = row.original.approved.toString() as ApproveType;
+            const approved = row.original.approved?.toString() as ApproveType;
 
             if (!approved) return "N/A";
 
@@ -197,7 +207,7 @@ export const columns: ColumnDef<FraudNumberType>[] = [
         accessorKey: "riskLevel",
         header: "Risk Level",
         cell: ({ row }) => {
-            const riskLevel = row.original.riskLevel?.name.toString() as RiskLevelType
+            const riskLevel = row.original.riskLevel?.name?.toString() as RiskLevelType
 
             if (!riskLevel) return "N/A";
 
@@ -218,6 +228,7 @@ export const columns: ColumnDef<FraudNumberType>[] = [
         }
     },
     {
+        header: "Actions",
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => <ActionsCell fraudNumber={row.original} />,

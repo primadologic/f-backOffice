@@ -4,9 +4,12 @@
 import { useNavigateBack } from "@/hooks/useNavigateBack"
 import { CustomButton } from "./buttons"
 import { ArrowLeft } from "lucide-react"
+import { AlertDialogFooter } from "../ui/alert-dialog";
+import { AlertDialogCancel } from "@radix-ui/react-alert-dialog";
+import { Button } from "../ui/button";
 
 
-export default function CustomBackButton() { 
+export const CustomBackButton = () => { 
 
     const navigateBack = useNavigateBack()
     
@@ -20,7 +23,18 @@ export default function CustomBackButton() {
                     <ArrowLeft strokeWidth={2.5} size={24} className="text-button_colors-deep_warning dark:text-custom_theme-primary_background" />
             </CustomButton>
         </>
-        
     )
-    
 };
+
+export const CustomCloseButton = () => {
+
+    return (
+        <AlertDialogFooter>
+            <AlertDialogCancel className="btn-default btn-dark-mode min-w-[100px] " asChild >
+                <Button variant={'outline'}>Close</Button>
+            </AlertDialogCancel>
+        </AlertDialogFooter>
+    )
+
+}
+

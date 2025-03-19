@@ -6,6 +6,7 @@ import { CaseFileType } from "@/common/Type/CaseFile/CaseFile.type"
 import { Button } from "@/components/ui/button"
 import { ArrowUpDown } from "lucide-react"
 import { Checkbox } from "@radix-ui/react-checkbox"
+import { formatDateTime, maskNumber } from "@/lib/custom"
 
 
 
@@ -18,15 +19,15 @@ const statusStyles: Record<StatusType, {bg: string, text: string}> = {
     text: "text-[#1a365d]"     // Dark blue text
   },
   investigation: {
-    bg: "bg-[#FFD580]",
+    bg: "bg-[#FFF266]",
     text: "text-[#744210]"     // Dark brown text
   },
   review: {
-    bg: "bg-[#87CEEB]",
-    text: "text-[#1e4e8c]"     // Dark blue text
+    bg: "bg-[#005CE8]",
+    text: "text-[#ffffff]"     // White text
   },
   approved: {
-    bg: "bg-[#90EE90]",
+    bg: "bg-[#0FAF62]",
     text: "text-[#ffffff]"     // Dark green text
   },
   closed: {
@@ -34,8 +35,8 @@ const statusStyles: Record<StatusType, {bg: string, text: string}> = {
     text: "text-[#742a2a]"     // Dark red text
   },
   archived: {
-    bg: "bg-[#B0C4DE]",
-    text: "text-[#2d3748]"     // Dark gray text
+    bg: "bg-[#795548]",         // B0C4DE
+    text: "text-[#fff]"     // Dark gray text
   }
 }
 
@@ -67,11 +68,12 @@ export const columns: ColumnDef<CaseFileType>[] = [
   {
     accessorKey: "suspectNumber",
     header: "Suspect Number",
+    cell: ({ getValue }) => maskNumber(getValue() as string),
   },
   {
     accessorKey: "investigator",
     // header: "Investigator",
-    cell: ({ row }) => row.original.investigator?.firstName ?? "N/A",
+    cell: ({ row }) =>  row.original?.investigator ? row.original.investigator?.firstName + " " + row.original.investigator?.lastName : "N/A" ,
     filterFn: (row, columnId, filterValue) => {
       const firstName = row.original.investigator?.firstName ?? "";
       const lastName =  row.original.investigator?.lastName ?? "";
@@ -87,7 +89,7 @@ export const columns: ColumnDef<CaseFileType>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           
         >
-          Investigator
+            Investigator
           <ArrowUpDown size={18} /> 
         </Button>
       )
@@ -96,6 +98,26 @@ export const columns: ColumnDef<CaseFileType>[] = [
   {
     accessorKey: "remark",
     header: "Remarks",
+    cell: ({ row }) => {
+      const remarks = row.original?.remark
+        if (!remarks) return "N/A";
+      
+        return (
+          <span className="">{ remarks }...</span>
+        )
+    }
+  },
+  {
+    accessorKey: "createdAt",
+    header: "Date Created",
+    cell: ({ row }) => {
+      const createdAt = row.original?.createdAt;
+      
+      if (!createdAt) return "N/A";
+
+      return formatDateTime(createdAt);
+    }
+
   },
   {
     accessorKey: "status",
@@ -105,7 +127,7 @@ export const columns: ColumnDef<CaseFileType>[] = [
 
         const status = row.original.status?.name?.toLowerCase() as StatusType
         
-        if (!status) return "N/A"
+        if (!status) return "N/A";
 
         return (
           <div className="flex justify-start w-full min-w-[120px]">
@@ -129,6 +151,7 @@ export const columns: ColumnDef<CaseFileType>[] = [
     }
   },
   {
+    header: "Actions",
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => <ActionsCell caseFile={row.original} />,
