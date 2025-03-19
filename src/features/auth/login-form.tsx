@@ -29,7 +29,7 @@ export default function LoginForm() {
 
 
     const onSubmit = (data: LoginUserType) => {
-        console.log("Login data", data);
+        // console.log("Login data", data);
         loginService.mutateAsync(data, {
             onSuccess: () => {
                 reset();
@@ -71,16 +71,7 @@ export default function LoginForm() {
                                 {errors.email && <p className="form-error-msg">{errors.email.message}</p>}
                             </div>
                             <div className="flex flex-col gap-2">
-                                <div className="flex items-center">
-                                    <label htmlFor="password"  className="form-label">Password</label>
-                                    <a 
-                                        href="#"
-                                        className="ml-auto inline-block text-sm font-medium underline-offset-4 hover:underline"
-                                    >
-                                        Forgotyour password?
-                                    </a>
-                                </div>
-                               
+                                <label htmlFor="password"  className="form-label">Password</label>
                                 <input 
                                     type="password" 
                                     placeholder="Enter your password"
@@ -103,7 +94,7 @@ export default function LoginForm() {
                             <button  
                                 // variant={"outline"}
                                 disabled={!isValid || loginService.isPending}
-                                className={`px-3 py-2 text-base font-medium flex justify-center items-center rounded-md dark:bg-custom_theme-primary_background dark:text-custom_theme-primary_foreground dark:hover:bg-custom_theme-primary_background/85 bg-custom_theme-primary_foreground text-white hover:bg-custom_theme-primary_foreground/85
+                                className={`px-3 py-2 text-base text-white font-medium flex justify-center items-center rounded-md dark:bg-custom_theme-primary_background dark:text-custom_theme-primary_foreground dark:hover:bg-custom_theme-primary_background/85 bg-custom_theme-primary_foreground  hover:bg-custom_theme-primary_foreground/85
                                         ${!isValid ? " disabled:cursor-not-allowed " : "cursor-pointer"}
                                         ${loginService.isPending ? "opacity-50 disabled:cursor-not-allowed" : "cursor-pointer"}
                                     `}

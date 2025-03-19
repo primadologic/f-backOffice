@@ -24,8 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { useVerificationbyOriginReport } from "@/service/stats-verify-report.service"
-import { CustomLegendContent } from "./platformbyOrigin"
+import { useVerificationbyOriginReport } from "@/service/analytics/stats-verify-report.service"
 
 // Chart configuration for different platforms
 const chartConfig: Record<string, { label?: string; color?: string }> =  {
@@ -97,6 +96,49 @@ const chartConfig: Record<string, { label?: string; color?: string }> =  {
 //       </div>
 //     );
 //   };
+
+
+interface LegendEntry {
+  payload: {
+    fill: string;
+    origin: keyof typeof chartConfig;
+    fraud: number;
+  };
+}
+
+interface LegendProps {
+payload: LegendEntry[];
+}
+
+
+const CustomLegendContent: React.FC<LegendProps> = ({ payload }) => {
+   
+    const leftOrigins = ["Web", "Telegram", "USSD"];
+    // const rightOrigins = ["Facebook", "x", "Instagram", "Portal", "WhatsApp"];
+  
+    const leftItems = payload.filter((item) => leftOrigins.includes(item.payload.origin));
+    // const rightItems = payload.filter((item) => rightOrigins.includes(item.payload.origin));
+  
+    
+    return (
+        <div className="flex justify-start items-start gap-x-10">
+          <div className="flex flex-row gap-3">
+            {leftItems.map((entry, index) => (
+              <div key={`left-item-${index}`} className="flex justify-start items-center gap-1">
+                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: entry.payload.fill }}></div>
+                <span className="text-xs">
+                  {chartConfig[entry.payload.origin]?.label}: {entry.payload.fraud}
+                </span>
+              </div>
+            ))}
+          </div>
+
+        </div>
+
+        
+    )
+}
+  
 
 
 export default function VerificationbyOriginReportChart() {
@@ -273,7 +315,7 @@ export default function VerificationbyOriginReportChart() {
                         //       nameKey="origin"
                         //     />
                         // }
-                        content={<CustomLegendContent payload={chartData.map(item => ({payload: item}))} />} // Pass the payload here
+                        content={<CustomLegendContent payload={chartData.map(item => ({payload: item.fraud}))} />} // Pass the payload here
                         layout="vertical" align="center" verticalAlign="bottom"
                         
                         // className=" max-w-max grid gap-4  sm:grid-cols-3 grid-cols-2"
@@ -289,7 +331,7 @@ export default function VerificationbyOriginReportChart() {
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex gap-2 font-medium leading-none">
-          Showing the phone number verification by origin
+          Showing phone number verifications by origin
         </div>
         <div className="leading-none text-muted-foreground">
           {verificationbyOrigin?.isLoading ? 

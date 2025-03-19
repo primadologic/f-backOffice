@@ -19,7 +19,7 @@ interface UserType {
 }
 
 export type UserDetailType = {
-  userId: string;
+  userId: any;
   email: string;
   firstName?: string;
   lastName?: string;

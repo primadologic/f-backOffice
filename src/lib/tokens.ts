@@ -1,4 +1,4 @@
 import Cookies from "js-cookie";
 
-export const accessToken = Cookies.get('access');
-export const refreshToken = Cookies.get('refresh');
+export const accessToken: string | undefined = Cookies.get('access');
+export const refreshToken: string | undefined = Cookies.get('refresh');

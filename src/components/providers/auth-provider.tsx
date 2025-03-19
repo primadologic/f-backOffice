@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { AuthContext } from './auth-context';
 import Cookies from "js-cookie";
+import { toast } from 'sonner';
 
 
 
@@ -25,6 +26,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     Cookies.remove("refresh");
     setToken(null);
     setIsAuthenticated(false);
+    toast.success("Logged out successfully", {
+      description: "Remember to spread FraudWall as you leave."
+    })
   };
 
   return (

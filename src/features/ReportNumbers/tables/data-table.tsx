@@ -3,6 +3,7 @@ import React from "react"
 import {
   ColumnDef,
   ColumnFiltersState,
+  FilterFn,
   SortingState,
   VisibilityState,
   flexRender,
@@ -40,6 +41,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { ChevronDown, ListFilter, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { useReportListService } from "@/service/report/service"
 
 
 
@@ -48,7 +50,16 @@ import { Button } from "@/components/ui/button"
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-}
+};
+
+
+const includesFilter: FilterFn<any> = (row, columnId, filterValue) => {
+  const value = row.getValue(columnId);
+  return (
+    typeof value === "string" &&
+    value.toLowerCase().includes(filterValue.toLowerCase())
+  );
+};
 
 export function DataTable<TData, TValue>({
   columns,
@@ -79,6 +90,7 @@ const [pagination, setPagination] = useState({
     onPaginationChange: setPagination,
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    globalFilterFn: includesFilter,
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     state: {
@@ -89,6 +101,9 @@ const [pagination, setPagination] = useState({
       pagination
     },
   });
+
+
+  const reportListQuery = useReportListService()
 
   return (
     <div className="">
@@ -104,10 +119,12 @@ const [pagination, setPagination] = useState({
                 <Search className="absolute left-3 top-2.5 text-muted-foreground" size={18} />
                 <Input
                   placeholder="Filter report platform..."
-                  value={(table.getColumn("reportPlatform")?.getFilterValue() as string) ?? ""}
-                  onChange={(event) =>
-                    table.getColumn("reportPlatform")?.setFilterValue(event.target.value)
-                  }
+                  // value={(table.getColumn("reportPlatform")?.getFilterValue() as string) ?? ""}
+                  // onChange={(event) =>
+                  //   table.getColumn("reportPlatform")?.setFilterValue(event.target.value)
+                  // }
+                  value={table.getState().globalFilter ?? ""}
+                  onChange={(event) => table.setGlobalFilter(event.target.value)}
                   className="max-w-sm pl-10 focus-visible:ring-1 focus-visible:ring-gray-400 outline-none focus:ring-1 focus:ring-gray-400 delay-150 transition ease-in-out duration-300"
                 />
               </div>
@@ -204,7 +221,7 @@ const [pagination, setPagination] = useState({
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No results.
+                  {reportListQuery.isFetching ? "Loading..." : "No results."}
                 </TableCell>
               </TableRow>
             )}

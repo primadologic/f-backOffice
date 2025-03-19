@@ -1,19 +1,22 @@
 
-import { useQuery } from "@tanstack/react-query";
+// import { useQuery } from "@tanstack/react-query";
 
+import { ApiResponse } from "@/common/api-response.type";
 import TableExport from "@/components/custom-ui/table-export";
-import { getData } from "@/service/report-number.service";
+// import { getData } from "@/service/report-number.service";
+import { useReportListService } from "@/service/report/service";
+
 
 
 // Your existing getData function...
 
 export default function ReportNumberExport() {
-  const getCaseFiles = useQuery({
-    queryKey: ['reportNumberList'],
-    queryFn: async () => {
-      return await getData();
-    }
-  });
+
+
+  const response: ApiResponse = useReportListService()?.data
+
+  const report = response?.data || []
+
 
   const reportNumberColumns = [
     {
@@ -42,7 +45,7 @@ export default function ReportNumberExport() {
       value: 'description'
     },
     {
-      label: 'Status',
+      label: 'Archived',
       value: 'archived',
       transform: (value: boolean) => value ? 'Archived' : 'Active'
     },
@@ -57,7 +60,7 @@ export default function ReportNumberExport() {
     <div className="container mx-auto ">
       <div className="">
         <TableExport 
-          data={getCaseFiles.data || []}
+          data={report || []}
           columns={reportNumberColumns}
           filename="report-numbers-export"
         />

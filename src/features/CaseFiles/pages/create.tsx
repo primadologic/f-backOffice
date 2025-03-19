@@ -1,4 +1,4 @@
-import CustomBackButton from "@/components/custom-ui/back-button";
+
 import TopNavBar from "@/components/custom-ui/topBarNav";
 import PageLayout from "@/features/layout/PagesLayout";
 import { Separator } from "@radix-ui/react-separator";
@@ -22,11 +22,12 @@ import { Button } from "@/components/ui/button";
 
 
 // Types
-import { NewCaseFileType } from "@/common/Type/CaseFile/CaseFile.type";
-import { CaseStatusType,   } from "@/common/Type/CaseFile/CaseStatus.type";
+import { CaseFileStatusType, NewCaseFileType } from "@/common/Type/CaseFile/CaseFile.type";
 // Data
-import { CaseStatusData } from "@/data/CaseFiles/CaseStatus.table.data";
 
+import { CustomBackButton } from "@/components/custom-ui/custom-buttons";
+import { useCaseFileStatusService, useCreateCaseFileService } from "@/service/case-files/service";
+import Loader from "@/components/custom-ui/loader";
 
 
 
@@ -37,19 +38,27 @@ export default function CaseFileCreatePage() {
     const { register, handleSubmit, trigger, control, formState: { errors } } = useForm<NewCaseFileType>({
         defaultValues: {
             suspectNumber: "",
-            status: "",
-            remarks: ""
+            statusId: "",
+            remark: ""
         },
-        criteriaMode: "firstError"
+        criteriaMode: 'all',
+        mode: 'onChange'
     })
 
     // const suspectNumber = watch("suspectNumber");
     // const status = watch("status");
     // const remarks = watch("remarks")
 
+    const caseFileStatusQuery = useCaseFileStatusService().data;
+    const caseFileStatusData: CaseFileStatusType[] = caseFileStatusQuery?.data
+
+    const createCaseFileMutation = useCreateCaseFileService()
+
 
     const onSubmit = (data: NewCaseFileType) => {
         console.log("New Case File", data);
+
+        createCaseFileMutation.mutateAsync(data)
     }
 
 
@@ -99,10 +108,10 @@ export default function CaseFileCreatePage() {
                                             />
                                             {errors.suspectNumber && <p className="form-error-msg">{errors.suspectNumber?.message}</p>}
                                         </div>
-                                        <div className="w-full flex flex-col gap-2 ">
+                                        <div className="w-full flex flex-col gap-2">
                                             <label htmlFor="Status" className="form-label">Status</label>
                                             <Controller
-                                                name="status"
+                                                name="statusId"
                                                 control={control}
                                                 rules={{
                                                     required: {
@@ -113,22 +122,28 @@ export default function CaseFileCreatePage() {
                                                 render={({ field: { onBlur, value, onChange } }) => (
                                                 <Select onValueChange={onChange} defaultValue={value}>
                                                     <SelectTrigger 
-                                                        className={`outline-none border h-[3.2rem] text-sm  px-3 py-3 rounded-md font-medium text-custom_theme-primary_foreground dark:bg-custom_theme-dark_gray_1 dark:text-custom_theme-primary_background focus:ring-1 focus:ring-gray-400 dark:focus:ring-custom_theme-gray delay-150 transition ease-in-out duration-300
-                                                                ${errors.status ? "form-validerr-ring " : "form-valid-ring"}
+                                                        className={`outline-none w-full border h-[3.2rem] text-sm  px-3 py-3 rounded-md font-medium text-custom_theme-primary_foreground dark:bg-custom_theme-dark_gray_1 dark:text-custom_theme-primary_background focus:ring-1 focus:ring-gray-400 dark:focus:ring-custom_theme-gray delay-150 transition ease-in-out duration-300
+                                                                ${errors.statusId ? "form-validerr-ring " : "form-valid-ring"}
                                                             `}
                                                         onBlur={onBlur}
                                                     >
                                                         <SelectValue className="dark:!text-custom_theme-primary_background" placeholder="Select Status"  />
                                                     </SelectTrigger>
                                                     <SelectContent className="w-full">
-                                                        {CaseStatusData.map((statusOption: CaseStatusType) => (
-                                                            <SelectItem key={statusOption.statusId} value={statusOption.statusId}>{statusOption.name}</SelectItem>
+                                                        {caseFileStatusData.map((option) => (
+                                                            <SelectItem
+                                                                key={option.statusId} 
+                                                                value={option.statusId}
+                                                                className="capitalize"
+                                                            >
+                                                                    {option.name}
+                                                            </SelectItem>
                                                         ))}
                                                     </SelectContent>
                                                 </Select>
                                                 )}
                                             />
-                                            {errors.status && <p className="form-error-msg">{errors.status.message}</p>}
+                                            {errors.statusId && <p className="form-error-msg">{errors.statusId.message}</p>}
                                         
                                         </div>
                                     </div>
@@ -140,23 +155,35 @@ export default function CaseFileCreatePage() {
                                                 rows={5}
                                                 placeholder="Enter the remarks for the case"
                                                 className={`form-input
-                                                        ${errors.remarks ? "form-validerr-ring" : "form-valid-ring"}
+                                                        ${errors.remark ? "form-validerr-ring" : "form-valid-ring"}
                                                     `}
-                                                {...register("remarks", {
+                                                {...register("remark", {
                                                     required: {
                                                         value: true,
                                                         message: "Remarks are required"
                                                     }
                                                 })}
-                                                onBlur={() => trigger('remarks')}
+                                                onBlur={() => trigger('remark')}
                                             ></textarea>
-                                            {errors.remarks && <p className="form-error-msg">{errors.remarks.message}</p>}
+                                            {errors.remark && <p className="form-error-msg">{errors.remark.message}</p>}
                                         </div>
                                     </div>
 
                                     <div className="w-full flex flex-row">
-                                        <Button className="btn-dark-mode">
-                                            Submit
+                                        <Button
+                                            type="submit"
+                                            className={`btn-default sm:min-w-[6.25rem]  ${
+                                                createCaseFileMutation.isPending ? "sm:min-w-[6.25rem]" : "sm:max-w-max w-full"
+                                            }`}
+                                        >
+                                            {createCaseFileMutation.isPending ? (
+                                                <span className="flex items-center justify-center sm:w-[6.25rem]"> 
+                                                    {/* Ensure the span has the desired width */}
+                                                    <Loader />
+                                                </span>
+                                            ) : (
+                                                <span>Submit</span>
+                                            )}
                                         </Button>
                                     </div>
                                 </div>

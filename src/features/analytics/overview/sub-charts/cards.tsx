@@ -11,7 +11,7 @@ import {
 import blue_graph from "/assets/illustrations/blue-graph.png"
 import organge_graph from "/assets/illustrations/orange-graph.png"
 import red_graph from "/assets/illustrations/red-graph.png"
-import { useStatReportDashboard } from "@/service/stats-report-dash.service"
+import { useStatReportDashboard } from "@/service/analytics/stats-report-dash.service"
   
 
 

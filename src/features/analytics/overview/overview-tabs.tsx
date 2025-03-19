@@ -18,7 +18,7 @@ export default function OverviewTabs() {
     return (
         
         <Tabs defaultValue="overview">
-            <TabsList className="">
+            <TabsList className="grid w-[25rem] grid-cols-2">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="insights">Insights</TabsTrigger>
             </TabsList>

@@ -11,7 +11,7 @@ import {
     SelectValue,
   } from "@/components/ui/select"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { useYearlyStatistics } from '@/service/yearly-stats.service';
+import { useYearlyStatistics } from '@/service/analytics/yearly-stats.service';
 
 
 // Define interfaces for our data structure
@@ -209,6 +209,7 @@ const YearlyReportStatistics = () => {
                             <ChartTooltipContent
                                 className="w-[150px]"
                                 nameKey="month"
+                                label={chartConfig[activeChart].label}
                             //     labelFormatter={(value) => {
                             //         return new Date(value).toLocaleDateString("en-US", {
                             //         month: "short",
@@ -219,7 +220,12 @@ const YearlyReportStatistics = () => {
                         />
                     }
                     />
-                    <Bar dataKey={activeChart} fill={`var(--color-${activeChart})`} />
+                    <Bar 
+                      dataKey={activeChart} 
+                      // fill={`var(--color-${activeChart})`}
+                      fill={`${chartConfig[activeChart].color}`} // Use the color from config instead of a string template
+                      name={chartConfig[activeChart].label} // Add this line to set the name that appears in tooltip 
+                    />
                     {/* <Bar dataKey="report" name="Reports" fill={chartConfig.report.color} />
                     <Bar dataKey="fraudNumbers" name="Frau" fill={chartConfig.fraudNumbers.color} /> */}
                 </BarChart>

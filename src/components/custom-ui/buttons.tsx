@@ -11,6 +11,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "capitalize btn-dark-mode btn-padding font-medium flex flex-row items-center gap-[.2rem]",
+        create: 'bg-custom_theme-primary_foreground text-custom_theme-primary_background dark:text-custom_theme-primary_background dark:bg-custom_theme-gray2 dark:hover:bg-custom_theme-gray_hover'
         
       },
       size: {

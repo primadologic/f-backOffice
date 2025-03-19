@@ -4,6 +4,8 @@ import { ReportNumberType } from "@/data/ReportNumbers/ReportNumbers.type"
 import { ArrowUpDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ActionsCell } from "./actions"
+import { formatDate, formatDateTime, maskNumber } from "@/lib/custom"
+
 
 
 
@@ -51,14 +53,14 @@ export const columns: ColumnDef<ReportNumberType>[] = [
         accessorKey: "reportPlatform",
         header: "Platform",
         cell: ({ row }) => row.original.reportPlatForm?.displayName ?? "N/A",
-        filterFn: (row, columnId, filterValue) => {
-            const reportPlatform = row.original.reportPlatForm?.displayName ?? "";
-            // const archived = row.original.archived ?? "";
-            return (
-                reportPlatform.toLowerCase().includes(filterValue.toLowerCase())
-                // archived
-            )
-        },
+        // filterFn: (row, columnId, filterValue) => {
+        //     const reportPlatform = row.original.reportPlatForm?.displayName ?? "";
+        //     // const archived = row.original.archived ?? "";
+        //     return (
+        //         reportPlatform.toLowerCase().includes(filterValue.toLowerCase())
+        //         // archived
+        //     )
+        // },
       
 
     },
@@ -69,26 +71,45 @@ export const columns: ColumnDef<ReportNumberType>[] = [
             return (
               <Button
                 variant="ghost"
-                onClick={() => {column.toggleSorting(column.getIsSorted() === "asc"); console.log("report platform") }}
+                onClick={() => {column.toggleSorting(column.getIsSorted() === "asc") }}
                 
               >
                     Suspect Number
                     <ArrowUpDown size={18} /> 
               </Button>
             )
+        },
+        
+        cell: ({ getValue }) => {
+
+            const suspectNumber = maskNumber(getValue() as string) as string
+
+            return (
+                <span className="">{suspectNumber.substring(0, 12)}</span>
+            )
         }
     },
     {
         accessorKey: "reporterNumber",
         header: "Reporter Number",
+        cell: ({ getValue }) => {
+
+            const reporterNumber = maskNumber(getValue() as string)
+
+            return (
+                <span>{reporterNumber.substring(0, 12)}</span>
+            )
+        }
     },
     {
         accessorKey: "incidentDate",
         header: "Incident Date",
+        cell: ({ getValue }) => formatDate(getValue() as string)
     },
     {
         accessorKey: "createdAt",
         header: "Date Reported",
+        cell: ({ getValue }) => formatDateTime(getValue() as string)
     },
     {
         accessorKey: "archived",
@@ -115,10 +136,11 @@ export const columns: ColumnDef<ReportNumberType>[] = [
         }
     },
     {
+        header: "Actions",
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => <ActionsCell reportNumber={row.original} />,
-      }
+    }
    
 ]
 

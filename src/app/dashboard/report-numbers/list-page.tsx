@@ -1,4 +1,4 @@
-
+'use client'
 import ReportNumberListPage from "@/features/ReportNumbers/pages/list";
 import DashboardLayout from "../dashBoardLayout";
 

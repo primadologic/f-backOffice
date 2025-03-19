@@ -1,11 +1,13 @@
 import { BriefcaseBusiness, Plus } from "lucide-react";
 import { useNavigate } from "@tanstack/react-router";
-import CaseFileListTable from "../tables/CaseFileTables";
+import CaseFileListTable from "../tables/case-file-table";
 import CaseFileExport from "../tables/case-file-export";
 import PageLayout from "@/features/layout/PagesLayout";
-import UpdateCaseFile from "./update";
 import { CustomButton } from "@/components/custom-ui/buttons";
 import TopNavBar from "@/components/custom-ui/topBarNav";
+import UpdateCaseFileDialog from "./update";
+import DeleteCaseFileDialog from "./delete-caseFile";
+import AssignInvestigatorDialog from "./assign-investigator";
 
 
 
@@ -23,13 +25,20 @@ export default function CaseFilesListPage() {
                     <div className="flex justify-end item-end">
                         <div className="flex gap-3 justify-center items-center">
                             <CaseFileExport />
-                            <CustomButton onClick={() => navigate({ to: '/dashboard/case-files/create' })} size={'sm'} 
+                            <CustomButton onClick={() => navigate({ to: '/dashboard/case-files/create' })} 
+                                size={'sm'} 
+                                variant={'create'}
                                 className=""
+                                
                             >
                                 <Plus className="mr-2 h-4 w-4" />
                                 <span className="mr-1">Create Case File</span>
                             </CustomButton>
-                            <UpdateCaseFile />
+                           <>
+                                <UpdateCaseFileDialog />
+                                <DeleteCaseFileDialog />
+                                <AssignInvestigatorDialog />
+                           </>
                         </div>
                     </div>
                     <div className="">
