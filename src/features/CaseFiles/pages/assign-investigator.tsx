@@ -39,8 +39,8 @@ export default function AssignInvestigatorDialog() {
 
     const caseId = selectedCaseFile?.caseId ?? ""; // Ensures caseId is always a string
  
-    const getusers = useUsers().data
-    const users: UserDetailType[] = getusers?.data || [];
+    const userService = useUsers()
+    const users: UserDetailType[] = userService.data?.data || [];
 
     const assignInvestigatorMutation = useAssignInvestigatorService(caseId)
 
@@ -100,11 +100,14 @@ export default function AssignInvestigatorDialog() {
                                                <SelectValue placeholder="Select investigator" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                {users.map((user) => (
+                                                {userService.isFetched ?  
+                                                users.map((user) => (
                                                     <SelectItem key={user.userId} value={user.userId}>
                                                         {user.firstName} {user.lastName}
                                                     </SelectItem>
-                                                ))}
+                                                )): (
+                                                    <SelectItem value="no-users">no available users</SelectItem>
+                                                )}
                                             </SelectContent>
                                         </Select>
                                     )}

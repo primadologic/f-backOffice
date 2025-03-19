@@ -17,9 +17,14 @@ export default function FraudNumberListTable() {
   //     }       
   // })
 
-  const fraudNumberData: ApiResponse = useFraudNumberListService()?.data;
+  const { data: fraudNumberData } = useFraudNumberListService() as {
+    data: ApiResponse
+  }
 
-  const fraudNumbers: FraudNumberNewType[] = fraudNumberData?.data || []
+  const fraudNumbers: FraudNumberNewType[] = fraudNumberData?.data
+
+  console.log(fraudNumbers);
+
 
   return (
     <div className="container mx-auto">

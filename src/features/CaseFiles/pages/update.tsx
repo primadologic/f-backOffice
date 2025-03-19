@@ -21,6 +21,7 @@ import { CaseFileStatusType, CaseFileType, EditCaseFileType } from "@/common/Typ
 import { useCaseFileStatusService, useUpdateCaseFileService,  } from "@/service/case-files/service"
 import Loader from "@/components/custom-ui/loader"
 import { CustomCloseButton } from "@/components/custom-ui/custom-buttons"
+import { ApiResponse } from "@/common/api-response.type"
 
 
 
@@ -33,35 +34,25 @@ export default function UpdateCaseFileDialog() {
         mode: 'onChange'
     })
 
-    // const [ isLoading, setIsLoading ] = useState(false)
 
     const { isOpen, selectedCaseFile, setIsOpen } = useUpdateCaseFileStore()
+        
+    const statusId = selectedCaseFile?.status?.statusId
 
-    // Service Hooks
+    const { data: caseFileStatusData } = useCaseFileStatusService() as {
+        data: ApiResponse
+    }
+    
+    const response: CaseFileStatusType[] = caseFileStatusData?.data ?? [];
 
-        // Case File       
-    const getCaseFileStatus = useCaseFileStatusService().data
-    const caseFileStatus: CaseFileStatusType[] = getCaseFileStatus?.data || [];
-    const caseId:  string | undefined = selectedCaseFile?.caseId
-
-        // Users
-    // const getusers = useUsers().data
-    // const users: UserDetailType[] = getusers?.data || [];
+    const currentStatusId: string | undefined = response.find((cf) => cf.statusId === statusId)?.statusId;
 
         // Patch Case File
-    const updateCaseFileMutation = useUpdateCaseFileService(caseId)
+    const updateCaseFileMutation = useUpdateCaseFileService(currentStatusId)
    
-
-
 
     
     const onSubmit = async (data: any) => {
-        // setIsLoading(true)
-        // setTimeout(() => {
-        //   console.log("Delete");
-        //   setIsLoading(false); // Move setIsLoading(false) here
-        // }, 125000); // 125 seconds
-
         updateCaseFileMutation.mutateAsync({
             "statusId": data.statusId,
             "remark": data.remark,
@@ -85,7 +76,7 @@ export default function UpdateCaseFileDialog() {
                     </AlertDialogHeader>
                     <div className="mt-5 w-full">
                         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 w-full">
-                            <div className="w-full flex sm:flex-row gap-6 flex-col">
+                            <div className="w-full flex items-center sm:flex-row gap-6 flex-col">
                                 <div className="w-full flex flex-col gap-2">
                                     <label htmlFor="suspect number" className="form-label">Suspect Number</label>
                                     <input type="text" 
@@ -103,7 +94,7 @@ export default function UpdateCaseFileDialog() {
                                     <Controller
                                         name="statusId"
                                         control={control}
-                                        defaultValue={selectedCaseFile?.status?.statusId}
+                                        defaultValue={selectedCaseFile?.status?.name}
                                         rules={{
                                             required: {
                                                 value: true,
@@ -125,7 +116,7 @@ export default function UpdateCaseFileDialog() {
                                             </SelectTrigger>
                                             
                                             <SelectContent className="">
-                                                {caseFileStatus.map((status) => (
+                                                {response.map((status) => (
                                                     <SelectItem key={status.statusId} value={status.statusId} >
                                                         {status.name}
                                                     </SelectItem>

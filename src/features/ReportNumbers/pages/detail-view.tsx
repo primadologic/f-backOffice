@@ -40,8 +40,8 @@ export default function ReportNumberViewSheet() {
                         </AlertDialogHeader>
                         <div className="mt-2">
                             <form className="space-y-4">
-                                <div className="w-full flex sm:flex-row gap-2 flex-col justify-between sm:items-center">
-                                    <div className="flex flex-col gap-2">
+                                <div className="w-full flex sm:flex-row gap-6 flex-col sm:items-center">
+                                    <div className="flex flex-col gap-2 w-full">
                                         <label htmlFor="suspect-Number" className="text-start text-sm font-medium">Suspect Number</label>
                                         <input 
                                             type="text" placeholder="Suspect Number"
@@ -50,7 +50,7 @@ export default function ReportNumberViewSheet() {
                                             defaultValue={maskNumber(selectedReportNumber?.suspectNumber)}
                                         />
                                     </div>
-                                    <div className="flex flex-col gap-2">
+                                    <div className="flex flex-col gap-2 w-full">
                                         <label htmlFor="platform" className="text-start text-sm font-medium">Platform</label>
                                         <input 
                                             type="text" placeholder="Platform"
@@ -61,8 +61,8 @@ export default function ReportNumberViewSheet() {
                                     </div>
                                 </div>
                                 <div className="space-y-2 flex flex-col gap-2">
-                                    <div className="w-full flex sm:flex-row gap-2 flex-col justify-between sm:items-center">
-                                        <div className="flex flex-col gap-2">
+                                    <div className="w-full flex sm:flex-row gap-6 flex-col sm:items-center">
+                                        <div className="flex flex-col gap-2 w-full ">
                                             <label htmlFor="suspect-Number" className="text-start text-sm font-medium">Archived</label>
                                             <input 
                                                 type="text" placeholder="Status"
@@ -71,7 +71,7 @@ export default function ReportNumberViewSheet() {
                                                 defaultValue={selectedReportNumber?.archived?.toString() ?? ""}
                                             />
                                         </div>
-                                        <div className="flex flex-col gap-2">
+                                        <div className="flex flex-col gap-2 w-full">
                                             <label htmlFor="Incident Date" className="text-start text-sm font-medium">Incident Date</label>
                                             <input 
                                                 type="text" placeholder="Incident Date"

@@ -199,43 +199,6 @@ export const useRetrieveCaseFileService = (caseFileId: string | null) => {
             return response.data
         },
 
-        // onSuccess: (data) => {
-        //     const code = data?.statusCode ?? null
-        //     const message = data?.message
-        //     if (code === 204) {
-        //         toast.success(`${message}`)
-        //     }
-
-        //     if (code === 404) {
-        //         toast.error(`${message}`)
-        //     }
-
-        // },
-
-        // onError: (error) => {
-        //     if (axios.isAxiosError(error)) {
-        //         const code = error.response?.status ?? null
-
-        //         if (code === 400) {
-        //             toast.error(`Oops an error occured`, {
-        //                 description: `${error.response?.data?.message}`
-        //             })
-        //         };
-        //         if (code === 401) {
-        //             toast.error(`Oops an error occured`, {
-        //                 description: `${error.response?.data?.message}`
-        //             })
-        //         };
-        //         if (code === 404) {
-        //             toast.error(`${error.response?.data?.message}`)
-        //         };
-        //         if (code === 500) {
-        //             toast.error(`Sorry an unexpected error occured.`, {
-        //                 description: `${error.response?.data?.message}`
-        //             })
-        //         };
-        //     }
-        // }
     });
 
     return retrieveCaseFile;

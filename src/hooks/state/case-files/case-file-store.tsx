@@ -1,6 +1,6 @@
 import { CaseFileType } from '@/common/Type/CaseFile/CaseFile.type'
 import { create } from 'zustand'
-
+import { persist } from "zustand/middleware";
 
 interface CaseFileStore {
   isOpen: boolean
@@ -20,40 +20,69 @@ export const useCaseFileStore = create<CaseFileStore>((set) => ({
 }))
 
 
-export const useDetailCaseFile = create<CaseFileStore>((set) => ({
-  isOpen: false,
-  selectedCaseFile: null,
-  setIsOpen: (isOpen) => set({ isOpen }),
-  setSelectedCaseFile: (suspectNumber) => set({ selectedCaseFile: suspectNumber }),
+export const useDetailCaseFile = create<CaseFileStore>() (
+  persist(
+    (set) => ({
+      isOpen: false,
+      selectedCaseFile: null,
+      setIsOpen: (isOpen) => set({ isOpen }),
+      setSelectedCaseFile: (suspectNumber) => set({ selectedCaseFile: suspectNumber }),
+      
+      reset: () => set({ isOpen: false, selectedCaseFile: null })
+    }),
+    {
+      name: "caseFile-detail-store"
+    }
+  )
+)
+
+
+export const useUpdateCaseFileStore = create<CaseFileStore>()(
+  persist(
+    (set) => ({
+      isOpen: false,
+      selectedCaseFile: null,
+      setIsOpen: (isOpen) => set({ isOpen }),
+      setSelectedCaseFile: (suspectNumber) => set({ selectedCaseFile: suspectNumber }),
+      reset: () => set({ isOpen: false, selectedCaseFile: null }),
+    }),
+    {
+      name: "update-caseFile-store", // Unique key in localStorage
+    }
+  )
+);
+
+export const useDeleteCaseFileStore = create<CaseFileStore>() (
+  persist(
+    (set) => ({
+      isOpen: false,
+      selectedCaseFile: null,
+      setIsOpen: (isOpen) => set({ isOpen }),
+      setSelectedCaseFile: (suspectNumber) => set({ selectedCaseFile: suspectNumber }),
+      
+      reset: () => set({ isOpen: false, selectedCaseFile: null })
+    }),
+    {
+      name: "delete-caseFile-store"
+    }
+  )
+)
+
+
+
+export const useAssignInvestigatorStore = create<CaseFileStore>() (
+  persist(
+    (set) => ({
   
-  reset: () => set({ isOpen: false, selectedCaseFile: null })
-}))
+      isOpen: false,
+      selectedCaseFile: null,
+      setIsOpen: (isOpen) => set({ isOpen }),
+      setSelectedCaseFile: (suspectNumber) => set({ selectedCaseFile: suspectNumber }),
+      reset: () => set({ isOpen: false, selectedCaseFile: null })    
+    }),
+    {
+      name: "assignInvestigator-caseFile-store"
+    }
 
-
-export const useUpdateCaseFileStore = create<CaseFileStore>((set) => ({
-  isOpen: false,
-  selectedCaseFile: null,
-  setIsOpen: (isOpen) => set({ isOpen }),
-  setSelectedCaseFile: (suspectNumber) => set({ selectedCaseFile: suspectNumber }),
-  
-  reset: () => set({ isOpen: false, selectedCaseFile: null })
-}))
-
-export const useDeleteCaseFileStore = create<CaseFileStore>((set) => ({
-  isOpen: false,
-  selectedCaseFile: null,
-  setIsOpen: (isOpen) => set({ isOpen }),
-  setSelectedCaseFile: (suspectNumber) => set({ selectedCaseFile: suspectNumber }),
-  
-  reset: () => set({ isOpen: false, selectedCaseFile: null })
-}))
-
-
-export const useAssignInvestigatorStore = create<CaseFileStore>((set) => ({
-  isOpen: false,
-  selectedCaseFile: null,
-  setIsOpen: (isOpen) => set({ isOpen }),
-  setSelectedCaseFile: (suspectNumber) => set({ selectedCaseFile: suspectNumber }),
-  
-  reset: () => set({ isOpen: false, selectedCaseFile: null })
-}))
+  )
+)

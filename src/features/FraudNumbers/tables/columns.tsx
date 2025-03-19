@@ -113,10 +113,10 @@ export const columns: ColumnDef<FraudNumberNewType>[] = [
         },
         cell: ({ getValue }) => {
 
-            const fraudNumber = maskNumber(getValue() as string)
+            const fraudNumber = maskNumber(getValue() as string)?.substring(0, 12)
 
             return (
-                <span>{fraudNumber.substring(0, 12)}</span>
+                <span>{fraudNumber}</span>
             )
         },
 
@@ -125,7 +125,7 @@ export const columns: ColumnDef<FraudNumberNewType>[] = [
             // const archived = row.original.archived ?? "";
             return (
 
-                fraudNumber.toLowerCase().includes(filterValue.toLowerCase())
+                fraudNumber?.toLowerCase()?.includes(filterValue.toLowerCase())
                 // archived
             )
         },
@@ -135,7 +135,7 @@ export const columns: ColumnDef<FraudNumberNewType>[] = [
         accessorKey: "visibility",
         header: "Visibility",
         cell: ({ row }) => {
-            const visibility = row.original.visibility.toString() as VisibilityType;
+            const visibility = row.original.visibility?.toString() as VisibilityType;
 
             if (!visibility) return "N/A";
 
@@ -159,7 +159,7 @@ export const columns: ColumnDef<FraudNumberNewType>[] = [
         accessorKey: "reported",
         header: "Investigated",
         cell: ({ row }) => {
-            const investigated = row.original.investigated.toString() as InvestigatedType;
+            const investigated = row.original.investigated?.toString() as InvestigatedType;
 
             if (!investigated) return "N/A";
 
@@ -183,7 +183,7 @@ export const columns: ColumnDef<FraudNumberNewType>[] = [
         accessorKey: "approved",
         header: "Approved",
         cell: ({ row }) => {
-            const approved = row.original.approved.toString() as ApproveType;
+            const approved = row.original.approved?.toString() as ApproveType;
 
             if (!approved) return "N/A";
 
@@ -207,7 +207,7 @@ export const columns: ColumnDef<FraudNumberNewType>[] = [
         accessorKey: "riskLevel",
         header: "Risk Level",
         cell: ({ row }) => {
-            const riskLevel = row.original.riskLevel?.name.toString() as RiskLevelType
+            const riskLevel = row.original.riskLevel?.name?.toString() as RiskLevelType
 
             if (!riskLevel) return "N/A";
 

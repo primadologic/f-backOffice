@@ -31,7 +31,7 @@ export const CustomCloseButton = () => {
     return (
         <AlertDialogFooter>
             <AlertDialogCancel className="btn-default btn-dark-mode min-w-[100px] " asChild >
-                <Button>Close</Button>
+                <Button variant={'outline'}>Close</Button>
             </AlertDialogCancel>
         </AlertDialogFooter>
     )

@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ReportNumberType } from "@/data/ReportNumbers/ReportNumbers.type";
 import { useReportNumberStore } from "@/hooks/state/reports/report-store";
+import { toast } from "sonner";
 
 
 export const ActionsCell = ({ reportNumber }: { reportNumber: ReportNumberType }) => {
@@ -35,7 +36,10 @@ export const ActionsCell = ({ reportNumber }: { reportNumber: ReportNumberType }
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <DropdownMenuItem
-          onClick={() => navigator.clipboard.writeText(reportNumber.reporterNumber)}
+          onClick={() => {
+            navigator.clipboard.writeText(reportNumber.reporterNumber);
+            toast.info("Copied", {duration: 2000})
+          }}
         >
           Copy reporter number
         </DropdownMenuItem>

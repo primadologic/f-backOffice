@@ -14,6 +14,7 @@ import { useAssignInvestigatorStore, useUpdateCaseFileStore, useDeleteCaseFileSt
 import { useNavigate } from "@tanstack/react-router";
 import { useCaseFileListService } from "@/service/case-files/service";
 import { CaseFileType } from "@/common/Type/CaseFile/CaseFile.type";
+import { toast } from "sonner";
 
 
 
@@ -80,7 +81,10 @@ export const ActionsCell = ({ caseFile }: { caseFile: CaseFileType }) => {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem
-          onClick={() => navigator.clipboard.writeText(caseFile.suspectNumber)}
+          onClick={() => {
+            navigator.clipboard.writeText(caseFile.suspectNumber)
+              toast.info("Copied", {duration: 2000})
+          }}
           className="space-x-1"
         >
           <span><Copy /></span>
