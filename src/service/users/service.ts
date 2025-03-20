@@ -33,3 +33,33 @@ export const useUsers = () => {
 
     return users
 }
+
+
+export const useGetUserService = (userId: string) => {
+
+    const { token: access } = useAuth();
+
+    const users = useQuery({
+        queryKey: ['get-users', userId],
+        queryFn: async () => {
+            const response = await axios.get(`${API_BASE_URL}/api/users/${userId}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${ access }`,
+                    'X-API-KEY': `${API_KEY}`
+                }
+            });
+
+            return response.data
+
+        },
+
+        // staleTime: 21600000 , // Cache data for 6 hours
+        refetchOnWindowFocus: false, // Prevent refetching on window focus
+        refetchInterval: 86400000, // Refetch every 1 day
+        
+    })
+
+    return users
+}
+

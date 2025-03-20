@@ -115,7 +115,7 @@ export const columns: ColumnDef<ReportNumberType>[] = [
         accessorKey: "archived",
         header: "Archived",
         cell: ({ row }) => {
-            const archive = row.original.archived?.toString() as ArchivedType
+            const archive = row.original.archived.toString() as ArchivedType
 
             if (!archive) return "N/A";
 
