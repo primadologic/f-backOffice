@@ -34,7 +34,7 @@ export default function ReportNumberExport() {
     {
       label: 'Incident Date',
       value: 'incidentDate',
-      transform: (value: string) => new Date(value).toLocaleDateString()
+      transform: (value: string) => new Date(value)?.toLocaleDateString()
     },
     {
       label: 'Platform',
