@@ -1,5 +1,5 @@
 
-import { MoreHorizontal } from "lucide-react";
+import { Copy, Eye, MoreHorizontal } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -40,14 +40,17 @@ export const ActionsCell = ({ reportNumber }: { reportNumber: ReportNumberType }
             navigator.clipboard.writeText(reportNumber.reporterNumber);
             toast.info("Copied", {duration: 2000})
           }}
+          className="space-x-1"
         >
-          Copy reporter number
+          <span><Copy /></span>
+          <span>Copy fraud number</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem 
             onClick={handleEditClick}
         >
-          View
+          <span><Eye /></span>
+          <span>View</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

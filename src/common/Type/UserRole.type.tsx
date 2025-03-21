@@ -7,7 +7,7 @@
 // }
 
 
-type UserRole = {
+export type UserRole = {
     dateCreated: string;
     dateUpdated: string;
     dateDeleted: string | null;
@@ -34,4 +34,12 @@ export type UserType = {
     lastAssigned?: string | null;
     role: UserRole;
   };
-  
+
+export type CreateUserType = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  roleId?: UserRole; // Optional because it's not marked as required
+  avatarUrl?: File | null; // Assuming the binary data will be handled as a File
+};

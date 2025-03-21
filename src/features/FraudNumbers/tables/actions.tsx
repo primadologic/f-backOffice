@@ -1,5 +1,5 @@
 
-import { MoreHorizontal } from "lucide-react";
+import { Copy, MoreHorizontal, SquarePen, Trash2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -60,20 +60,24 @@ export const ActionsCell = ({ fraudNumber }: { fraudNumber: FraudNumberNewType }
             navigator.clipboard.writeText(fraudNumber.fraudNumber);
             toast.info("Copied", {duration: 2000})
           }}
+          className="space-x-1"
         >
-          Copy fraud number
+          <span><Copy /></span>
+          <span>Copy fraud number</span>
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem onClick={handleEditClick}>
-          Edit
+        <DropdownMenuItem onClick={handleEditClick} className="space-x-1">
+          <span><SquarePen /></span>
+          <span>Edit</span>
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem onClick={handleDeleteClick}>
-          Remove
+        <DropdownMenuItem onClick={handleDeleteClick} className="space-x-1">
+          <span><Trash2 /></span>
+          <span>Remove</span>
         </DropdownMenuItem>
 
       </DropdownMenuContent>

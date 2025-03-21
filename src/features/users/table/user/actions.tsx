@@ -1,5 +1,5 @@
 
-import { MoreHorizontal } from "lucide-react";
+import { Copy, MoreHorizontal, SquarePen, Trash2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,18 +11,28 @@ import {
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { UserType } from "@/common/Type/UserRole.type";
-import { useUserStore } from "@/hooks/state/users/user.state";
+import { useDeleteUserStore, useUpdateUserStore } from "@/hooks/state/users/user.state";
+import { useNavigate } from "@tanstack/react-router";
 
 
 export const ActionsCell = ({ userId }: { userId: UserType }) => {
     
-  const { setIsOpen, setSelectedUser } = useUserStore()
-
-    
+  const { setSelectedUser} = useUpdateUserStore();
+  const { setSelectedUser: setSelectDeletedUser, setIsOpen: setIsOpenDeletedUser} = useDeleteUserStore();
+  const navigate = useNavigate()
   
   const handleEditClick = () => {
-    setSelectedUser(userId)
-    setIsOpen(true)
+    if (userId.userId) {
+      setSelectedUser(userId)
+      navigate({ to: `/users/edit/${userId.userId}` });
+    }
+  }
+
+  const handleDeleteClick = () => {
+    if (userId.userId) {
+      setSelectDeletedUser(userId)
+      setIsOpenDeletedUser(true)
+    }
   }
 
   return (
@@ -37,17 +47,28 @@ export const ActionsCell = ({ userId }: { userId: UserType }) => {
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <DropdownMenuItem
           onClick={() => {
-            navigator.clipboard.writeText(userId.firstName + " " + userId.lastName);
+            navigator.clipboard.writeText(userId?.firstName + " " + userId?.lastName);
             toast.info("Copied", {duration: 2000})
           }}
         >
+          <span><Copy /></span>
           Copy Full name
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem 
             onClick={handleEditClick}
+            className="space-x-1"
         >
-          View
+          <span><SquarePen /></span>
+          <span>Edit</span>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem 
+            onClick={handleDeleteClick}
+            className="space-x-1"
+        >
+          <span><Trash2 /></span>
+          <span>Delete</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

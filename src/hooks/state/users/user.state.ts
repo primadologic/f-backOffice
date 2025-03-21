@@ -25,7 +25,41 @@ export const useUserStore = create<UserStore>() (
             reset: () => set({ isOpen: false, selectedUser: null })
         }),
         {
+            name: 'users'
+        }
+    )
+)
+
+
+export const useUpdateUserStore = create<UserStore>() (
+    persist(
+        (set) => ({
+            isOpen: false,
+            selectedUser: null,
+            setIsOpen: (isOpen) => set({ isOpen }),
+            setSelectedUser: (userId) => set({ selectedUser: userId }),
+
+            reset: () => set({ isOpen: false, selectedUser: null })
+        }),
+        {
             name: 'user'
+        }
+    )
+)
+
+
+export const useDeleteUserStore = create<UserStore>() (
+    persist(
+        (set) => ({
+            isOpen: false,
+            selectedUser: null,
+            setIsOpen: (isOpen) => set({ isOpen }),
+            setSelectedUser: (userId) => set({ selectedUser: userId }),
+
+            reset: () => set({ isOpen: false, selectedUser: null })
+        }),
+        {
+            name: 'delete-user'
         }
     )
 )

@@ -22,6 +22,7 @@ import { Route as DashboardReportNumbersIndexImport } from './routes/dashboard/r
 import { Route as DashboardFraudNumbersIndexImport } from './routes/dashboard/fraud-numbers/index'
 import { Route as DashboardCaseFilesIndexImport } from './routes/dashboard/case-files/index'
 import { Route as UsersRoleCreateImport } from './routes/users/role/create'
+import { Route as UsersEditUserIdImport } from './routes/users/edit/$userId'
 import { Route as DashboardReportNumbersCreateImport } from './routes/dashboard/report-numbers/create'
 import { Route as DashboardFraudNumbersCreateImport } from './routes/dashboard/fraud-numbers/create'
 import { Route as DashboardCaseFilesCreateImport } from './routes/dashboard/case-files/create'
@@ -95,6 +96,12 @@ const DashboardCaseFilesIndexRoute = DashboardCaseFilesIndexImport.update({
 const UsersRoleCreateRoute = UsersRoleCreateImport.update({
   id: '/users/role/create',
   path: '/users/role/create',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const UsersEditUserIdRoute = UsersEditUserIdImport.update({
+  id: '/users/edit/$userId',
+  path: '/users/edit/$userId',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -198,6 +205,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardReportNumbersCreateImport
       parentRoute: typeof rootRoute
     }
+    '/users/edit/$userId': {
+      id: '/users/edit/$userId'
+      path: '/users/edit/$userId'
+      fullPath: '/users/edit/$userId'
+      preLoaderRoute: typeof UsersEditUserIdImport
+      parentRoute: typeof rootRoute
+    }
     '/users/role/create': {
       id: '/users/role/create'
       path: '/users/role/create'
@@ -249,6 +263,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/case-files/create': typeof DashboardCaseFilesCreateRoute
   '/dashboard/fraud-numbers/create': typeof DashboardFraudNumbersCreateRoute
   '/dashboard/report-numbers/create': typeof DashboardReportNumbersCreateRoute
+  '/users/edit/$userId': typeof UsersEditUserIdRoute
   '/users/role/create': typeof UsersRoleCreateRoute
   '/dashboard/case-files': typeof DashboardCaseFilesIndexRoute
   '/dashboard/fraud-numbers': typeof DashboardFraudNumbersIndexRoute
@@ -267,6 +282,7 @@ export interface FileRoutesByTo {
   '/dashboard/case-files/create': typeof DashboardCaseFilesCreateRoute
   '/dashboard/fraud-numbers/create': typeof DashboardFraudNumbersCreateRoute
   '/dashboard/report-numbers/create': typeof DashboardReportNumbersCreateRoute
+  '/users/edit/$userId': typeof UsersEditUserIdRoute
   '/users/role/create': typeof UsersRoleCreateRoute
   '/dashboard/case-files': typeof DashboardCaseFilesIndexRoute
   '/dashboard/fraud-numbers': typeof DashboardFraudNumbersIndexRoute
@@ -286,6 +302,7 @@ export interface FileRoutesById {
   '/dashboard/case-files/create': typeof DashboardCaseFilesCreateRoute
   '/dashboard/fraud-numbers/create': typeof DashboardFraudNumbersCreateRoute
   '/dashboard/report-numbers/create': typeof DashboardReportNumbersCreateRoute
+  '/users/edit/$userId': typeof UsersEditUserIdRoute
   '/users/role/create': typeof UsersRoleCreateRoute
   '/dashboard/case-files/': typeof DashboardCaseFilesIndexRoute
   '/dashboard/fraud-numbers/': typeof DashboardFraudNumbersIndexRoute
@@ -306,6 +323,7 @@ export interface FileRouteTypes {
     | '/dashboard/case-files/create'
     | '/dashboard/fraud-numbers/create'
     | '/dashboard/report-numbers/create'
+    | '/users/edit/$userId'
     | '/users/role/create'
     | '/dashboard/case-files'
     | '/dashboard/fraud-numbers'
@@ -323,6 +341,7 @@ export interface FileRouteTypes {
     | '/dashboard/case-files/create'
     | '/dashboard/fraud-numbers/create'
     | '/dashboard/report-numbers/create'
+    | '/users/edit/$userId'
     | '/users/role/create'
     | '/dashboard/case-files'
     | '/dashboard/fraud-numbers'
@@ -340,6 +359,7 @@ export interface FileRouteTypes {
     | '/dashboard/case-files/create'
     | '/dashboard/fraud-numbers/create'
     | '/dashboard/report-numbers/create'
+    | '/users/edit/$userId'
     | '/users/role/create'
     | '/dashboard/case-files/'
     | '/dashboard/fraud-numbers/'
@@ -359,6 +379,7 @@ export interface RootRouteChildren {
   DashboardCaseFilesCreateRoute: typeof DashboardCaseFilesCreateRoute
   DashboardFraudNumbersCreateRoute: typeof DashboardFraudNumbersCreateRoute
   DashboardReportNumbersCreateRoute: typeof DashboardReportNumbersCreateRoute
+  UsersEditUserIdRoute: typeof UsersEditUserIdRoute
   UsersRoleCreateRoute: typeof UsersRoleCreateRoute
   DashboardCaseFilesIndexRoute: typeof DashboardCaseFilesIndexRoute
   DashboardFraudNumbersIndexRoute: typeof DashboardFraudNumbersIndexRoute
@@ -377,6 +398,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardCaseFilesCreateRoute: DashboardCaseFilesCreateRoute,
   DashboardFraudNumbersCreateRoute: DashboardFraudNumbersCreateRoute,
   DashboardReportNumbersCreateRoute: DashboardReportNumbersCreateRoute,
+  UsersEditUserIdRoute: UsersEditUserIdRoute,
   UsersRoleCreateRoute: UsersRoleCreateRoute,
   DashboardCaseFilesIndexRoute: DashboardCaseFilesIndexRoute,
   DashboardFraudNumbersIndexRoute: DashboardFraudNumbersIndexRoute,
@@ -404,6 +426,7 @@ export const routeTree = rootRoute
         "/dashboard/case-files/create",
         "/dashboard/fraud-numbers/create",
         "/dashboard/report-numbers/create",
+        "/users/edit/$userId",
         "/users/role/create",
         "/dashboard/case-files/",
         "/dashboard/fraud-numbers/",
@@ -440,6 +463,9 @@ export const routeTree = rootRoute
     },
     "/dashboard/report-numbers/create": {
       "filePath": "dashboard/report-numbers/create.tsx"
+    },
+    "/users/edit/$userId": {
+      "filePath": "users/edit/$userId.tsx"
     },
     "/users/role/create": {
       "filePath": "users/role/create.tsx"
