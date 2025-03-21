@@ -87,7 +87,7 @@ export const useDeleteUserService = (userId: string) => {
         },
         onSuccess: (data) => {
             const message = data?.message
-            if (data?.statusCode === 204) {
+            if (data?.statusCode === 200) {
                 toast.success(`${message}`)
                 queryClient.invalidateQueries({ queryKey: ['users'] })
                 setIsOpen(false)
