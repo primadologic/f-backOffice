@@ -110,6 +110,7 @@ export default {
 				gray2: "#272727",
 				gray_hover: "#414141",
 				black: "#0f0f0f",
+				light_blue: "#b18cff"
 			}
   		},
 
