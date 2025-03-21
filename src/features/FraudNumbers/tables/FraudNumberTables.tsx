@@ -23,8 +23,6 @@ export default function FraudNumberListTable() {
 
   const fraudNumbers: FraudNumberNewType[] = fraudNumberData?.data
 
-  console.log(fraudNumbers);
-
 
   return (
     <div className="container mx-auto">

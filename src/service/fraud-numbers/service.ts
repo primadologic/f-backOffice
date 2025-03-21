@@ -77,7 +77,7 @@ export const useDeleteFraudNumberService = () => {
                     'X-API-KEY': `${API_KEY}`
                 }
             });
-            console.log("delete fraud number", response.data);
+            // console.log("delete fraud number", response.data);
             return response.data
         },
         onSuccess: (data) => {

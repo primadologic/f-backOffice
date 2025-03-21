@@ -210,7 +210,7 @@ export const useDeletCaseFileService = (caseFileId: string | null) => {
 
     const { token: access } = useAuth();
 
-    const queryClient = useQueryClient()
+    const queryClient = useQueryClient();
 
     const { setIsOpen } = useDeleteCaseFileStore();
 

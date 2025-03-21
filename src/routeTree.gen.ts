@@ -13,10 +13,16 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
+import { Route as UsersIndexImport } from './routes/users/index'
+import { Route as UserRoleIndexImport } from './routes/user-role/index'
 import { Route as DashboardIndexImport } from './routes/dashboard/index'
+import { Route as UsersCreateImport } from './routes/users/create'
+import { Route as UsersRoleIndexImport } from './routes/users/role/index'
 import { Route as DashboardReportNumbersIndexImport } from './routes/dashboard/report-numbers/index'
 import { Route as DashboardFraudNumbersIndexImport } from './routes/dashboard/fraud-numbers/index'
 import { Route as DashboardCaseFilesIndexImport } from './routes/dashboard/case-files/index'
+import { Route as UsersRoleCreateImport } from './routes/users/role/create'
+import { Route as UsersEditUserIdImport } from './routes/users/edit/$userId'
 import { Route as DashboardReportNumbersCreateImport } from './routes/dashboard/report-numbers/create'
 import { Route as DashboardFraudNumbersCreateImport } from './routes/dashboard/fraud-numbers/create'
 import { Route as DashboardCaseFilesCreateImport } from './routes/dashboard/case-files/create'
@@ -36,9 +42,33 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const UsersIndexRoute = UsersIndexImport.update({
+  id: '/users/',
+  path: '/users/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const UserRoleIndexRoute = UserRoleIndexImport.update({
+  id: '/user-role/',
+  path: '/user-role/',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const DashboardIndexRoute = DashboardIndexImport.update({
   id: '/dashboard/',
   path: '/dashboard/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const UsersCreateRoute = UsersCreateImport.update({
+  id: '/users/create',
+  path: '/users/create',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const UsersRoleIndexRoute = UsersRoleIndexImport.update({
+  id: '/users/role/',
+  path: '/users/role/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -60,6 +90,18 @@ const DashboardFraudNumbersIndexRoute = DashboardFraudNumbersIndexImport.update(
 const DashboardCaseFilesIndexRoute = DashboardCaseFilesIndexImport.update({
   id: '/dashboard/case-files/',
   path: '/dashboard/case-files/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const UsersRoleCreateRoute = UsersRoleCreateImport.update({
+  id: '/users/role/create',
+  path: '/users/role/create',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const UsersEditUserIdRoute = UsersEditUserIdImport.update({
+  id: '/users/edit/$userId',
+  path: '/users/edit/$userId',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -107,11 +149,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutImport
       parentRoute: typeof rootRoute
     }
+    '/users/create': {
+      id: '/users/create'
+      path: '/users/create'
+      fullPath: '/users/create'
+      preLoaderRoute: typeof UsersCreateImport
+      parentRoute: typeof rootRoute
+    }
     '/dashboard/': {
       id: '/dashboard/'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/user-role/': {
+      id: '/user-role/'
+      path: '/user-role'
+      fullPath: '/user-role'
+      preLoaderRoute: typeof UserRoleIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/users/': {
+      id: '/users/'
+      path: '/users'
+      fullPath: '/users'
+      preLoaderRoute: typeof UsersIndexImport
       parentRoute: typeof rootRoute
     }
     '/dashboard/case-files/$caseId': {
@@ -142,6 +205,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardReportNumbersCreateImport
       parentRoute: typeof rootRoute
     }
+    '/users/edit/$userId': {
+      id: '/users/edit/$userId'
+      path: '/users/edit/$userId'
+      fullPath: '/users/edit/$userId'
+      preLoaderRoute: typeof UsersEditUserIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/users/role/create': {
+      id: '/users/role/create'
+      path: '/users/role/create'
+      fullPath: '/users/role/create'
+      preLoaderRoute: typeof UsersRoleCreateImport
+      parentRoute: typeof rootRoute
+    }
     '/dashboard/case-files/': {
       id: '/dashboard/case-files/'
       path: '/dashboard/case-files'
@@ -163,6 +240,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardReportNumbersIndexImport
       parentRoute: typeof rootRoute
     }
+    '/users/role/': {
+      id: '/users/role/'
+      path: '/users/role'
+      fullPath: '/users/role'
+      preLoaderRoute: typeof UsersRoleIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -171,41 +255,59 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/users/create': typeof UsersCreateRoute
   '/dashboard': typeof DashboardIndexRoute
+  '/user-role': typeof UserRoleIndexRoute
+  '/users': typeof UsersIndexRoute
   '/dashboard/case-files/$caseId': typeof DashboardCaseFilesCaseIdRoute
   '/dashboard/case-files/create': typeof DashboardCaseFilesCreateRoute
   '/dashboard/fraud-numbers/create': typeof DashboardFraudNumbersCreateRoute
   '/dashboard/report-numbers/create': typeof DashboardReportNumbersCreateRoute
+  '/users/edit/$userId': typeof UsersEditUserIdRoute
+  '/users/role/create': typeof UsersRoleCreateRoute
   '/dashboard/case-files': typeof DashboardCaseFilesIndexRoute
   '/dashboard/fraud-numbers': typeof DashboardFraudNumbersIndexRoute
   '/dashboard/report-numbers': typeof DashboardReportNumbersIndexRoute
+  '/users/role': typeof UsersRoleIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/users/create': typeof UsersCreateRoute
   '/dashboard': typeof DashboardIndexRoute
+  '/user-role': typeof UserRoleIndexRoute
+  '/users': typeof UsersIndexRoute
   '/dashboard/case-files/$caseId': typeof DashboardCaseFilesCaseIdRoute
   '/dashboard/case-files/create': typeof DashboardCaseFilesCreateRoute
   '/dashboard/fraud-numbers/create': typeof DashboardFraudNumbersCreateRoute
   '/dashboard/report-numbers/create': typeof DashboardReportNumbersCreateRoute
+  '/users/edit/$userId': typeof UsersEditUserIdRoute
+  '/users/role/create': typeof UsersRoleCreateRoute
   '/dashboard/case-files': typeof DashboardCaseFilesIndexRoute
   '/dashboard/fraud-numbers': typeof DashboardFraudNumbersIndexRoute
   '/dashboard/report-numbers': typeof DashboardReportNumbersIndexRoute
+  '/users/role': typeof UsersRoleIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/users/create': typeof UsersCreateRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/user-role/': typeof UserRoleIndexRoute
+  '/users/': typeof UsersIndexRoute
   '/dashboard/case-files/$caseId': typeof DashboardCaseFilesCaseIdRoute
   '/dashboard/case-files/create': typeof DashboardCaseFilesCreateRoute
   '/dashboard/fraud-numbers/create': typeof DashboardFraudNumbersCreateRoute
   '/dashboard/report-numbers/create': typeof DashboardReportNumbersCreateRoute
+  '/users/edit/$userId': typeof UsersEditUserIdRoute
+  '/users/role/create': typeof UsersRoleCreateRoute
   '/dashboard/case-files/': typeof DashboardCaseFilesIndexRoute
   '/dashboard/fraud-numbers/': typeof DashboardFraudNumbersIndexRoute
   '/dashboard/report-numbers/': typeof DashboardReportNumbersIndexRoute
+  '/users/role/': typeof UsersRoleIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -213,65 +315,95 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/users/create'
     | '/dashboard'
+    | '/user-role'
+    | '/users'
     | '/dashboard/case-files/$caseId'
     | '/dashboard/case-files/create'
     | '/dashboard/fraud-numbers/create'
     | '/dashboard/report-numbers/create'
+    | '/users/edit/$userId'
+    | '/users/role/create'
     | '/dashboard/case-files'
     | '/dashboard/fraud-numbers'
     | '/dashboard/report-numbers'
+    | '/users/role'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
+    | '/users/create'
     | '/dashboard'
+    | '/user-role'
+    | '/users'
     | '/dashboard/case-files/$caseId'
     | '/dashboard/case-files/create'
     | '/dashboard/fraud-numbers/create'
     | '/dashboard/report-numbers/create'
+    | '/users/edit/$userId'
+    | '/users/role/create'
     | '/dashboard/case-files'
     | '/dashboard/fraud-numbers'
     | '/dashboard/report-numbers'
+    | '/users/role'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/users/create'
     | '/dashboard/'
+    | '/user-role/'
+    | '/users/'
     | '/dashboard/case-files/$caseId'
     | '/dashboard/case-files/create'
     | '/dashboard/fraud-numbers/create'
     | '/dashboard/report-numbers/create'
+    | '/users/edit/$userId'
+    | '/users/role/create'
     | '/dashboard/case-files/'
     | '/dashboard/fraud-numbers/'
     | '/dashboard/report-numbers/'
+    | '/users/role/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  UsersCreateRoute: typeof UsersCreateRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
+  UserRoleIndexRoute: typeof UserRoleIndexRoute
+  UsersIndexRoute: typeof UsersIndexRoute
   DashboardCaseFilesCaseIdRoute: typeof DashboardCaseFilesCaseIdRoute
   DashboardCaseFilesCreateRoute: typeof DashboardCaseFilesCreateRoute
   DashboardFraudNumbersCreateRoute: typeof DashboardFraudNumbersCreateRoute
   DashboardReportNumbersCreateRoute: typeof DashboardReportNumbersCreateRoute
+  UsersEditUserIdRoute: typeof UsersEditUserIdRoute
+  UsersRoleCreateRoute: typeof UsersRoleCreateRoute
   DashboardCaseFilesIndexRoute: typeof DashboardCaseFilesIndexRoute
   DashboardFraudNumbersIndexRoute: typeof DashboardFraudNumbersIndexRoute
   DashboardReportNumbersIndexRoute: typeof DashboardReportNumbersIndexRoute
+  UsersRoleIndexRoute: typeof UsersRoleIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  UsersCreateRoute: UsersCreateRoute,
   DashboardIndexRoute: DashboardIndexRoute,
+  UserRoleIndexRoute: UserRoleIndexRoute,
+  UsersIndexRoute: UsersIndexRoute,
   DashboardCaseFilesCaseIdRoute: DashboardCaseFilesCaseIdRoute,
   DashboardCaseFilesCreateRoute: DashboardCaseFilesCreateRoute,
   DashboardFraudNumbersCreateRoute: DashboardFraudNumbersCreateRoute,
   DashboardReportNumbersCreateRoute: DashboardReportNumbersCreateRoute,
+  UsersEditUserIdRoute: UsersEditUserIdRoute,
+  UsersRoleCreateRoute: UsersRoleCreateRoute,
   DashboardCaseFilesIndexRoute: DashboardCaseFilesIndexRoute,
   DashboardFraudNumbersIndexRoute: DashboardFraudNumbersIndexRoute,
   DashboardReportNumbersIndexRoute: DashboardReportNumbersIndexRoute,
+  UsersRoleIndexRoute: UsersRoleIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -286,14 +418,20 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/about",
+        "/users/create",
         "/dashboard/",
+        "/user-role/",
+        "/users/",
         "/dashboard/case-files/$caseId",
         "/dashboard/case-files/create",
         "/dashboard/fraud-numbers/create",
         "/dashboard/report-numbers/create",
+        "/users/edit/$userId",
+        "/users/role/create",
         "/dashboard/case-files/",
         "/dashboard/fraud-numbers/",
-        "/dashboard/report-numbers/"
+        "/dashboard/report-numbers/",
+        "/users/role/"
       ]
     },
     "/": {
@@ -302,8 +440,17 @@ export const routeTree = rootRoute
     "/about": {
       "filePath": "about.tsx"
     },
+    "/users/create": {
+      "filePath": "users/create.tsx"
+    },
     "/dashboard/": {
       "filePath": "dashboard/index.tsx"
+    },
+    "/user-role/": {
+      "filePath": "user-role/index.tsx"
+    },
+    "/users/": {
+      "filePath": "users/index.tsx"
     },
     "/dashboard/case-files/$caseId": {
       "filePath": "dashboard/case-files/$caseId.tsx"
@@ -317,6 +464,12 @@ export const routeTree = rootRoute
     "/dashboard/report-numbers/create": {
       "filePath": "dashboard/report-numbers/create.tsx"
     },
+    "/users/edit/$userId": {
+      "filePath": "users/edit/$userId.tsx"
+    },
+    "/users/role/create": {
+      "filePath": "users/role/create.tsx"
+    },
     "/dashboard/case-files/": {
       "filePath": "dashboard/case-files/index.tsx"
     },
@@ -325,6 +478,9 @@ export const routeTree = rootRoute
     },
     "/dashboard/report-numbers/": {
       "filePath": "dashboard/report-numbers/index.tsx"
+    },
+    "/users/role/": {
+      "filePath": "users/role/index.tsx"
     }
   }
 }

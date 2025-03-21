@@ -18,13 +18,14 @@ import {
   Flag,
   BriefcaseBusiness,
   LayoutDashboard,
+  Users,
   
 } from "lucide-react"
 
 // import { NavMain } from "@/components/nav-main"
 // import { NavProjects } from "@/components/nav-projects"
 import { NavUser } from "@/components/nav-user"
-import { TeamSwitcher } from "@/components/team-switcher"
+// import { TeamSwitcher } from "@/components/team-switcher"
 import {
   Sidebar,
   SidebarContent,
@@ -35,6 +36,7 @@ import {
 
 import { MenuItem } from "./menu-items"
 import Logo from "./custom-ui/logo"
+import NavBrand from "./custom-ui/navbar-brand"
 
 // This is sample data.
 const data = {
@@ -230,6 +232,12 @@ const data = {
       icon: Flag ,
       isActive: true
     },
+    {
+      title: 'Users',
+      url: "/users",
+      icon: Users,
+      isActive: true
+    },
   ],
 
 }
@@ -238,7 +246,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props} >
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        {/* <TeamSwitcher teams={data.teams} /> */}
+        <NavBrand />
       </SidebarHeader>
       <SidebarContent className="dark:bg-custom_theme-black">
         {/* <NavMain items={data.navMain} /> */}

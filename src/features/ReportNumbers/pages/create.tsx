@@ -117,8 +117,8 @@ export default function ReportNumberCreatePage() {
                     formData.append('requestFiles', file);
                 });
     
-                // console.log("Sending request to:", `${API_BASE_URL}/report?origin=${origin}`);
-                console.log("FormData entries:", Array.from(formData.entries()));
+
+                // console.log("FormData entries:", Array.from(formData.entries()));
     
                 const response = await axios.post(`${API_BASE_URL}/report/back-office`, formData, {
                     headers: {
@@ -128,7 +128,7 @@ export default function ReportNumberCreatePage() {
                     }
                 });
     
-                console.log("Response received:", response);
+                // console.log("Response received:", response);
     
                 if (response.data?.statusCode === 200) {
                     toast.success(`${response?.data?.message}`, {
@@ -139,7 +139,7 @@ export default function ReportNumberCreatePage() {
                     
                     setTimeout(() => {
                         navigate({ to: '/' });
-                    }, 3000);
+                    }, 1000);
                 }
     
                 if (response.data?.statusCode === 201) {
