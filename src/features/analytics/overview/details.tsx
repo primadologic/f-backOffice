@@ -1,7 +1,8 @@
 
 
+import NewOverviewCards from "@/components/custom-ui/overview-loading";
 import AnalyticsLayout from "../layout/analytics-layout";
-import OverviewCards from "./sub-charts/cards";
+// import OverviewCards from "./sub-charts/cards";
 
 
 
@@ -12,7 +13,8 @@ export default function OverviewPageAnalytics() {
         <AnalyticsLayout>
             <div className=" py-4">
                 <div className="">
-                    <OverviewCards />
+                    {/* <OverviewCards /> */}
+                    <NewOverviewCards />
                 </div>
             </div>
         </AnalyticsLayout>
