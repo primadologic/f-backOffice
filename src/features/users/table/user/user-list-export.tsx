@@ -87,7 +87,7 @@ export default function UserListExport() {
         <TableExport 
           data={userList || []}
           columns={userListColumns}
-          filename="report-numbers-export"
+          filename="user-list-export"
         />
       </div>
     </div>
