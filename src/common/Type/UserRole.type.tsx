@@ -8,13 +8,13 @@
 
 
 export type UserRole = {
-    dateCreated: string;
-    dateUpdated: string;
-    dateDeleted: string | null;
-    id: string;
+    dateCreated?: string;
+    dateUpdated?: string;
+    dateDeleted?: string | null;
+    id?: string;
     roleName: string;
-    description: string;
-  };
+    description?: string;
+};
   
 export type UserType = {
     dateCreated?: string;

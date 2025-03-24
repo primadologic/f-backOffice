@@ -19,6 +19,7 @@ import {
   BriefcaseBusiness,
   LayoutDashboard,
   Users,
+  ShieldUser,
   
 } from "lucide-react"
 
@@ -236,6 +237,12 @@ const data = {
       title: 'Users',
       url: "/users",
       icon: Users,
+      isActive: true
+    },
+    {
+      title: 'User Roles',
+      url: "/user-role",
+      icon: ShieldUser,
       isActive: true
     },
   ],

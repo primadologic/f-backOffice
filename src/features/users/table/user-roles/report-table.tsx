@@ -3,10 +3,10 @@ import { ApiResponse } from "@/common/api-response.type";
 import { columns } from "./columns"
 import { DataTable } from "./data-table"
 // import { getData } from "@/service/report-number.service";
-import { useReportListService } from "@/service/report/service";
+import { useUserRoleService } from "@/service/users/service";
 
 
-export default function ReportNumberListTable() {
+export default function UserRoleListTable() {
 
   // const getCaseFiles = useQuery({
   //     queryKey: ['reportNumberList'],
@@ -16,15 +16,15 @@ export default function ReportNumberListTable() {
        
   // })
 
-  const response: ApiResponse = useReportListService()?.data
+  const response: ApiResponse = useUserRoleService()?.data
 
-  const report = response?.data || []
+  const role = response?.data || []
 
 
   return (
     <div className="container mx-auto ">
       {/* <DataTable columns={columns} data={getCaseFiles.data || []} /> */}
-      <DataTable columns={columns} data={ report || []} />
+      <DataTable columns={columns} data={ role || []} />
     </div>
   )
 }

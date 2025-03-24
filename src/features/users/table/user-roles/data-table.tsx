@@ -41,7 +41,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { ChevronDown, ListFilter, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { useReportListService } from "@/service/report/service"
+import { useUserRoleService } from "@/service/users/service"
 
 
 
@@ -103,7 +103,7 @@ const [pagination, setPagination] = useState({
   });
 
 
-  const reportListQuery = useReportListService()
+  const userRoleQuery = useUserRoleService()
 
   return (
     <div className="">
@@ -221,7 +221,7 @@ const [pagination, setPagination] = useState({
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                  {reportListQuery.isFetching ? "Loading..." : "No results."}
+                  {userRoleQuery.isFetching ? "Loading..." : "No results."}
                 </TableCell>
               </TableRow>
             )}

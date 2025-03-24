@@ -3,17 +3,31 @@ import { Plus, Users } from "lucide-react";
 import { CustomButton } from "@/components/custom-ui/buttons";
 import TopNavBar from "@/components/custom-ui/topBarNav";
 import PageLayout from "@/features/layout/PagesLayout";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, useRouterState } from "@tanstack/react-router";
 import UserListExport from "@/features/users//table/user/user-list-export";
 import UserListTable from "@/features/users/table/user/user-table";
 import DeleteUserDialog from "./delete";
-
+import { useUsers } from "@/service/users/service";
+import LoadingSkeleton from "@/components/custom-ui/page-loading-ui";
 
 
 
 export default function UserListComponent() {
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const { status } = useRouterState() // Get the current State of router state\
+
+    const { isLoading, isPending, } = useUsers()
+
+    if ( status ===  "pending" ) {
+        return <LoadingSkeleton />
+    } 
+    else if (isLoading || isPending) {
+        return <LoadingSkeleton />
+    }
+
+
+    // Show skeleton if the routeis still loading
 
     return (
        <div className="py-3">

@@ -8,13 +8,27 @@ import ReportNumberListTable from "../tables/report-table";
 import ReportNumberExport from "../tables/report-number-export";
 import ReportNumberViewSheet from "./detail-view";
 import PageLayout from "@/features/layout/PagesLayout";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, useRouterState } from "@tanstack/react-router";
+import LoadingSkeleton from "@/components/custom-ui/page-loading-ui";
+import { useReportListService } from "@/service/report/service";
 
 
 
 export default function ReportNumberListPage() {
 
     const navigate = useNavigate()
+
+    const { status } = useRouterState() // Get the current State of router state
+
+    const { isLoading, isPending, }  = useReportListService()
+    
+
+    if ( status ===  "pending" ) {
+        return <LoadingSkeleton />
+    } 
+    else if (isLoading || isPending) {
+        return <LoadingSkeleton />
+    }
 
     return (
        <div className="">

@@ -1,3 +1,4 @@
+import { useUserRoleStore } from "@/hooks/state/users/role.state";
 import { useDeleteUserStore } from "@/hooks/state/users/user.state";
 import { useAuth } from "@/hooks/useAuth";
 import { API_BASE_URL, API_KEY } from "@/lib/env_vars";
@@ -73,7 +74,7 @@ export const useDeleteUserService = (userId: string) => {
     const queryClient = useQueryClient();
 
     const deleteUser = useMutation({
-        mutationKey: ['delete-user'],
+        mutationKey: ['delete-user', userId],
         mutationFn: async () => {
             const response = await axios.delete(`${API_BASE_URL}/api/users/${userId}`, {
                 headers: {
@@ -83,13 +84,14 @@ export const useDeleteUserService = (userId: string) => {
                 }
             })
 
+
             return response.data
         },
         onSuccess: (data) => {
             const message = data?.message
             if (data?.statusCode === 200) {
                 toast.success(`${message}`)
-                queryClient.invalidateQueries({ queryKey: ['users'] })
+                queryClient.invalidateQueries({ queryKey: ['users', userId] })
                 setIsOpen(false)
                 logout();
     
@@ -130,11 +132,13 @@ export const useDeleteUserService = (userId: string) => {
 }
 
 
+
+// User Roles Service Hooks
+
+
 export const useUserRoleService = () => {
 
     const { token: access } = useAuth();
-
-
 
     const userRole = useQuery({
         queryKey: ['user-role'],
@@ -158,4 +162,99 @@ export const useUserRoleService = () => {
 
     return userRole
 
+}
+
+
+export const useUpdateUserRole = (roleId: string) => {
+    const { token: access, logout,  } = useAuth();
+    
+    const { setIsOpen } = useUserRoleStore()
+
+    const queryClient = useQueryClient();
+
+    const updateUserRole = useMutation({
+        mutationKey: ['update-user-role', roleId],
+        mutationFn: async () => {
+            const response = await axios.put(`${API_BASE_URL}/api/roles/${roleId}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${ access }`,
+                    'X-API-KEY': `${API_KEY}`
+                }
+            })
+
+            return response.data
+        },
+        onSuccess: (data) => {
+            const message = data?.message
+            if (data?.statusCode === 200) {
+                toast.success(`${message}`)
+                queryClient.invalidateQueries({ queryKey: ['user-role', roleId] })
+                setIsOpen(false)
+                logout();
+    
+            }
+        },
+
+        onError: (error) => {
+            if (axios.isAxiosError(error)) {
+                const code = error.response?.status ?? null
+
+                if (code === 400) {
+                    toast.error(`Oops an error occured`, {
+                        description: `${error.response?.data?.message}`
+                    })
+                };
+                if (code === 401) {
+                    toast.error(`Oops an error occured`, {
+                        description: `${error.response?.data?.message}`
+                    })
+                };
+
+                if (code === 404) {
+                    toast.error(`Sorry, this case file does not exist.`, {
+                        description: `${error.response?.data?.message}`
+                    })
+                };
+                if (code === 500) {
+                    toast.error(`Sorry an unexpected error occured.`, {
+                        description: `${error.response?.data?.message}`
+                    })
+                };
+            }
+        },
+        
+    })
+
+    return updateUserRole;
+}
+
+
+export const useUserRoleDetails = (roleId: string) => {
+
+    const { token: access } = useAuth();
+
+    const userRoleDetail = useQuery({
+        queryKey: ['role-details', roleId],
+        queryFn: async () => {
+            const response = await axios.get(`${API_BASE_URL}/api/roles/${roleId}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${ access }`,
+                    'X-API-KEY': `${API_KEY}`
+                }
+            });
+
+            return response.data
+
+        },
+
+        enabled: !!roleId,
+        // staleTime: 21600000 , // Cache data for 6 hours
+        refetchOnWindowFocus: false, // Prevent refetching on window focus
+        refetchInterval: 86400000, // Refetch every 1 day
+        
+    })
+
+    return userRoleDetail;
 }
