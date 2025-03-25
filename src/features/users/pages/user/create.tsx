@@ -333,7 +333,7 @@ export default function UserCreateComponent() {
                                                         <SelectContent>
                                                             {userRoleService.isFetched ?  
                                                             userRoleData?.map((role) => (
-                                                                <SelectItem key={role.id} value={role.id}>
+                                                                <SelectItem key={role.id} value={role.id || ""}>
                                                                     {role.roleName}
                                                                 </SelectItem>
                                                             )): (

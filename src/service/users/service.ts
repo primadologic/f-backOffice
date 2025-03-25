@@ -262,7 +262,7 @@ export const useUserRoleService = () => {
 }
 
 
-export const useUpdateUserRole = (roleId: string) => {
+export const useUpdateUserRoleService = (roleId: string) => {
     const { token: access, logout,  } = useAuth();
     
     const { setIsOpen } = useUserRoleStore()
@@ -327,7 +327,7 @@ export const useUpdateUserRole = (roleId: string) => {
 }
 
 
-export const useUserRoleDetails = (roleId: string) => {
+export const useUserRoleDetailService = (roleId: string) => {
 
     const { token: access } = useAuth();
 
@@ -336,7 +336,7 @@ export const useUserRoleDetails = (roleId: string) => {
         queryFn: async () => {
             const response = await axios.get(`${API_BASE_URL}/api/roles/${roleId}`, {
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Typpe': 'application/json',
                     'Authorization': `Bearer ${ access }`,
                     'X-API-KEY': `${API_KEY}`
                 }
@@ -354,4 +354,69 @@ export const useUserRoleDetails = (roleId: string) => {
     })
 
     return userRoleDetail;
+}
+
+
+export const useDeleteUserRoleService = (roleId: string) => {
+    const { token: access, logout,  } = useAuth();
+    const { setIsOpen } = useDeleteUserStore();
+
+    const queryClient = useQueryClient();
+
+    const deleteUserRole = useMutation({
+        mutationKey: ['delete-user-role', roleId],
+        mutationFn: async () => {
+            const response = await axios.delete(`${API_BASE_URL}/api/role/${roleId}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${ access }`,
+                    'X-API-KEY': `${API_KEY}`
+                }
+            })
+
+
+            return response.data
+        },
+        onSuccess: (data) => {
+            const message = data?.message
+            if (data?.statusCode === 200) {
+                toast.success(`${message}`)
+                queryClient.invalidateQueries({ queryKey: ['user-role', roleId] })
+                setIsOpen(false)
+                logout();
+    
+            }
+        },
+
+        onError: (error) => {
+            if (axios.isAxiosError(error)) {
+                const code = error.response?.status ?? null
+
+                if (code === 400) {
+                    toast.error(`Oops an error occured`, {
+                        description: `${error.response?.data?.message}`
+                    })
+                };
+                if (code === 401) {
+                    toast.error(`Oops an error occured`, {
+                        description: `${error.response?.data?.message}`
+                    })
+                };
+
+                if (code === 404) {
+                    toast.error(`Sorry, this user role does not exist.`, {
+                        description: `${error.response?.data?.message}`
+                    })
+                };
+                if (code === 500) {
+                    toast.error(`Sorry an unexpected error occured.`, {
+                        description: `${error.response?.data?.message}`
+                    })
+                };
+            }
+        },
+        
+    })
+
+    return deleteUserRole;
 }

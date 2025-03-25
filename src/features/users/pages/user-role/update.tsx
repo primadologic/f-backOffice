@@ -12,14 +12,14 @@ import { CustomCloseButton } from "@/components/custom-ui/custom-buttons";
 import { useUserRoleStore } from "@/hooks/state/users/role.state";
 import { UserRole } from "@/common/Type/UserRole.type";
 import Loader from "@/components/custom-ui/loader";
-import { useUpdateUserRole, useUserRoleDetails } from "@/service/users/service";
+import { useUpdateUserRoleService, useUserRoleDetailService,  } from "@/service/users/service";
 import React from "react";
 
 export default function UserRoleUpdateDialog() {
   const { isOpen, setIsOpen, selectedRoleId } = useUserRoleStore();
 
-  const updateUserRoleMutation = useUpdateUserRole(selectedRoleId ?? "");
-  const selectedRole = useUserRoleDetails(selectedRoleId ?? "null");
+  const updateUserRoleMutation = useUpdateUserRoleService(selectedRoleId ?? "");
+  const selectedRole = useUserRoleDetailService(selectedRoleId ?? "null");
 
   // Initialize React Hook Form
   const {

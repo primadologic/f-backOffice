@@ -25,3 +25,21 @@ export const useUserRoleStore = create<UserRoleStore>()(
     }
   )
 );
+
+
+export const useUserRoleDeleteStore = create<UserRoleStore>()(
+  persist(
+    (set) => ({
+      isOpen: false,
+      selectedRoleId: null,
+      setIsOpen: (isOpen) => set({ isOpen }),
+      setSelectedRoleId: (roleId) => set({ selectedRoleId: roleId }),
+      reset: () => set({ isOpen: false, selectedRoleId: null }),
+    }),
+    {
+      name: 'user-role-storage', // Unique name for storage
+      storage: createJSONStorage(() => localStorage), // Use localStorage
+      partialize: (state) => ({ selectedRoleId: state.selectedRoleId }), // only persist selectedRoleId
+    }
+  )
+);
