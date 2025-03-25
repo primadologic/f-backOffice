@@ -174,7 +174,7 @@ export const columns: ColumnDef<UserType>[] = [
         header: "Actions",
         id: "actions",
         enableHiding: false,
-        cell: ({ row }) => <ActionsCell userId={row.original} />,
+        cell: ({ row }) => <ActionsCell user={row.original} />,
     }
    
 ]

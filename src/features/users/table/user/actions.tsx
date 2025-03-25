@@ -1,4 +1,4 @@
-import { Copy, MoreHorizontal, SquarePen } from "lucide-react";
+import { Copy, MoreHorizontal, SquarePen, Trash2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,27 +9,40 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { useUserRoleStore } from "@/hooks/state/users/role.state";
-import { UserRole } from "@/common/Type/UserRole.type";
-import { useUserRoleDetails } from "@/service/users/service";
+import { useGetUserDetails } from "@/service/users/service";
+import { useDeleteUserStore, useUserStore } from "@/hooks/state/users/user.state";
+import { UserType } from "@/common/Type/UserRole.type";
+import { useNavigate } from "@tanstack/react-router";
 
-export const ActionsCell = ({ userRole }: { userRole: UserRole }) => {
-  const { setIsOpen, setSelectedRoleId, selectedRoleId } = useUserRoleStore();
-  const selectedRole = useUserRoleDetails(selectedRoleId ?? "null");
+export const ActionsCell = ({ user }: { user: UserType }) => {
+  const { setSelectedUser, selectedUser } = useUserStore();
+  const { setIsOpen: setIsOpenDelete, setSelectedUser: setSelectedDeleteUser } = useDeleteUserStore();
+  const selectedUserId = useGetUserDetails(selectedUser ?? "defaultUserId");
+
+  const navigate = useNavigate()
 
   const handleEditClick = () => {
-    setSelectedRoleId(userRole.id ?? null);
-    setIsOpen(true);
+    setSelectedUser(user.userId);
+    navigate({ to: `/users/edit/${user.userId}`, params: { userId: user.userId } });
   };
 
   const handleCopyClick = () => {
-      if(selectedRole.data?.data?.roleName){
-        navigator.clipboard.writeText(selectedRole.data.data.roleName);
-        toast.info("Copied", { duration: 2000 });
-      } else {
-        toast.error("Role Name not available", {duration: 2000})
-      }
+    if (selectedUserId.data?.data?.roleName) {
+      navigator.clipboard.writeText(
+        selectedUserId.data?.data?.firstName +
+          " " +
+          selectedUserId.data?.data?.lastName
+      );
+      toast.info("Copied", { duration: 2000 });
+    } else {
+      toast.error("Role Name not available", { duration: 2000 });
+    }
   };
+
+  const handleDeleteClick = () => {
+    setSelectedDeleteUser(user.userId)
+    setIsOpenDelete(true)
+  }
 
   return (
     <DropdownMenu>
@@ -41,14 +54,27 @@ export const ActionsCell = ({ userRole }: { userRole: UserRole }) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        <DropdownMenuItem onClick={handleCopyClick} className="space-x-1">
+        <DropdownMenuItem 
+          onClick={handleCopyClick} 
+          className="space-x-1"
+      >
           <Copy className="h-4 w-4" />
           Copy role name
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleEditClick} className="space-x-1">
+        <DropdownMenuItem 
+          onClick={handleEditClick} 
+          className="space-x-1"
+        >
           <SquarePen className="h-4 w-4" />
           Edit
+        </DropdownMenuItem>
+        <DropdownMenuItem 
+          onClick={handleDeleteClick} 
+          className="space-x-1"
+        >
+          <Trash2 className="h-4 w-4" />
+          Delete
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

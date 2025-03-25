@@ -1,4 +1,3 @@
-
 import PageLayout from "@/features/layout/PagesLayout";
 import {
     Card,
@@ -28,90 +27,52 @@ import Loader from "@/components/custom-ui/loader";
 import { CustomBackButton } from "@/components/custom-ui/custom-buttons";
 import { CreateUserType, UserRole } from "@/common/Type/UserRole.type";
 import { useAuth } from "@/hooks/useAuth";
-import { useGetUserService, useUserRoleService } from "@/service/users/service";
-import { useUpdateUserStore } from "@/hooks/state/users/user.state";
-import { ApiResponse } from "@/common/api-response.type";
-import { useEffect } from "react";
-
-
+import { useGetUserDetails, useUserRoleService } from "@/service/users/service";
+import { useUserStore } from "@/hooks/state/users/user.state";
+import { useEffect, useState } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function UpdateUserComponent() {
-
     const { token: access } = useAuth();
-    const { selectedUser} = useUpdateUserStore();
-    const userId = selectedUser?.userId as string
-    const getUserService = useGetUserService(userId);
+    const { selectedUser } = useUserStore();
+  
+    const getUserData = useGetUserDetails(selectedUser || "defaultUser");
+    const userRoleService = useUserRoleService();
+    const userRoleData: UserRole[] = userRoleService.data?.data || [];
 
-    const {data: getUser} = getUserService as {
-        data: ApiResponse
-    }
-
-    const getUserData: CreateUserType | undefined = getUser?.data || undefined;
-
-    const { register, handleSubmit, control, reset, formState: { errors } } = useForm<CreateUserType>({
-        defaultValues: {
-            firstName: getUserData?.firstName || "",
-            lastName: getUserData?.lastName || "",
-            email: getUserData?.email || "",
-            password: "",
-            roleId: getUserData?.roleId || {
-                id: "",
-                roleName: "",
-                dateCreated: "",
-                description: "",
-                dateUpdated: "",
-                dateDeleted: ""
-            },
+    const [isLoading, setIsLoading] = useState(true);
+  
+    const {
+      register,
+      handleSubmit,
+      control,
+      reset,
+      formState: { errors },
+    } = useForm<CreateUserType>({
+      defaultValues: {
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        roleId: {
+          id: "",
+          roleName: "",
+          dateCreated: "",
+          description: "",
+          dateUpdated: "",
+          dateDeleted: "",
         },
-        criteriaMode: "firstError"
-    })
-
-   
-
-    // Navigation
+      },
+      criteriaMode: "firstError",
+    });
+  
     const navigate = useNavigate();
-    
-    // Get QueryClient from the context
-    const queryClient = useQueryClient()
-
- /*    const getStartYear = () => {
-        const startYear = 1900;
-        return `${startYear}-12-31`;
-    } */
-
-
-    // File and File Validation
-/*     const [files, setFiles] = useState<File[]>([]);
-    const { getRootProps, getInputProps } = useDropzone({
-        multiple: false,
-        onDrop: (acceptedFile: File[]) => {
-          if (acceptedFile.length > 0) {
-            const file = acceptedFile[0]; // Only take the first file
-            setFiles([file]);
-            setValue('avatarUrl', file, { shouldValidate: true })
-          }
-        },
-      });
-    
-    const removeFile = () => {
-      setFiles([]);
-      setValue('avatarUrl', null, { shouldValidate: true }); // Reset field
-      trigger('avatarUrl');
-    };
-
-
-    const validateFileSize = (file: File | null | undefined): boolean | string => {
-        if (!file) return true;
-        
-        return file.size > 5_000_000 ? "File size exceeds the limit of 5 MB." : true;
-    }; */
-
+    const queryClient = useQueryClient();
 
     const updateUserMutation = useMutation({
-        mutationKey: ['update-user', userId],
+        mutationKey: ['update-user', selectedUser],
         mutationFn: async (newData: CreateUserType) => {
             try {
-                // const origin: string = 'Web';
                 const formData = new FormData();
 
                 // Append non-file fields
@@ -123,23 +84,12 @@ export default function UpdateUserComponent() {
                     formData.append('roleId', newData.roleId?.id);
                 }
 
-               
-    
-                // Append file (Only one allowed)
-                // newData.avatarUrl?.forEach(file => {
-                //     if (!file) return true;
-                //     formData.append('requestFiles', file);
-                // });
-
                 // Append file (Only one allowed)
                 if (newData.avatarUrl && newData.avatarUrl instanceof File) {
                     formData.append('avatarUrl', newData.avatarUrl);
                 }
 
-
-                console.log("FormData entries:", Array.from(formData.entries()));
-    
-                const response = await axios.post(`${API_BASE_URL}/api/users/${userId}`, formData, {
+                const response = await axios.put(`${API_BASE_URL}/api/users/${selectedUser}`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         "X-API-KEY": `${API_KEY}`,
@@ -147,17 +97,15 @@ export default function UpdateUserComponent() {
                     }
                 });
     
-                // console.log("Response received:", response);
-    
                 if (response.data?.statusCode === 200) {
                     toast.success(`${response?.data?.message}`, {
                         duration: 4000
                     });
 
-                    queryClient.invalidateQueries({ queryKey: ['users'] })
+                    queryClient.invalidateQueries({ queryKey: ['users', selectedUser] })
                     
                     setTimeout(() => {
-                        navigate({ to: '/' });
+                        navigate({ to: '/users' });
                     }, 1000);
                 }
     
@@ -177,68 +125,88 @@ export default function UpdateUserComponent() {
                         toast.info(`${err.response?.data?.message} `, {
                             duration: 5000
                         });
-                    };
+                    }
 
                     if (code === 400) {
                         toast.error(`${err.response?.data?.message}`, {
                             duration: 5000
                         });
-                    };
+                    }
 
                     if (code === 500) {
                         toast.error(`${err.response?.data?.message}`, {
                             duration: 5000
                         });
-                    };
+                    }
 
                     if (code === 401) {
                         toast.error(`${err.response?.data?.message}`);
-                        console.log("Error 401");
                         reset();
-                        // setFiles([]);
                         setTimeout(() => {
                             navigate({ to: '/' });
                         }, 4000);
                     }
-    
-                    // console.log("Error occurred while posting report:", err);
                 }
-                throw err; // Ensure mutation handles errors properly
+                throw err;
             }
         },
-
     });
 
-
-
-    const userRoleService = useUserRoleService()
-    const userRoleData: UserRole[] = userRoleService.data?.data || [];
-    
-    const onSubmit = async (data: CreateUserType) => {
-        updateUserMutation.mutateAsync(data); 
-    };
-
-
     useEffect(() => {
-        if (getUserData) {
+        if (getUserData.data && userRoleService.isSuccess) {
             reset({
-                firstName: getUserData.firstName || "",
-                lastName: getUserData.lastName || "",
-                email: getUserData.email || "",
-
-                roleId: getUserData.roleId || {
-                    id: "",
-                    roleName: "",
+                firstName: getUserData.data.data.firstName || "",
+                lastName: getUserData.data.data.lastName || "",
+                email: getUserData.data.data.email || "",
+                password: "",
+                roleId: {
+                    id: getUserData.data.data.role?.id || "",
+                    roleName: getUserData.data.data.role?.roleName || "",
                     dateCreated: "",
                     description: "",
                     dateUpdated: "",
-                    dateDeleted: ""
+                    dateDeleted: "",
                 },
-                // avatarUrl: getUserData.avatarUrl || null
             });
+            setIsLoading(false);
         }
-    }, [getUserData, reset])
+    }, [getUserData.data, userRoleService.isSuccess, reset]);
 
+    const onSubmit = (data: CreateUserType) => {
+        updateUserMutation.mutateAsync(data)
+    }
+
+    // Loading Skeleton
+    if (isLoading || getUserData.isLoading || userRoleService.isLoading) {
+        return (
+            <div className="py-3">
+                <TopNavBar pageName="Update User" icon={UserRoundPen} />
+                <PageLayout>
+                    <div className="pt-7"/>
+                    <Card className="rounded-[1.8rem] border">
+                        <CardHeader>
+                            <CustomBackButton />
+                            <CardTitle>Loading User Details</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="space-y-4">
+                                <div className="flex gap-5">
+                                    <Skeleton className="h-12 w-full" />
+                                    <Skeleton className="h-12 w-full" />
+                                </div>
+                                <div className="flex gap-5">
+                                    <Skeleton className="h-12 w-full" />
+                                    <Skeleton className="h-12 w-full" />
+                                </div>
+                                <Skeleton className="h-12 w-full" />
+                                <Skeleton className="h-12 w-full" />
+                            </div>
+                        </CardContent>
+                    </Card>
+                </PageLayout>
+            </div>
+        );
+    }
 
     return (
        <div className="py-3">
@@ -295,7 +263,6 @@ export default function UpdateUserComponent() {
                                             />
                                             {errors.lastName && <p className="form-error-msg">{errors.lastName?.message}</p>}
                                         </div>
-
                                     </div>
                                     <div className="flex sm:flex-row flex-col gap-5 justify-center items-center">
                                         <div className="w-full flex flex-col gap-2 ">
@@ -304,7 +271,7 @@ export default function UpdateUserComponent() {
                                                 type="email" 
                                                 placeholder="Email Address"
                                                 className={`form-input
-                                                        ${errors.lastName ? "form-validerr-ring" : "form-valid-ring"}
+                                                        ${errors.email ? "form-validerr-ring" : "form-valid-ring"}
                                                     `} 
                                                 {...register("email", {
                                                     required: {
@@ -328,10 +295,13 @@ export default function UpdateUserComponent() {
                                                     }
                                                 }}
                                                 render={({ field: {onBlur, onChange} }) => (
-                                                    <Select onValueChange={onChange} defaultValue={selectedUser?.role.id}>
+                                                    <Select 
+                                                        onValueChange={onChange} 
+                                                        defaultValue={getUserData.data?.data?.role?.id}
+                                                    >
                                                         <SelectTrigger 
                                                             onBlur={onBlur}
-                                                            className={` outline-none border py-3 px-3 !w-full  text-sm font-medium text-custom_theme-primary_foreground dark:bg-custom_theme-dark_gray_1 dark:text-custom_theme-primary_background focus:ring-1 focus:ring-gray-400 dark:focus:ring-custom_theme-gray delay-150 transition ease-in-out duration-300
+                                                            className={`outline-none border py-3 px-3 !w-full text-sm font-medium text-custom_theme-primary_foreground dark:bg-custom_theme-dark_gray_1 dark:text-custom_theme-primary_background focus:ring-1 focus:ring-gray-400 dark:focus:ring-custom_theme-gray delay-150 transition ease-in-out duration-300
                                                                     ${errors.roleId?.id ? "form-validerr-ring " : "form-valid-ring"}
                                                                 `}
                                                         >
@@ -340,7 +310,7 @@ export default function UpdateUserComponent() {
                                                         <SelectContent>
                                                             {userRoleService.isFetched ?  
                                                             userRoleData?.map((role) => (
-                                                                <SelectItem key={role.id} value={role.id}>
+                                                                <SelectItem key={role.id} value={role?.id || 'undefined'}>
                                                                     {role.roleName}
                                                                 </SelectItem>
                                                             )): (
@@ -352,38 +322,30 @@ export default function UpdateUserComponent() {
                                             />
                                             {errors.roleId?.id && <p className="form-error-msg">{errors.roleId.id?.message}</p>}
                                         </div>
-
                                     </div>
-                                       
 
-
-                                <div className="w-full flex sm:flex-row flex-col sm:gap-10 gap-3 py-3">
-                                    <Button
-                                        type="submit"
-                                        className={`btn-default sm:min-w-[6.25rem]  ${
-                                            updateUserMutation.isPending ? "sm:min-w-[6.25rem]" : "sm:max-w-max w-full"
-                                        }`}
-                                    >
-                                        {updateUserMutation.isPending ? (
-                                            <span className="flex items-center justify-center sm:w-[6.25rem]"> {/* Ensure the span has the desired width */}
-                                                <Loader />
-                                            </span>
-                                        ) : (
-                                            <span>Update</span>
-                                        )}
-                                    </Button>
-                                </div>
+                                    <div className="w-full flex sm:flex-row flex-col sm:gap-10 gap-3 py-3">
+                                        <Button
+                                            type="submit"
+                                            className={`btn-default sm:min-w-[6.25rem]  ${
+                                                updateUserMutation.isPending ? "sm:min-w-[6.25rem]" : "sm:max-w-max w-full"
+                                            }`}
+                                        >
+                                            {updateUserMutation.isPending ? (
+                                                <span className="flex items-center justify-center sm:w-[6.25rem]">
+                                                    <Loader />
+                                                </span>
+                                            ) : (
+                                                <span>Update</span>
+                                            )}
+                                        </Button>
+                                    </div>
                                 </div>
                             </form>
                         </div>
-
                     </CardContent>
                  </Card>
             </PageLayout>
        </div>
     )
-    
 };
-
-
-

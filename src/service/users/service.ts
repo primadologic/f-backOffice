@@ -67,6 +67,103 @@ export const useGetUserService = (userId: string) => {
     return user;
 }
 
+
+export const useGetUserDetails = (userId: string) => {
+    const { token: access } = useAuth();
+
+    console.log("Fetching user details for userId:", userId); // Debugging log
+
+    const userDetail = useQuery({
+        queryKey: ['user-details', userId],
+        queryFn: async () => {
+            if (!userId || userId === "defaultUserId") return null; // Avoid invalid API calls
+
+            const response = await axios.get(`${API_BASE_URL}/api/users/${userId}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${access}`,
+                    'X-API-KEY': `${API_KEY}`
+                }
+            });
+
+            return response.data;
+        },
+
+        enabled: !!userId && userId !== "defaultUserId", // Prevent fetching when userId is default
+        staleTime: 1000 * 60 * 5, // Cache for 5 minutes
+        refetchOnMount: true, // Ensure fresh data on mount
+        refetchOnWindowFocus: false,
+    });
+
+    return userDetail;
+}
+
+export const useUpdateUserService = (userId: string) => {
+    const { token: access, logout,  } = useAuth();
+    
+    const { setIsOpen } = useUserRoleStore()
+
+    const queryClient = useQueryClient();
+
+    const updateUser = useMutation({
+        mutationKey: ['update-user', userId],
+        mutationFn: async () => {
+            const response = await axios.put(`${API_BASE_URL}/api/users/${userId}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${ access }`,
+                    'X-API-KEY': `${API_KEY}`
+                }
+            })
+
+            return response.data
+        },
+        onSuccess: (data) => {
+            const message = data?.message
+            if (data?.statusCode === 200) {
+                toast.success(`${message}`)
+                queryClient.invalidateQueries({ queryKey: ['users', userId] })
+                setIsOpen(false)
+                logout();
+    
+            }
+        },
+
+        onError: (error) => {
+            if (axios.isAxiosError(error)) {
+                const code = error.response?.status ?? null
+
+                if (code === 400) {
+                    toast.error(`Oops an error occured`, {
+                        description: `${error.response?.data?.message}`
+                    })
+                };
+                if (code === 401) {
+                    toast.error(`Oops an error occured`, {
+                        description: `${error.response?.data?.message}`
+                    })
+                };
+
+                if (code === 404) {
+                    toast.error(`Sorry, this user does not exist.`, {
+                        description: `${error.response?.data?.message}`
+                    })
+                };
+                if (code === 500) {
+                    toast.error(`Sorry an unexpected error occured.`, {
+                        description: `${error.response?.data?.message}`
+                    })
+                };
+            }
+        },
+        
+    })
+
+    return updateUser;
+}
+
+
+
 export const useDeleteUserService = (userId: string) => {
     const { token: access, logout,  } = useAuth();
     const { setIsOpen } = useDeleteUserStore();
@@ -114,7 +211,7 @@ export const useDeleteUserService = (userId: string) => {
                 };
 
                 if (code === 404) {
-                    toast.error(`Sorry, this case file does not exist.`, {
+                    toast.error(`Sorry, this user does not exist.`, {
                         description: `${error.response?.data?.message}`
                     })
                 };
@@ -212,7 +309,7 @@ export const useUpdateUserRole = (roleId: string) => {
                 };
 
                 if (code === 404) {
-                    toast.error(`Sorry, this case file does not exist.`, {
+                    toast.error(`Sorry, this user role does not exist.`, {
                         description: `${error.response?.data?.message}`
                     })
                 };

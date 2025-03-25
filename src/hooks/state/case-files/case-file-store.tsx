@@ -52,37 +52,21 @@ export const useUpdateCaseFileStore = create<CaseFileStore>()(
   )
 );
 
-export const useDeleteCaseFileStore = create<CaseFileStore>() (
-  persist(
-    (set) => ({
-      isOpen: false,
-      selectedCaseFile: null,
-      setIsOpen: (isOpen) => set({ isOpen }),
-      setSelectedCaseFile: (suspectNumber) => set({ selectedCaseFile: suspectNumber }),
-      
-      reset: () => set({ isOpen: false, selectedCaseFile: null })
-    }),
-    {
-      name: "delete-caseFile-store"
-    }
-  )
-)
+export const useDeleteCaseFileStore = create<CaseFileStore>()((set) => ({
+
+    isOpen: false,
+    selectedCaseFile: null,
+    setIsOpen: (isOpen) => set({ isOpen }),
+    setSelectedCaseFile: (caseId) => set({ selectedCaseFile: caseId }),
+    reset: () => set({ isOpen: false, selectedCaseFile: null })
+
+}))
 
 
-
-export const useAssignInvestigatorStore = create<CaseFileStore>() (
-  persist(
-    (set) => ({
-  
-      isOpen: false,
-      selectedCaseFile: null,
-      setIsOpen: (isOpen) => set({ isOpen }),
-      setSelectedCaseFile: (suspectNumber) => set({ selectedCaseFile: suspectNumber }),
-      reset: () => set({ isOpen: false, selectedCaseFile: null })    
-    }),
-    {
-      name: "assignInvestigator-caseFile-store"
-    }
-
-  )
-)
+export const useAssignInvestigatorStore = create<CaseFileStore>()((set) => ({
+  isOpen: false,
+  selectedCaseFile: null,
+  setIsOpen: (isOpen) => set({ isOpen }),
+  setSelectedCaseFile: (caseId) => set({ selectedCaseFile: caseId }),
+  reset: () => set({ isOpen: false, selectedCaseFile: null })    
+}))

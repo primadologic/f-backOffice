@@ -1,11 +1,11 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
 interface UserRoleStore {
   isOpen: boolean;
-  selectedRoleId: string | null; // Store only roleId, not the full object
+  selectedRoleId: string | null;
   setIsOpen: (isOpen: boolean) => void;
-  setSelectedRoleId: (roleId: string | null) => void; // Update only roleId
+  setSelectedRoleId: (roleId: string | null) => void;
   reset: () => void;
 }
 
@@ -19,7 +19,9 @@ export const useUserRoleStore = create<UserRoleStore>()(
       reset: () => set({ isOpen: false, selectedRoleId: null }),
     }),
     {
-      name: "user-role",
+      name: 'user-role-storage', // Unique name for storage
+      storage: createJSONStorage(() => localStorage), // Use localStorage
+      partialize: (state) => ({ selectedRoleId: state.selectedRoleId }), // only persist selectedRoleId
     }
   )
 );
