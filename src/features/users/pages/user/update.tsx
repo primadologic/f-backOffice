@@ -180,13 +180,14 @@ export default function UpdateUserComponent() {
     if (isLoading || getUserData.isLoading || userRoleService.isLoading) {
         return (
             <div className="py-3">
-                <TopNavBar pageName="Update User" icon={UserRoundPen} />
+                {/* <TopNavBar pageName="Update User" icon={UserRoundPen} /> */}
+                <Skeleton className="h-5 w-32" />
                 <PageLayout>
                     <div className="pt-7"/>
                     <Card className="rounded-[1.8rem] border">
                         <CardHeader>
                             <CustomBackButton />
-                            <CardTitle>Loading User Details</CardTitle>
+                            <Skeleton className="h-5 w-32" />
                         </CardHeader>
                         <CardContent>
                             <div className="space-y-4">

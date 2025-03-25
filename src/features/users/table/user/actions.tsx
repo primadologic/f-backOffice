@@ -27,7 +27,7 @@ export const ActionsCell = ({ user }: { user: UserType }) => {
   };
 
   const handleCopyClick = () => {
-    if (selectedUserId.data?.data?.roleName) {
+    if (selectedUserId.data?.data?.userId) {
       navigator.clipboard.writeText(
         selectedUserId.data?.data?.firstName +
           " " +
@@ -35,7 +35,7 @@ export const ActionsCell = ({ user }: { user: UserType }) => {
       );
       toast.info("Copied", { duration: 2000 });
     } else {
-      toast.error("Role Name not available", { duration: 2000 });
+      toast.error("User unavailable", { duration: 2000 });
     }
   };
 
@@ -59,7 +59,7 @@ export const ActionsCell = ({ user }: { user: UserType }) => {
           className="space-x-1"
       >
           <Copy className="h-4 w-4" />
-          Copy role name
+          Copy full name
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem 

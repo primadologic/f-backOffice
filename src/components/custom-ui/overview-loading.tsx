@@ -62,7 +62,12 @@ import { useRouterState } from "@tanstack/react-router";
           {statCards.map(({ key, title, image }) => (
             <Card key={key} className="w-full">
               <CardHeader>
+              {isLoading || status === "pending" ? (
+                 <Skeleton className="h-6 w-24" />
+                
+              ): (
                 <CardTitle className="text-sm">{title}</CardTitle>
+              )}
               </CardHeader>
               <CardContent className="flex items-center justify-center">
                 {isLoading || status === "pending" ? (
