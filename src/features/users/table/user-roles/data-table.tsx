@@ -157,28 +157,28 @@ const [pagination, setPagination] = useState({
                           )
                         })}
                       </DropdownMenuGroup>
-                      <DropdownMenuGroup>
-                        <DropdownMenuLabel>Archived</DropdownMenuLabel>
-                        {[true, false].map((archiveOption) => {
-                          const column = table.getColumn("archived");
-                          const currentFilter = column?.getFilterValue() as boolean | undefined;
-                          const isChecked = currentFilter === archiveOption;
+                        <DropdownMenuGroup>
+                          <DropdownMenuLabel>Role Name</DropdownMenuLabel>
+                          {['admin', 'investigator', 'guest'].map((roleOption) => {
+                            const column = table.getColumn("roleName");
+                            const currentFilter = column?.getFilterValue() as string | undefined;
+                            const isChecked = currentFilter === roleOption;
 
                           return (
-                          <DropdownMenuCheckboxItem
-                            key={archiveOption.toString()}
-                            className="capitalize"
-                            checked={isChecked}
-                            onCheckedChange={(checked) => {
-                              if (!column) return;
-                              column.setFilterValue(checked ? archiveOption : undefined) // Set or Clear filter
-                            }}
-                            >
-                              { archiveOption.toString() }
-                            </DropdownMenuCheckboxItem>
-                          );
-                        })}
-                      </DropdownMenuGroup>
+                            <DropdownMenuCheckboxItem
+                              key={roleOption}
+                              className="capitalize"
+                              checked={isChecked}
+                              onCheckedChange={(checked) => {
+                                if (!column) return;
+                                column.setFilterValue(checked ? roleOption : undefined) // Set or Clear filter
+                              }}
+                              >
+                                { roleOption }
+                              </DropdownMenuCheckboxItem>
+                            );
+                          })}
+                        </DropdownMenuGroup>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>

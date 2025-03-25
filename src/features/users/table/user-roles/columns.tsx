@@ -9,19 +9,23 @@ import { UserRole } from "@/common/Type/UserRole.type"
 
 
 
-// type ArchivedType = "true" | "false" 
+type RoleType = "admin" | "investigator" | "guest"
 
-// const archivedStyles: Record<ArchivedType, {bg: string, text: string}> = {
-//   true: {
-//     bg: "bg-status-success_500",
-//     text: "text-[#ffffff]"    
-//   }, 
-//   false: {
-//     bg: "bg-status-primary_500",
-//     text: "text-[#ffffff]"
-//   }
+const roleStyles: Record<RoleType, {bg: string, text: string}> = {
+    admin: {
+        bg: "bg-red-600",
+        text: "text-white",
+      },
+    investigator: {
+      bg: "bg-blue-600",
+      text: "text-white",
+    },
+    guest: {
+      bg: "bg-gray-400",
+      text: "text-black",
+    },
 
-// }
+}
 
 export const columns: ColumnDef<UserRole>[] = [
 
@@ -50,19 +54,29 @@ export const columns: ColumnDef<UserRole>[] = [
     },
 
     {
-        accessorKey: "roleName",
-        header: "Role Name",
-        cell: ({ row }) => row.original.roleName ?? "N/A",
-        // filterFn: (row, columnId, filterValue) => {
-        //     const reportPlatform = row.original.reportPlatForm?.displayName ?? "";
-        //     // const archived = row.original.archived ?? "";
-        //     return (
-        //         reportPlatform.toLowerCase().includes(filterValue.toLowerCase())
-        //         // archived
-        //     )
-        // },
-      
+        id: "roleName",
+        accessorFn: (row) => row.roleName,
+        header: "Role",
+        cell: ({ row }) => {
+            const role = row.original.roleName.toString() as RoleType
 
+            if (!role) return "N/A";
+
+            return (
+                <div className="flex justify-start w-full min-w-[120px]">
+                    <div className={`
+                        inline-flex items-center justify-center px-2.5 py-0.5
+                        rounded-full text-xs font-semibold whitespace-nowrap
+                        ${roleStyles[role]?.bg || ""}
+                        ${roleStyles[role]?.text || ""}
+                    `}>
+                        <span className="mr-1">&#9679;</span>
+                        <span className="capitalize">{role}</span>
+                    </div>
+
+                </div>
+            )
+        }
     },
 
     {

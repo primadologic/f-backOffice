@@ -145,7 +145,7 @@ const [pagination, setPagination] = useState({
                         })}
                       </DropdownMenuGroup>
                       <DropdownMenuGroup>
-                        <DropdownMenuLabel>Archived</DropdownMenuLabel>
+                        <DropdownMenuLabel>Role Name</DropdownMenuLabel>
                         {['admin', 'investigator', 'guest'].map((roleOption) => {
                           const column = table.getColumn("roleName");
                           const currentFilter = column?.getFilterValue() as string | undefined;
