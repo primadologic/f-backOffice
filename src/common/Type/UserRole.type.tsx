@@ -43,3 +43,10 @@ export type CreateUserType = {
   roleId?: UserRole; // Optional because it's not marked as required
   avatarUrl?: File | null; // Assuming the binary data will be handled as a File
 };
+
+
+export type CreateUserRoleType = {
+  roleName: string;
+  displayName: string;
+  description: string
+}

@@ -97,16 +97,13 @@ export default function UpdateUserComponent() {
                     }
                 });
     
-                if (response.data?.statusCode === 200) {
+                if (response.data?.statusCode === 204) {
                     toast.success(`${response?.data?.message}`, {
                         duration: 4000
                     });
 
-                    queryClient.invalidateQueries({ queryKey: ['users', selectedUser] })
-                    
-                    setTimeout(() => {
-                        navigate({ to: '/users' });
-                    }, 1000);
+                    queryClient.invalidateQueries({ queryKey: ['users'] })
+                    navigate({ to: '/users' });
                 }
     
                 if (response.data?.statusCode === 201) {

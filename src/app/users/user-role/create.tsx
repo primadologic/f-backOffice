@@ -1,13 +1,14 @@
 
 import DashboardLayout from "@/app/dashboard/dashBoardLayout";
-import UserRoleList from "@/features/users/pages/user-role/list";
+import UserRoleCreateComponent from "@/features/users/pages/user-role/create";
+
 
 
 export default function Page() {
 
     return (
         <DashboardLayout>
-            <UserRoleList />
+            <UserRoleCreateComponent />
         </DashboardLayout>
     )
     

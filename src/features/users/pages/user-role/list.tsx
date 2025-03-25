@@ -39,10 +39,10 @@ export default function UserRoleList() {
                             {/* export */}
                             <UserRoleListExport />
                             <CustomButton 
-                                onClick={() =>navigate({ to: '/dashboard/report-numbers/create' })} 
+                                onClick={() =>navigate({ to: '/user-role/create' })} 
                                 size={'sm'}
                                 variant={'create'}
-                                className="sr-only"
+                                className=""
                             >
                                 <Plus className="mr-2 h-4 w-4" />
                                 <span className="mr-1">Create new role</span>

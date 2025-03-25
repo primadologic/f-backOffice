@@ -17,6 +17,7 @@ import { Route as UsersIndexImport } from './routes/users/index'
 import { Route as UserRoleIndexImport } from './routes/user-role/index'
 import { Route as DashboardIndexImport } from './routes/dashboard/index'
 import { Route as UsersCreateImport } from './routes/users/create'
+import { Route as UserRoleCreateImport } from './routes/user-role/create'
 import { Route as DashboardReportNumbersIndexImport } from './routes/dashboard/report-numbers/index'
 import { Route as DashboardFraudNumbersIndexImport } from './routes/dashboard/fraud-numbers/index'
 import { Route as DashboardCaseFilesIndexImport } from './routes/dashboard/case-files/index'
@@ -61,6 +62,12 @@ const DashboardIndexRoute = DashboardIndexImport.update({
 const UsersCreateRoute = UsersCreateImport.update({
   id: '/users/create',
   path: '/users/create',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const UserRoleCreateRoute = UserRoleCreateImport.update({
+  id: '/user-role/create',
+  path: '/user-role/create',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -133,6 +140,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutImport
+      parentRoute: typeof rootRoute
+    }
+    '/user-role/create': {
+      id: '/user-role/create'
+      path: '/user-role/create'
+      fullPath: '/user-role/create'
+      preLoaderRoute: typeof UserRoleCreateImport
       parentRoute: typeof rootRoute
     }
     '/users/create': {
@@ -227,6 +241,7 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/user-role/create': typeof UserRoleCreateRoute
   '/users/create': typeof UsersCreateRoute
   '/dashboard': typeof DashboardIndexRoute
   '/user-role': typeof UserRoleIndexRoute
@@ -244,6 +259,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/user-role/create': typeof UserRoleCreateRoute
   '/users/create': typeof UsersCreateRoute
   '/dashboard': typeof DashboardIndexRoute
   '/user-role': typeof UserRoleIndexRoute
@@ -262,6 +278,7 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/user-role/create': typeof UserRoleCreateRoute
   '/users/create': typeof UsersCreateRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/user-role/': typeof UserRoleIndexRoute
@@ -281,6 +298,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/user-role/create'
     | '/users/create'
     | '/dashboard'
     | '/user-role'
@@ -297,6 +315,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/user-role/create'
     | '/users/create'
     | '/dashboard'
     | '/user-role'
@@ -313,6 +332,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/user-role/create'
     | '/users/create'
     | '/dashboard/'
     | '/user-role/'
@@ -331,6 +351,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  UserRoleCreateRoute: typeof UserRoleCreateRoute
   UsersCreateRoute: typeof UsersCreateRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
   UserRoleIndexRoute: typeof UserRoleIndexRoute
@@ -348,6 +369,7 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  UserRoleCreateRoute: UserRoleCreateRoute,
   UsersCreateRoute: UsersCreateRoute,
   DashboardIndexRoute: DashboardIndexRoute,
   UserRoleIndexRoute: UserRoleIndexRoute,
@@ -374,6 +396,7 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/about",
+        "/user-role/create",
         "/users/create",
         "/dashboard/",
         "/user-role/",
@@ -393,6 +416,9 @@ export const routeTree = rootRoute
     },
     "/about": {
       "filePath": "about.tsx"
+    },
+    "/user-role/create": {
+      "filePath": "user-role/create.tsx"
     },
     "/users/create": {
       "filePath": "users/create.tsx"

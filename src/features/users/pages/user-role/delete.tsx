@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import Loader from "@/components/custom-ui/loader"
 import { CustomCloseButton } from "@/components/custom-ui/custom-buttons"
-import { useDeleteUserService, useUserRoleDetailService } from "@/service/users/service"
+import { useDeleteUserRoleService, useUserRoleDetailService } from "@/service/users/service"
 import { useUserRoleDeleteStore } from "@/hooks/state/users/role.state"
 
 
@@ -22,7 +22,7 @@ export default function DeleteUserRoleDialog() {
     // Service Hooks
     const getUserData = useUserRoleDetailService(selectedRoleId || "defaultUser");
 
-    const deleteUserRole = useDeleteUserService(selectedRoleId ?? 'null')
+    const deleteUserRole = useDeleteUserRoleService(selectedRoleId ?? 'null')
 
     const deleteHandler = () => {
         deleteUserRole.mutateAsync()  
@@ -76,10 +76,10 @@ export default function DeleteUserRoleDialog() {
                                 <div className="flex flex-row gap-3">
                                     <p className="form-label">Description</p>
                                     <data 
-                                        value={getUserData?.data?.role?.description|| "N/A"}
+                                        value={getUserData?.data?.description|| "N/A"}
                                         className="custom-txt capitalize"
                                     >
-                                        {getUserData?.data?.data?.role?.description || "N/A"}
+                                        {getUserData?.data?.data?.description || "N/A"}
                                     </data>
                                 </div>
                             </div>
