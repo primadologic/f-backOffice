@@ -10,6 +10,7 @@ import UserRoleListExport from "../../table/user-roles/user-role-export";
 import UserRoleListTable from "../../table/user-roles/report-table";
 import LoadingSkeleton from "@/components/custom-ui/page-loading-ui";
 import { useUserRoleService } from "@/service/users/service";
+import DeleteUserRoleDialog from "./delete";
 
 
 
@@ -49,6 +50,7 @@ export default function UserRoleList() {
                             </CustomButton>
                             {/* actions */}
                             <UserRoleUpdatePage />
+                            <DeleteUserRoleDialog />
                         </div>
                     </div>
                     <div className="">

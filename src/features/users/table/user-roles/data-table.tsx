@@ -110,8 +110,8 @@ const [pagination, setPagination] = useState({
       <Card className="rounded-[1.8rem] border">
         <div className="w-full flex sm:flex-row flex-col justify-between items-center">
           <CardHeader className="">
-            <CardTitle className="font-semibold dark:text-custom_theme-primary_background">Report Numbers List</CardTitle>
-            <CardDescription className="dark:text-custom_theme-gray font-medium">Keep track of reported fraud incidents and other information</CardDescription>
+            <CardTitle className="font-semibold dark:text-custom_theme-primary_background">User Role List</CardTitle>
+            <CardDescription className="dark:text-custom_theme-gray font-medium">Keep track of user roles details</CardDescription>
           </CardHeader>
             <CardContent className="flex gap-3 ">
               <div className="flex items-center gap-4 py-4">

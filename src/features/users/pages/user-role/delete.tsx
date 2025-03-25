@@ -15,7 +15,7 @@ import { useUserRoleDeleteStore } from "@/hooks/state/users/role.state"
 
 
 
-export default function DeleteUserDialog() {
+export default function DeleteUserRoleDialog() {
 
     const { isOpen, setIsOpen, selectedRoleId } = useUserRoleDeleteStore();
 
@@ -50,11 +50,11 @@ export default function DeleteUserDialog() {
                 onOpenChange={setIsOpen}
             >
                 <AlertDialogTrigger className="sr-only">
-                    Edit
+                    Delete User Role
                 </AlertDialogTrigger>
                 <AlertDialogContent className="">
                     <AlertDialogHeader className="w-full flex flex-col space-y-1 !justify-start !items-start">
-                        <AlertDialogTitle className="text-left">Are you sure you want to delete this user?</AlertDialogTitle>
+                        <AlertDialogTitle className="text-left">Are you sure you want to delete this user role?</AlertDialogTitle>
                         <AlertDialogDescription className="text-left space-y-2">
                             <span>This action cannot be undone.</span> {" "}
                             <span>This will <span>permanently</span> delete this record and remove the data from the database</span>

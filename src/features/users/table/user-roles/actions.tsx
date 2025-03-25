@@ -73,7 +73,7 @@ export const ActionsCell = ({ userRole }: { userRole: UserRole }) => {
           className="space-x-1"
         >
           <span><Trash2 /></span>
-          <span>Edit</span>
+          <span>Delete</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
