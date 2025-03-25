@@ -54,7 +54,7 @@ if (!rootElement.innerHTML) {
                 closeButton={true}
               />
             <ReactQueryDevtools initialIsOpen={false} />
-          </QueryClientProvider>,
+          </QueryClientProvider>
         </ThemeProvider>
       </AuthProvider>
     </ErrorBoundary>
