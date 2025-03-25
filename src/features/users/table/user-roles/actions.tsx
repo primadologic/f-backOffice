@@ -1,5 +1,5 @@
 
-import { Copy, MoreHorizontal, SquarePen } from "lucide-react";
+import { Copy, MoreHorizontal, SquarePen, Trash2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { useUserRoleStore } from "@/hooks/state/users/role.state";
+import { useUserRoleDeleteStore, useUserRoleStore } from "@/hooks/state/users/role.state";
 import { UserRole } from "@/common/Type/UserRole.type";
 import { useUserRoleDetailService } from "@/service/users/service";
 
@@ -20,11 +20,21 @@ export const ActionsCell = ({ userRole }: { userRole: UserRole }) => {
     
 
   const { setIsOpen, setSelectedRoleId, selectedRoleId } = useUserRoleStore();
+  const { setIsOpen: setIsOpenDelete, setSelectedRoleId: setSelectedRoleIdDelete, selectedRoleId: SelectedRoleIdDelete } = useUserRoleDeleteStore();
   const selectedRole = useUserRoleDetailService(selectedRoleId ?? 'null'); // Ensure null fallback
 
   const handleEditClick = () => {
-    setSelectedRoleId(userRole.id ?? null); // Ensure null fallback
-    setIsOpen(true);
+    if (selectedRoleId) {
+      setSelectedRoleId(userRole.id ?? null); // Ensure null fallback
+      setIsOpen(true);
+    }
+  };
+
+  const handleDeleteClick = () => {
+    if (SelectedRoleIdDelete) {
+      setSelectedRoleIdDelete(userRole.id ?? null); // Ensure null fallback
+      setIsOpenDelete(true);
+    }
   };
 
 
@@ -55,6 +65,14 @@ export const ActionsCell = ({ userRole }: { userRole: UserRole }) => {
           className="space-x-1"
         >
           <span><SquarePen /></span>
+          <span>Edit</span>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem 
+          onClick={handleDeleteClick}
+          className="space-x-1"
+        >
+          <span><Trash2 /></span>
           <span>Edit</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
