@@ -20,6 +20,7 @@ import {
   LayoutDashboard,
   Users,
   ShieldUser,
+  CircleUser,
   
 } from "lucide-react"
 
@@ -38,6 +39,10 @@ import {
 import { MenuItem } from "./menu-items"
 import Logo from "./custom-ui/logo"
 import NavBrand from "./custom-ui/navbar-brand"
+import { AccountItems } from "./account"
+
+
+
 
 // This is sample data.
 const data = {
@@ -66,39 +71,20 @@ const data = {
   // navMain: [
 
   //   {
-  //     title: "Dashboard Analytics",
-  //     url: "#",
+  //     title: "Menu",
+  //     url: "/accounts",
   //     isActive: true,
   //     items: [
   //       {
-  //         title: "Overview",
-  //         url: "/dashboard",
-  //         Icon: ChartColumnStacked,
-  //       },
-  //       {
-  //         title: "FraudWall Client",
-  //         url: "/dashboard/analytics/fraudwall",
-  //         icon: FileChartColumnIncreasing 
-  //       },
-  //       {
-  //         title: "Verification Insights",
-  //         url: "/dashboard/analytics/verification",
-  //         icon: ChartLine 
-  //       },
-  //       {
-  //         title: "Report Numbers",
-  //         url: "/dashboard/analytics/reports",
-  //         icon: ChartPie,
-  //       },
-  //       {
-  //         title: "Case Files",
-  //         url: "/dashboard/analytics/case-files",
-  //         icon: ChartNoAxesCombined,
+  //         title: "My Profile",
+  //         url: "/accounts",
+  //         Icon: CircleUser,
   //       },
   //     ],
 
      
   //   },
+  // ],
 
   // ],
   //   {
@@ -192,20 +178,20 @@ const data = {
   // ],
   // projects: [
   //   {
-  //     name: "Design Engineering",
+  //     name: "Account Settings",
   //     url: "#",
-  //     icon: Frame,
+  //     icon: Settings ,
   //   },
-  //   {
-  //     name: "Sales & Marketing",
-  //     url: "#",
-  //     icon: PieChart,
-  //   },
-  //   {
-  //     name: "Travel",
-  //     url: "#",
-  //     icon: Map,
-  //   },
+  //   // {
+  //   //   name: "Sales & Marketing",
+  //   //   url: "#",
+  //   //   icon: PieChart,
+  //   // },
+  //   // {
+  //   //   name: "Travel",
+  //   //   url: "#",
+  //   //   icon: Map,
+  //   // },
   // ],
 
   menuItems: [
@@ -247,7 +233,17 @@ const data = {
     },
   ],
 
+  accountItems: [
+    {
+      title: "My Profile",
+      url: "/accounts",
+      icon: CircleUser,
+      isActive: true
+    },
+  ],
+
 }
+
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -257,9 +253,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavBrand />
       </SidebarHeader>
       <SidebarContent className="dark:bg-custom_theme-black">
-        {/* <NavMain items={data.navMain} /> */}
+       
         <MenuItem items={data.menuItems} />
+        <AccountItems items={data.accountItems} />
+
+
         {/* <NavProjects projects={data.projects} />  */}
+        {/* <NavMain items={data.navMain} /> */}
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />

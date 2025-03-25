@@ -35,7 +35,7 @@ export function NavMain({
 }) {
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>MENU</SidebarGroupLabel>
+      <SidebarGroupLabel>Accounts Settings</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
           <Collapsible

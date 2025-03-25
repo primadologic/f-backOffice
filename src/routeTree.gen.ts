@@ -16,6 +16,7 @@ import { Route as IndexImport } from './routes/index'
 import { Route as UsersIndexImport } from './routes/users/index'
 import { Route as UserRoleIndexImport } from './routes/user-role/index'
 import { Route as DashboardIndexImport } from './routes/dashboard/index'
+import { Route as AccountsIndexImport } from './routes/accounts/index'
 import { Route as UsersCreateImport } from './routes/users/create'
 import { Route as UserRoleCreateImport } from './routes/user-role/create'
 import { Route as DashboardReportNumbersIndexImport } from './routes/dashboard/report-numbers/index'
@@ -56,6 +57,12 @@ const UserRoleIndexRoute = UserRoleIndexImport.update({
 const DashboardIndexRoute = DashboardIndexImport.update({
   id: '/dashboard/',
   path: '/dashboard/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AccountsIndexRoute = AccountsIndexImport.update({
+  id: '/accounts/',
+  path: '/accounts/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -156,6 +163,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersCreateImport
       parentRoute: typeof rootRoute
     }
+    '/accounts/': {
+      id: '/accounts/'
+      path: '/accounts'
+      fullPath: '/accounts'
+      preLoaderRoute: typeof AccountsIndexImport
+      parentRoute: typeof rootRoute
+    }
     '/dashboard/': {
       id: '/dashboard/'
       path: '/dashboard'
@@ -243,6 +257,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/user-role/create': typeof UserRoleCreateRoute
   '/users/create': typeof UsersCreateRoute
+  '/accounts': typeof AccountsIndexRoute
   '/dashboard': typeof DashboardIndexRoute
   '/user-role': typeof UserRoleIndexRoute
   '/users': typeof UsersIndexRoute
@@ -261,6 +276,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/user-role/create': typeof UserRoleCreateRoute
   '/users/create': typeof UsersCreateRoute
+  '/accounts': typeof AccountsIndexRoute
   '/dashboard': typeof DashboardIndexRoute
   '/user-role': typeof UserRoleIndexRoute
   '/users': typeof UsersIndexRoute
@@ -280,6 +296,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/user-role/create': typeof UserRoleCreateRoute
   '/users/create': typeof UsersCreateRoute
+  '/accounts/': typeof AccountsIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/user-role/': typeof UserRoleIndexRoute
   '/users/': typeof UsersIndexRoute
@@ -300,6 +317,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/user-role/create'
     | '/users/create'
+    | '/accounts'
     | '/dashboard'
     | '/user-role'
     | '/users'
@@ -317,6 +335,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/user-role/create'
     | '/users/create'
+    | '/accounts'
     | '/dashboard'
     | '/user-role'
     | '/users'
@@ -334,6 +353,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/user-role/create'
     | '/users/create'
+    | '/accounts/'
     | '/dashboard/'
     | '/user-role/'
     | '/users/'
@@ -353,6 +373,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   UserRoleCreateRoute: typeof UserRoleCreateRoute
   UsersCreateRoute: typeof UsersCreateRoute
+  AccountsIndexRoute: typeof AccountsIndexRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
   UserRoleIndexRoute: typeof UserRoleIndexRoute
   UsersIndexRoute: typeof UsersIndexRoute
@@ -371,6 +392,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   UserRoleCreateRoute: UserRoleCreateRoute,
   UsersCreateRoute: UsersCreateRoute,
+  AccountsIndexRoute: AccountsIndexRoute,
   DashboardIndexRoute: DashboardIndexRoute,
   UserRoleIndexRoute: UserRoleIndexRoute,
   UsersIndexRoute: UsersIndexRoute,
@@ -398,6 +420,7 @@ export const routeTree = rootRoute
         "/about",
         "/user-role/create",
         "/users/create",
+        "/accounts/",
         "/dashboard/",
         "/user-role/",
         "/users/",
@@ -422,6 +445,9 @@ export const routeTree = rootRoute
     },
     "/users/create": {
       "filePath": "users/create.tsx"
+    },
+    "/accounts/": {
+      "filePath": "accounts/index.tsx"
     },
     "/dashboard/": {
       "filePath": "dashboard/index.tsx"
