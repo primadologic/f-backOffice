@@ -98,7 +98,7 @@ export default function UserCreateComponent() {
     };
 
 
-    const creaateUserMutation = useMutation({
+    const createUserMutation = useMutation({
         mutationKey: ['create-user'],
         mutationFn: async (newData: CreateUserType) => {
             try {
@@ -157,6 +157,7 @@ export default function UserCreateComponent() {
                     toast.success(`${response?.data?.message}`, {
                         duration: 4000
                     });
+                    navigate({ to: '/users' })
                 }
     
                 return response.data;
@@ -207,7 +208,7 @@ export default function UserCreateComponent() {
     const userRoleData: UserRole[] = userRoleService.data?.data || [];
     
     const onSubmit = async (data: CreateUserType) => {
-        creaateUserMutation.mutateAsync(data); 
+        createUserMutation.mutateAsync(data) 
     };
 
 
@@ -303,7 +304,24 @@ export default function UserCreateComponent() {
                                                     minLength: {
                                                         value: 6,
                                                         message: "Password cannot be less than 6 characters"
-                                                    }
+                                                    },
+                                                    validate: {
+                                                        length: (value) =>
+                                                            value.length >= 8 ||
+                                                            "Password must be at least 8 characters",
+                                                        uppercase: (value) =>
+                                                            /[A-Z]/.test(value) ||
+                                                            "Password must contain an uppercase letter",
+                                                        lowercase: (value) => 
+                                                            /[a-z]/.test(value) || 
+                                                            "Password must contain a lowercase letter",
+                                                        number: (value) => 
+                                                            /\d/.test(value)  ||
+                                                            "Password must contain a number",
+                                                        symbol: (value) =>
+                                                            /[@$!%*?&]/.test(value) ||
+                                                            "Password must contain a symbol",
+                                                    },
                                                 })}
                                             />
                                             {errors.password && <p className="form-error-msg">{errors.password?.message}</p>}
@@ -427,10 +445,10 @@ export default function UserCreateComponent() {
                                     <Button
                                         type="submit"
                                         className={`btn-default sm:min-w-[6.25rem]  ${
-                                            creaateUserMutation.isPending ? "sm:min-w-[6.25rem]" : "sm:max-w-max w-full"
+                                            createUserMutation.isPending ? "sm:min-w-[6.25rem]" : "sm:max-w-max w-full"
                                         }`}
                                     >
-                                        {creaateUserMutation.isPending ? (
+                                        {createUserMutation.isPending ? (
                                             <span className="flex items-center justify-center sm:w-[6.25rem]"> {/* Ensure the span has the desired width */}
                                                 <Loader />
                                             </span>

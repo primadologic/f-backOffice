@@ -50,7 +50,7 @@ export const useGetUserService = (userId: string) => {
             const response = await axios.get(`${API_BASE_URL}/api/users/${userId}`, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${ access }`,
+                    Authorization: `Bearer ${ access }`,
                     'X-API-KEY': `${API_KEY}`
                 }
             });

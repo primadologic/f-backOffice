@@ -17,7 +17,7 @@ export const useFraudNumberListService = () => {
             const response = await axios.get(`${API_BASE_URL}/api/fraud-number`, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${ access }`,
+                    Authorization: `Bearer ${ access }`,
                     'X-API-KEY': `${API_KEY}`
                 }
             });
