@@ -1,7 +1,7 @@
 import { UserType } from "./UserRole.type";
 
 export type UserProfileType = {
-  firstName?: string;
+  firstNam: string;
   lastName?: string;
   email?: string;
   password?: string;
@@ -20,3 +20,5 @@ export type ChangePasswordType = {
   newPassword: string,
   confirmPassword: string;
 }
+
+
