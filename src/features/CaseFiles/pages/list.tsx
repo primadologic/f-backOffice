@@ -32,10 +32,10 @@ export default function CaseFilesListPage() {
     
 
     return (
-       <div className="">
+       <div className="pt-5">
             <TopNavBar pageName="Case Files" icon={BriefcaseBusiness} />
             <PageLayout>
-                <div className="space-y-8">
+                <div className="pt-5 pb-12">
                     <div className="flex justify-end item-end">
                         <div className="flex gap-3 justify-center items-center">
                             <CaseFileExport />
@@ -48,14 +48,14 @@ export default function CaseFilesListPage() {
                                 <Plus className="mr-2 h-4 w-4" />
                                 <span className="mr-1">Create Case File</span>
                             </CustomButton>
-                           <>
+                            <>
                                 <UpdateCaseFileDialog />
                                 <DeleteCaseFileDialog />
                                 <AssignInvestigatorDialog />
-                           </>
+                            </>
                         </div>
                     </div>
-                    <div className="">
+                    <div className="py-8">
                         <div className="">
                             <CaseFileListTable />
                         </div>

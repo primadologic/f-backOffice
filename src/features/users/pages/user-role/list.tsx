@@ -33,7 +33,7 @@ export default function UserRoleList() {
        <div className="">
             <TopNavBar pageName="User Role" icon={UserPlus} />
             <PageLayout>
-                <div className="space-y-8 mt-3">
+                <div className="space-y-8 pt-10 pb-12">
                     <div className="w-full flex sm:justify-end items-center justify-end">
                         <div className="flex sm:flex-row gap-3 justify-center items-center flex-col">
                             {/* export */}

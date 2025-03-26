@@ -31,10 +31,10 @@ export default function ReportNumberListPage() {
     }
 
     return (
-       <div className="">
+       <div className="pt-5">
             <TopNavBar pageName="Reported Numbers" icon={BookOpen} />
             <PageLayout>
-                <div className="space-y-8 mt-3">
+                <div className="space-y-8 pt-5 pb-12">
                     <div className="w-full flex sm:justify-end items-center justify-end">
                         <div className="flex sm:flex-row gap-3 justify-center items-center flex-col">
                             <ReportNumberExport />

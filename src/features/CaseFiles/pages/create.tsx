@@ -63,10 +63,10 @@ export default function CaseFileCreatePage() {
 
 
     return (
-       <div className="">
+       <div className="pt-5">
             <TopNavBar pageName="Case File" />
             <PageLayout>
-                <div className="pt-7"/>
+                <div className="pb-12"/>
                  <Card className="rounded-[1.8rem] border">
                     <div className="w-full flex flex-row justify-between items-center">
                         <CardHeader className="flex flex-row justify-start items-center gap-x-5">
@@ -130,7 +130,7 @@ export default function CaseFileCreatePage() {
                                                         <SelectValue className="dark:!text-custom_theme-primary_background" placeholder="Select Status"  />
                                                     </SelectTrigger>
                                                     <SelectContent className="w-full">
-                                                        {caseFileStatusData.map((option) => (
+                                                        {caseFileStatusData && caseFileStatusData.map((option) => (
                                                             <SelectItem
                                                                 key={option.statusId} 
                                                                 value={option.statusId}

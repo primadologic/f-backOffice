@@ -176,7 +176,7 @@ export default function UpdateUserComponent() {
     // Loading Skeleton
     if (isLoading || getUserData.isLoading || userRoleService.isLoading) {
         return (
-            <div className="py-3">
+            <div className="pt-10 pb-12">
                 {/* <TopNavBar pageName="Update User" icon={UserRoundPen} /> */}
                 <Skeleton className="h-5 w-32" />
                 <PageLayout>

@@ -213,7 +213,7 @@ export default function UserCreateComponent() {
 
 
     return (
-       <div className="py-3">
+       <div className="pt-10 pb-12">
             <TopNavBar pageName="Create User" icon={UserPlus2} />
             <PageLayout>
                 <div className="pt-7"/>

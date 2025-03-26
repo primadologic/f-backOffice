@@ -39,7 +39,7 @@ export default function UserRoleCreateComponent() {
 
 
     return (
-       <div className="py-3">
+       <div className="pt-10 pb-12">
             <TopNavBar pageName="Create User Role" icon={ShieldUser} />
             <PageLayout>
                 <div className="pt-7"/>

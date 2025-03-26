@@ -11,7 +11,7 @@ export default function OverviewPageAnalytics() {
 
     return (
         <AnalyticsLayout>
-            <div className=" py-4">
+            <div className="pt-10 pb-12">
                 <div className="">
                     {/* <OverviewCards /> */}
                     <NewOverviewCards />

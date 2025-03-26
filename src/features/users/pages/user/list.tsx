@@ -30,7 +30,7 @@ export default function UserListComponent() {
     // Show skeleton if the routeis still loading
 
     return (
-       <div className="py-3">
+       <div className="pt-10 pb-12">
             <TopNavBar pageName="Users" icon={Users} />
             <PageLayout>
                 <div className="space-y-8 mt-3">

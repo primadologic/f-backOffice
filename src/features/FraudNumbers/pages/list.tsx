@@ -29,10 +29,10 @@ export default function FraudNumberListPage() {
 
 
     return (
-       <div className="">
+       <div className="pt-5">
             <TopNavBar pageName="Fraud Numbers" icon={Flag} />
             <PageLayout>
-                <div className="space-y-8">
+                <div className="pt-5 pb-12">
                     <div className="flex justify-end item-end">
                         <div className="flex gap-3 justify-center items-center">
                             <FraudNumberExport />
@@ -48,7 +48,7 @@ export default function FraudNumberListPage() {
                             <DeleteFraudNumberDialog />
                         </div>
                     </div>
-                    <div className="">
+                    <div className="py-8">
                         <div className="">
                            <FraudNumberListTable />
                         </div>
