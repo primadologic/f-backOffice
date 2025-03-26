@@ -7,6 +7,7 @@ import UserAvatarComponent from "./profile-avatar";
 import UserInfoComponent from "./personal-info";
 import ChangePasswordComponent from "./change-password";
 import { useCurrentUser, UserResponse } from "@/service/accounts/fetchCurrentUser";
+import UpdateAvatarDialog from "./dialogs/profile-dialog";
 
 
 
@@ -16,7 +17,7 @@ export default function AccountSettingsComponent() {
 
     const { status } = useRouterState() // Get the current State of router state\
 
-    const { data: userResponse, isLoading, isError, error} = useCurrentUser() as {
+    const { data: userResponse, isLoading } = useCurrentUser() as {
         data: UserResponse;
         isLoading: boolean;
         isError: boolean;
@@ -34,22 +35,23 @@ export default function AccountSettingsComponent() {
         return <div>No user data available.</div>; // Or handle it as you like
     }
 
-    if (isError) {
-        return <div>Error: {error?.message || "Something went wrong!"}</div>;
-    }
+    // if (isError) {
+    //     return <div>Error: {error?.message || "Something went wrong!"}</div>;
+    // }
 
     
-    if (isError) {
-        return <div>Error: {error?.message || "Something went wrong!"}</div>;
-    }
+    // if (isError) {
+    //     return <div>Error: {error?.message || "Something went wrong!"}</div>;
+    // }
     
 
 
     // Show skeleton if the routeis still loading
 
     return (
-       <div className="py-5 mb-5">
+       <div className="py-5">
             <TopNavBar pageName="My Profile" icon={UserRoundPen } />
+            <UpdateAvatarDialog />
             <PageLayout>
                 <div className="space-y-10 mt-3">
                     

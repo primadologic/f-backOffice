@@ -1,12 +1,12 @@
 import {
     AlertDialog,
     AlertDialogContent,
-    // AlertDialogDescription,
+    AlertDialogDescription,
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
   } from "@/components/ui/alert-dialog"
-import { useForm, Controller } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { API_BASE_URL, API_KEY } from "@/lib/env_vars";
@@ -17,7 +17,7 @@ import Loader from "@/components/custom-ui/loader";
 import { useAuth } from "@/hooks/useAuth";
 import { CustomCloseButton } from "@/components/custom-ui/custom-buttons"
 import { useDropzone } from 'react-dropzone';
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { CloudUpload, X } from "lucide-react";
 import { useAccountAvatarStore } from "@/hooks/state/account/account.state";
 
@@ -28,13 +28,9 @@ type AvatarURLType = {
 
 export default function UpdateAvatarDialog() {
     const { token: access } = useAuth();
-
-    const { selectedUser } = useAccountAvatarStore()
   
     const {
       handleSubmit,
-      trigger,
-      control,
       setValue,
       reset,
       formState: { errors },
@@ -48,69 +44,80 @@ export default function UpdateAvatarDialog() {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
-    const {isOpen, setIsOpen} = useAccountAvatarStore();
+    const {isOpen, selectedUser, setIsOpen} = useAccountAvatarStore();
 
 
         // File and File Validation
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [files, setFiles] = useState<File[]>([]);
-    const { getRootProps, getInputProps } = useDropzone({
+    const [preview, setPreview] = useState<string | null>(null)
+
+    const { 
+        getRootProps, 
+        getInputProps, 
+        open,
+        isDragActive 
+      } = useDropzone({
         multiple: false,
-        onDrop: (acceptedFile: File[]) => {
-          if (acceptedFile.length > 0) {
-            const file = acceptedFile[0]; // Only take the first file
-            setFiles([file]);
-            setValue('avatarUrl', file, { shouldValidate: true })
-          }
+        accept: {
+          'image/*': ['.jpeg', '.png', '.gif', '.jpg']
         },
+        maxSize: 5 * 1024 * 1024, // 5MB
+        noClick: true, // Prevent automatic click
+        onDrop: useCallback((acceptedFiles: File[]) => {
+          if (acceptedFiles.length > 0) {
+            const file = acceptedFiles[0];
+            
+            // Create image preview
+            const reader = new FileReader();
+            reader.onloadend = () => {
+              setPreview(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+    
+            setFiles([file]);
+            setValue('avatarUrl', file, { shouldValidate: true });
+          }
+        }, []),
+        onDropRejected: (fileRejections) => {
+          const errors = fileRejections.map(rejection => 
+            `${rejection.file.name}: ${rejection.errors[0].message}`
+          );
+          console.error('File Rejected:', errors);
+        }
       });
     
-    const removeFile = () => {
-      setFiles([]);
-      setValue('avatarUrl', null, { shouldValidate: true }); // Reset field
-      trigger('avatarUrl');
-    };
-
-
-    const validateFileSize = (file: File | null | undefined): boolean | string => {
-        if (!file) return true;
-        
-        return file.size > 5_000_000 ? "File size exceeds the limit of 5 MB." : true;
-    };
+      const removeFile = () => {
+        setFiles([]);
+        setPreview(null);
+        setValue('avatarUrl', null, { shouldValidate: true });
+      };
+    
+      const handleBrowseClick = (e: React.MouseEvent) => {
+        e.preventDefault(); // Prevent any default behavior
+        open(); // Open file selection
+      };
     
 
     const updateAvatarMutation = useMutation({
-        mutationKey: ['update-user', selectedUser],
-        mutationFn: async (newData: AvatarURLType) => {
+        mutationKey: ['update-avatar', selectedUser],
+        mutationFn: async (newAvater: AvatarURLType) => {
             try {
+
                 const formData = new FormData();
 
-                // Append file (Only one allowed)
-                if (newData.avatarUrl && newData.avatarUrl instanceof File) {
-                    formData.append('avatarUrl', newData.avatarUrl);
+                // Ensure that newAvatar is Valid is valid File before appending
+                if (newAvater.avatarUrl instanceof File) {
+                    formData.append("avatarUrl", newAvater.avatarUrl)
                 }
 
                 const response = await axios.put(`${API_BASE_URL}/api/users/${selectedUser}`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         "X-API-KEY": `${API_KEY}`,
-                        'Authorization': `Bearer ${access}`
+                        Authorization: `Bearer ${access}`
                     }
                 });
-    
-                if (response.data?.statusCode === 204) {
-                    toast.success(`${response?.data?.message}`, {
-                        duration: 4000
-                    });
-
-                    queryClient.invalidateQueries({ queryKey: [['users'], ['currentUser']] })
-                    navigate({ to: '/users' });
-                }
-    
-                if (response.data?.statusCode === 201) {
-                    toast.success(`${response?.data?.message}`, {
-                        duration: 4000
-                    });
-                }
     
                 return response.data;
     
@@ -147,17 +154,40 @@ export default function UpdateAvatarDialog() {
                 throw err;
             }
         },
+
+        onSuccess: (data) => {
+            if (data?.statusCode === 204) {
+                toast.success(`Your profile avatar image has been uploaded.`, {
+                    duration: 4000
+                });
+
+                queryClient.invalidateQueries({ queryKey: [['users'], ['currentUser']] })
+            }
+
+            if (data?.statusCode === 201) {
+                toast.success(`${data?.message}`, {
+                    duration: 4000
+                });
+            };
+
+            setFiles([]);
+            setIsOpen(false);
+            navigate({ to: '/accounts' });
+        },
     });
 
-  
 
     const onSubmit = (data: AvatarURLType) => {
-        updateAvatarMutation.mutateAsync(data)
-    }
+        if (!data.avatarUrl) {
+            toast.error("Please select an avatar.");
+            return;
+        }
+        updateAvatarMutation.mutateAsync(data);
+    };
 
 
     return (
-       <div className="py-3">
+        <div className="py-3">
              <AlertDialog
                 open={isOpen}
                 onOpenChange={setIsOpen}
@@ -168,68 +198,59 @@ export default function UpdateAvatarDialog() {
                 <AlertDialogContent className="">
                     <AlertDialogHeader className="w-full flex flex-col space-y-1 !justify-start !items-start">
                         <AlertDialogTitle className="text-left">Update Profile Avator</AlertDialogTitle>
-                        {/* <AlertDialogDescription className="text-left space-y-2">
-                          
-                        </AlertDialogDescription> */}
+                        <AlertDialogDescription className="text-left space-y-2">
+                           Upload a new profile avatar to personalize your account.
+                        </AlertDialogDescription>
                     </AlertDialogHeader>
 
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="w-full flex flex-col gap-2">
                             <label htmlFor="incident_date"  className="form-label">User Profile Picture</label>
-                            <div className="flex flex-col gap-2">
-                                <Controller
-                                    name="avatarUrl"
-                                    control={control}
-                                    rules={{ required: 'This field is required', validate: validateFileSize }}
-                                    render={() => (
-                                        <>
-                                            <div {...getRootProps({ className: 'dropzone' })}>
-                                                <input {...getInputProps()} 
-                                                    className={`form-input
-                                                        ${errors.avatarUrl ? "form-validerr-ring" : "form-valid-err"}
-                                                    `}
-                                                />
-                                                <div className="form-input-file hover: flex flex-col items-center gap-3 px-10 py-8">
-                                                    <div className="dark:bg-[#2d2738] bg-[#d5c1ff] text-[#712eff] w-12 h-12 flex justify-center items-center text-center rounded-full">
-                                                        <CloudUpload className="" />
-                                                    </div>
-                                                    <div className="text-center space-y-2">
-                                                        <div className="text-sm">
-                                                            Drag and drop a file here, or click to select a file
-                                                        </div>
-                                                        <p className="text-custom_theme-primary_foreground dark:text-custom_theme-gray">
-                                                            File size is limited to 5MB
-                                                        </p>
-                                                        <Button type="button" className="btn-dark-mode bg-custom_theme-light_blue hover:bg-custom_theme-light_blue/95">Browse</Button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            {errors.avatarUrl && (
-                                                <span className="form-error-msg">{errors.avatarUrl.message}</span>
-                                            )}
-                                            {files.length > 0 && (
-                                                <aside className="flex flex-col gap-2 max-w-max ">
-                                                    <ul className="space-y-3 list-disc ">
-                                                        {files.map((file) => (
-                                                            <div key={file.name} className="flex flex-row gap-2">
-                                                                <li className="bg-white w-full px-3 line-clamp-1 text-black text-base font-medium py-1 rounded-xl flex items-center justify-between">
-                                                                    {file.name}
-                                                                </li>
-                                                                <button onClick={removeFile} className="ml-2 text-red-500">
-                                                                    <X className="w-6 h-6 bg-white text-black rounded-full hover:bg-red-500 focus:bg-red-500 hover:text-white hover:font-bold transition-all duration-300 hover:scale-125 hover:translate-y-1" />
-                                                                </button>
-                                                            </div>
-                                                        ))}
-                                                    </ul>
-                                                </aside>
-                                            )}
-                                        </>
-                                    )}
-                                />
-                            </div>
+                            <div className="flex flex-col gap-4">
+                                {preview ? (
+                                    <div className="relative w-48 h-48">
+                                    <img 
+                                        src={preview} 
+                                        alt="Preview" 
+                                        className="w-full h-full object-cover rounded-lg shadow-md"
+                                    />
+                                    <button 
+                                        onClick={removeFile} 
+                                        className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1"
+                                    >
+                                        <X className="w-5 h-5" />
+                                    </button>
+                                    </div>
+                                ) : (
+                                    <div 
+                                    {...getRootProps({ 
+                                        className: `dropzone ${isDragActive ? 'border-blue-500' : 'border-gray-300'} 
+                                        border-2 border-dashed rounded-lg p-6 text-center`
+                                    })}
+                                    >
+                                    <input {...getInputProps()} />
+                                    <div className="flex flex-col items-center gap-3">
+                                        <CloudUpload className="w-12 h-12 text-gray-400" />
+                                        <p className="text-sm">
+                                        {isDragActive 
+                                            ? 'Drop the files here ...' 
+                                            : 'Drag and drop an image, or click to select'}
+                                        </p>
+                                        <Button 
+                                        type="button" 
+                                        onClick={handleBrowseClick}
+                                        className="btn-dark-mode"
+                                        >
+                                        Browse
+                                        </Button>
+                                    </div>
+                                    </div>
+                                )}
+
+                                {errors.avatarUrl && <p className="form-error-msg">{errors.avatarUrl.message}</p>}
+                                </div>
                         </div>
-                    
-                        <div className="w-full flex sm:flex-row gap-x-6 gap-y-3 py-3 flex-col-reverse">
+                        <div className="w-full flex sm:flex-row gap-x-6 gap-y-3 py-6 flex-col-reverse">
                             <CustomCloseButton />
                             <Button
                                 type="submit"
@@ -244,13 +265,13 @@ export default function UpdateAvatarDialog() {
                                         <Loader />
                                     </span>
                                 ) : (
-                                    <span>Confirm</span>
+                                    <span>Upload</span>
                                 )}
                             </Button>
                         </div>
                     </form>
                 </AlertDialogContent>
             </AlertDialog>
-       </div>
+        </div>
     )
 };

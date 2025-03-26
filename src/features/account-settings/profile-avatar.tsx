@@ -14,8 +14,6 @@ import { PencilLine } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { UserResponse } from "@/service/accounts/fetchCurrentUser"
 import { useAccountAvatarStore } from "@/hooks/state/account/account.state"
-import UpdateAvatarDialog from "./dialogs/profile-dialog"
-
 
 
 export default function UserAvatarComponent({ user }: {user: UserResponse} ) {
@@ -58,7 +56,6 @@ export default function UserAvatarComponent({ user }: {user: UserResponse} ) {
                             <span><PencilLine  /></span>
                         </Button>
                     </div>
-                    <UpdateAvatarDialog />
                 </CardContent>
             </Card>
         </div>
