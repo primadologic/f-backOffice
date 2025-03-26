@@ -1,16 +1,17 @@
-import { UserSettingsType } from "@/common/Type/accounts-settings.type";
 import { Button } from "@/components/ui/button";
 import {
     Card,
     CardContent,
-    CardDescription,
+    // CardDescription,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
+import { maskNumber } from "@/lib/custom";
+import { UserResponse } from "@/service/accounts/fetchCurrentUser";
 import { PencilLine } from "lucide-react";
 
 
-export default function UserInfoComponent({ user }: UserSettingsType) {
+export default function UserInfoComponent({ user }: {user: UserResponse} ) {
 
     return (
         <div className="">
@@ -28,57 +29,57 @@ export default function UserInfoComponent({ user }: UserSettingsType) {
                 </CardHeader>
                 <CardContent className="w-[40vw]">
                     <dl className="space-y-2 flex flex-col justify-between gap-4">
-                        <div className="flex sm:flex-row flex-col space-y-4  text-left justify-between">
+                        <div className="flex sm:flex-row flex-col space-y-4  text-left justify-between sm:items-center">
                             <div>
                                 <dt className="text-sm font-medium text-muted-foreground">
                                     First Name
                                 </dt>
-                                <dd className="text-secondary-foreground font-medium">
-                                    Sam
+                                <dd className="text-secondary-foreground font-medium capitalize">
+                                    {user?.data?.firstName ?? '-'}
                                 </dd>
                             </div>
                             <div>
                                 <dt className="text-sm font-medium text-muted-foreground">
                                     Last Name
                                 </dt>
-                                <dd className="text-secondary-foreground font-medium">
-                                    Adranyi
+                                <dd className="text-secondary-foreground font-medium capitalize">
+                                    {user?.data?.lastName ?? '-'}
                                 </dd>
                             </div>
                         </div>
-                        <div className="flex sm:flex-row flex-col space-y-4  text-left justify-between">
+                        <div className="flex sm:flex-row flex-col space-y-4  text-left justify-between sm:items-center">
                             <div className="text-left">
                                 <dt className="text-sm  font-medium text-muted-foreground">
                                     Email
                                 </dt>
-                                <dd className="text-secondary-foreground font-medium">
-                                    s.adranyi@outlook.com
+                                <dd className="text-secondary-foreground font-medium capitalize">
+                                    {maskNumber(`${user?.data?.email ?? '-'}`)}
                                 </dd>
                             </div>
                             <div className="sm:text-right">
                                 <dt className="text-sm font-medium text-muted-foreground">
                                     Phone
                                 </dt>
-                                <dd className="text-secondary-foreground font-medium">
-                                    +233 00 000 0000
+                                <dd className="text-secondary-foreground font-medium capitalize">
+                                   {maskNumber(`${user?.data?.phoneNumber ?? '-'}`)}
                                 </dd>
                             </div>
                         </div>
-                        <div className="flex sm:flex-row flex-col space-y-4  text-left justify-between">
+                        <div className="flex sm:flex-row flex-col space-y-4  text-left justify-between sm:items-center">
                             <div className="text-left">
                                 <dt className="text-sm  font-medium text-muted-foreground">
                                     User Role
                                 </dt>
-                                <dd className="text-secondary-foreground font-medium">
-                                    Admin
+                                <dd className="text-secondary-foreground font-medium capitalize">
+                                    {user?.data?.role.roleName ?? '-'}
                                 </dd>
                             </div>
                             <div className="sm:text-right">
                                 <dt className="text-sm font-medium text-muted-foreground">
-                                    Description
+                                    Role Description
                                 </dt>
-                                <dd className="text-secondary-foreground font-medium">
-                                    Adminstrator
+                                <dd className="text-secondary-foreground font-medium capitalize">
+                                    {user?.data?.role.description ?? '-'}
                                 </dd>
                             </div>
                         </div>

@@ -24,6 +24,7 @@ export type UserType = {
     firstName: string;
     lastName: string;
     email: string;
+    phoneNumber?: string;
     isActive?: boolean;
     lastLogIn?: string | null;
     lastActivity?: string | null;
