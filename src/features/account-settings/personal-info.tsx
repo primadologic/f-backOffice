@@ -39,7 +39,7 @@ export default function UserInfoComponent({ user }: {user: UserResponse} ) {
                         <span><PencilLine  /></span>
                     </Button>
                 </CardHeader>
-                <CardContent className="w-[40vw]">
+                <CardContent className="sm:w-[40vw] w-full">
                     <dl className="space-y-2 flex flex-col justify-between gap-4">
                         <div className="flex sm:flex-row flex-col space-y-4  text-left justify-between sm:items-center">
                             <div>
