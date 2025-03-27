@@ -9,15 +9,22 @@ import UserListTable from "@/features/users/table/user/user-table";
 import DeleteUserDialog from "./delete";
 import { useUsers } from "@/service/users/service";
 import LoadingSkeleton from "@/components/custom-ui/page-loading-ui";
+import { useCurrentUser } from "@/service/accounts/fetchCurrentUser";
 
 
 
 export default function UserListComponent() {
 
     const navigate = useNavigate();
-    const { status } = useRouterState() // Get the current State of router state\
+    const { status } = useRouterState(); // Get the current State of router state\
 
-    const { isLoading, isPending, } = useUsers()
+    const { isLoading, isPending, } = useUsers();
+
+    const { data: user } = useCurrentUser();
+
+    const userRoleId = user?.data?.role?.roleName ?? '';
+
+    const roleAccess = !["admin"].includes(userRoleId)
 
     if ( status ===  "pending" ) {
         return <LoadingSkeleton />
@@ -42,7 +49,8 @@ export default function UserListComponent() {
                                 onClick={() =>navigate({ to: '/users/create' })} 
                                 size={'sm'}
                                 variant={'create'}
-                                className=""
+                                className={` ${roleAccess ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+                                disabled={roleAccess}
                             >
                                 <Plus className="mr-2 h-4 w-4" />
                                 <span className="mr-1">Create New User</span>

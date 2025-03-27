@@ -11,6 +11,7 @@ import { ErrorBoundary } from 'react-error-boundary'
 import ErrorFallback from './components/custom-ui/error-fallback'
 import "@/index.css"
 import "@/App.css"
+import RoleAccessAlterDialog from './components/custom-ui/RBAC/alert-dialog'
 
 
 
@@ -53,6 +54,7 @@ if (!rootElement.innerHTML) {
                 duration={5500}
                 closeButton={true}
               />
+              <RoleAccessAlterDialog />
             <ReactQueryDevtools initialIsOpen={false} />
           </QueryClientProvider>
         </ThemeProvider>

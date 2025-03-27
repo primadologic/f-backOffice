@@ -133,30 +133,46 @@ export const useUpdateUserService = (userId: string) => {
 
         onError: (error) => {
             if (axios.isAxiosError(error)) {
-                const code = error.response?.status ?? null
-
-                if (code === 400) {
-                    toast.error(`Oops an error occured`, {
-                        description: `${error.response?.data?.message}`
-                    })
-                };
-                if (code === 401) {
-                    toast.error(`Oops an error occured`, {
-                        description: `${error.response?.data?.message}`
-                    })
-                };
-
-                if (code === 404) {
-                    toast.error(`Sorry, this user does not exist.`, {
-                        description: `${error.response?.data?.message}`
-                    })
-                };
-                if (code === 500) {
-                    toast.error(`Sorry an unexpected error occured.`, {
-                        description: `${error.response?.data?.message}`
-                    })
-                };
-            }
+                if (error.code === "ERR_NETWORK") {
+                    toast.error("Network error. Please check your internet connection.");
+                } else if (error.code === "ECONNABORTED") {
+                    toast.error("Request timed out. Please try again.");
+                } else if (error.code === "ECONNREFUSED") {
+                    toast.error("Connection refused. Please try again later.");
+                } else if(error.code === "ENOTFOUND") {
+                    toast.error("Server not found, please check your url.");
+                } else {
+                    const code = error.response?.status ?? null;
+        
+                    switch (code) {
+                        case 400:
+                            toast.error(`${error.response?.data?.message}`);
+                            break;
+                        case 401:
+                            toast.error("Oops, you're unauthorized. Sign in again.", {
+                                description: `${error.response?.data?.message}`
+                            });
+                            break;
+                        case 403:
+                            toast.error(`${error.response?.data?.message}`)
+                            break;
+                        case 404:
+                            toast.error(`Sorry, this user does not exist.`, {
+                                description: `${error.response?.data?.message}`
+                            });
+                            break;
+                        case 500:
+                            toast.error(`Sorry an unexpected error occured.`, {
+                                description: `${error.response?.data?.message}`
+                            });
+                            break;
+                        default:
+                            toast.info("An unexpected error occurred, please try again.");
+                    }
+                }
+            } else {
+                toast.error("An unexpected error occurred."); // handle non-axios errors
+            };
         },
         
     })
@@ -199,30 +215,44 @@ export const useDeleteUserService = (userId: string) => {
 
         onError: (error) => {
             if (axios.isAxiosError(error)) {
-                const code = error.response?.status ?? null
-
-                if (code === 400) {
-                    toast.error(`Oops an error occured`, {
-                        description: `${error.response?.data?.message}`
-                    })
-                };
-                if (code === 401) {
-                    toast.error(`Oops an error occured`, {
-                        description: `${error.response?.data?.message}`
-                    })
-                };
-
-                if (code === 404) {
-                    toast.error(`Sorry, this user does not exist.`, {
-                        description: `${error.response?.data?.message}`
-                    })
-                };
-                if (code === 500) {
-                    toast.error(`Sorry an unexpected error occured.`, {
-                        description: `${error.response?.data?.message}`
-                    })
-                };
-            }
+                if (error.code === "ERR_NETWORK") {
+                    toast.error("Network error. Please check your internet connection.");
+                } else if (error.code === "ECONNABORTED") {
+                    toast.error("Request timed out. Please try again.");
+                } else if (error.code === "ECONNREFUSED") {
+                    toast.error("Connection refused. Please try again later.");
+                } else if(error.code === "ENOTFOUND") {
+                    toast.error("Server not found, please check your url.");
+                } else {
+                    const code = error.response?.status ?? null;
+        
+                    switch (code) {
+                        case 400:
+                            toast.error(`${error.response?.data?.message}`);
+                            break;
+                        case 401:
+                            toast.error(`${error.response?.data?.message}`);
+                            break;
+                        case 403:
+                            toast.error(`${error.response?.data?.message}`)
+                            break;
+                        case 404:
+                            toast.error(`Sorry, this user does not exist.`, {
+                                description: `${error.response?.data?.message}`
+                            });
+                            break;
+                        case 500:
+                            toast.error(`Sorry an unexpected error occured.`, {
+                                description: `${error.response?.data?.message}`
+                            });
+                            break;
+                        default:
+                            toast.info("An unexpected error occurred, please try again.");
+                    }
+                }
+            } else {
+                toast.error("An unexpected error occurred."); // handle non-axios errors
+            };
         },
         
     })
@@ -294,30 +324,44 @@ export const useUpdateUserRoleService = (roleId: string) => {
 
         onError: (error) => {
             if (axios.isAxiosError(error)) {
-                const code = error.response?.status ?? null
-
-                if (code === 400) {
-                    toast.error(`Oops an error occured`, {
-                        description: `${error.response?.data?.message}`
-                    })
-                };
-                if (code === 401) {
-                    toast.error(`Oops an error occured`, {
-                        description: `${error.response?.data?.message}`
-                    })
-                };
-
-                if (code === 404) {
-                    toast.error(`Sorry, this user role does not exist.`, {
-                        description: `${error.response?.data?.message}`
-                    })
-                };
-                if (code === 500) {
-                    toast.error(`Sorry an unexpected error occured.`, {
-                        description: `${error.response?.data?.message}`
-                    })
-                };
-            }
+                if (error.code === "ERR_NETWORK") {
+                    toast.error("Network error. Please check your internet connection.");
+                } else if (error.code === "ECONNABORTED") {
+                    toast.error("Request timed out. Please try again.");
+                } else if (error.code === "ECONNREFUSED") {
+                    toast.error("Connection refused. Please try again later.");
+                } else if(error.code === "ENOTFOUND") {
+                    toast.error("Server not found, please check your url.");
+                } else {
+                    const code = error.response?.status ?? null;
+        
+                    switch (code) {
+                        case 400:
+                            toast.error(`${error.response?.data?.message}`);
+                            break;
+                        case 401:
+                            toast.error(`${error.response?.data?.message}`);
+                            break;
+                        case 403:
+                            toast.error(`${error.response?.data?.message}`)
+                            break;
+                        case 404:
+                            toast.error(`Sorry, this user role does not exist.`, {
+                                description: `${error.response?.data?.message}`
+                            });
+                            break;
+                        case 500:
+                            toast.error(`Sorry an unexpected error occured.`, {
+                                description: `${error.response?.data?.message}`
+                            });
+                            break;
+                        default:
+                            toast.info("An unexpected error occurred, please try again.");
+                    }
+                }
+            } else {
+                toast.error("An unexpected error occurred."); // handle non-axios errors
+            };
         },
         
     })
@@ -357,33 +401,44 @@ export const useCreateUserRoleService = () => {
 
         onError: (error) => {
             if (axios.isAxiosError(error)) {
-                const code = error.response?.status ?? null
-
-                if (code === 400) {
-                    toast.error(`Oops an error occured`, {
-                        description: `${error.response?.data?.message}`
-                    })
-                };
-                if (code === 401) {
-                    toast.error(`Oops an error occured`, {
-                        description: `${error.response?.data?.message}`
-                    })
-                };
-
-                if (code === 404) {
-                    toast.error(`Sorry, this user role does not exist.`, {
-                        description: `${error.response?.data?.message}`
-                    })
-                };
-                if (code === 500) {
-                    toast.error(`Sorry an unexpected error occured.`, {
-                        description: `${error.response?.data?.message}`
-                    })
-                };
-                if (code === 409) {
-                    toast.error(`${error.response?.data?.message}`)
-                };
-            }
+                if (error.code === "ERR_NETWORK") {
+                    toast.error("Network error. Please check your internet connection.");
+                } else if (error.code === "ECONNABORTED") {
+                    toast.error("Request timed out. Please try again.");
+                } else if (error.code === "ECONNREFUSED") {
+                    toast.error("Connection refused. Please try again later.");
+                } else if(error.code === "ENOTFOUND") {
+                    toast.error("Server not found, please check your url.");
+                } else {
+                    const code = error.response?.status ?? null;
+        
+                    switch (code) {
+                        case 400:
+                            toast.error(`${error.response?.data?.message}`);
+                            break;
+                        case 401:
+                            toast.error(`${error.response?.data?.message}`);
+                            break;
+                        case 403:
+                            toast.error(`${error.response?.data?.message}`)
+                            break;
+                        case 404:
+                            toast.error(`Sorry, this user role does not exist.`, {
+                                description: `${error.response?.data?.message}`
+                            })
+                            break;
+                        case 500:
+                            toast.error(`Sorry an unexpected error occured.`, {
+                                description: `${error.response?.data?.message}`
+                            });
+                            break;
+                        default:
+                            toast.info("An unexpected error occurred, please try again.");
+                    }
+                }
+            } else {
+                toast.error("An unexpected error occurred."); // handle non-axios errors
+            };
         },
         
     })
@@ -455,31 +510,44 @@ export const useDeleteUserRoleService = (roleId: string) => {
 
         onError: (error) => {
             if (axios.isAxiosError(error)) {
-                const code = error.response?.status ?? null
-
-                if (code === 400) {
-                    toast.error(`Oops an error occured`, {
-                        description: `${error.response?.data?.message}`
-                    })
-                };
-                if (code === 401) {
-                    toast.error(`Oops an error occured`, {
-                        description: `${error.response?.data?.message}`
-                    })
-                };
-
-                if (code === 404) {
-                    toast.error(`Sorry, this user role does not exist.`, {
-                        description: `${error.response?.data?.message}`
-                    })
-                };
-                if (code === 500) {
-                    toast.error(`Sorry an unexpected error occured.`, {
-                        description: `${error.response?.data?.message}`
-                    })
-                };
-              
-            }
+                if (error.code === "ERR_NETWORK") {
+                    toast.error("Network error. Please check your internet connection.");
+                } else if (error.code === "ECONNABORTED") {
+                    toast.error("Request timed out. Please try again.");
+                } else if (error.code === "ECONNREFUSED") {
+                    toast.error("Connection refused. Please try again later.");
+                } else if(error.code === "ENOTFOUND") {
+                    toast.error("Server not found, please check your url.");
+                } else {
+                    const code = error.response?.status ?? null;
+        
+                    switch (code) {
+                        case 400:
+                            toast.error(`${error.response?.data?.message}`);
+                            break;
+                        case 401:
+                            toast.error(`${error.response?.data?.message}`);
+                            break;
+                        case 403:
+                            toast.error(`${error.response?.data?.message}`)
+                            break;
+                        case 404:
+                            toast.error(`Sorry, this user role does not exist.`, {
+                                description: `${error.response?.data?.message}`
+                            });
+                            break;
+                        case 500:
+                            toast.error(`Sorry an unexpected error occured.`, {
+                                description: `${error.response?.data?.message}`
+                            });
+                            break;
+                        default:
+                            toast.info("An unexpected error occurred, please try again.");
+                    }
+                }
+            } else {
+                toast.error("An unexpected error occurred."); // handle non-axios errors
+            };
         },
         
     })
