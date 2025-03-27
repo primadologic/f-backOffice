@@ -60,7 +60,7 @@ export const ActionsCell = ({ fraudNumber }: { fraudNumber: FraudNumberNewType }
             navigator.clipboard.writeText(fraudNumber.fraudNumber);
             toast.info("Copied", {duration: 2000})
           }}
-          className="space-x-1"
+          className="space-x-1 cursor-pointer"
         >
           <span><Copy /></span>
           <span>Copy fraud number</span>
@@ -68,14 +68,14 @@ export const ActionsCell = ({ fraudNumber }: { fraudNumber: FraudNumberNewType }
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem onClick={handleEditClick} className="space-x-1">
+        <DropdownMenuItem onClick={handleEditClick} className="space-x- cursor-pointer">
           <span><SquarePen /></span>
           <span>Edit</span>
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem onClick={handleDeleteClick} className="space-x-1">
+        <DropdownMenuItem onClick={handleDeleteClick} className="space-x-1 cursor-pointer">
           <span><Trash2 /></span>
           <span>Remove</span>
         </DropdownMenuItem>

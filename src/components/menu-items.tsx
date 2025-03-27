@@ -25,7 +25,7 @@ import { useRouter } from "@tanstack/react-router"
         <SidebarGroup>
             <SidebarMenu className="gap-4">
                 {items.map((item) => (
-                   <SidebarMenuButton onClick={() => router.navigate({ to: `${item.url}` })}  key={item.title} tooltip={item.title}>
+                   <SidebarMenuButton className="cursor-pointer" onClick={() => router.navigate({ to: `${item.url}` })}  key={item.title} tooltip={item.title}>
                         {item.icon && <item.icon />}
                         <span>{item.title}</span>
                     </SidebarMenuButton>

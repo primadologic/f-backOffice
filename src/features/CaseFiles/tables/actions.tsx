@@ -85,7 +85,7 @@ export const ActionsCell = ({ caseFile }: { caseFile: CaseFileType }) => {
             navigator.clipboard.writeText(caseFile.suspectNumber)
               toast.info("Copied", {duration: 2000})
           }}
-          className="space-x-1"
+          className="space-x-1 cursor-pointer"
         >
           <span><Copy /></span>
           <span>Copy suspect number</span>
@@ -95,7 +95,7 @@ export const ActionsCell = ({ caseFile }: { caseFile: CaseFileType }) => {
 
         <DropdownMenuItem 
           onClick={handleEditClick}
-          className="space-x-1"
+          className="space-x- cursor-pointer"
         >
           <span><SquarePen /></span>
           <span>Edit</span>
@@ -105,7 +105,7 @@ export const ActionsCell = ({ caseFile }: { caseFile: CaseFileType }) => {
 
         <DropdownMenuItem 
           onClick={handleNavigate}
-          className="space-x-1"
+          className="space-x- cursor-pointer"
         >
           <span><Eye /></span>
           <span>View</span>
@@ -115,7 +115,7 @@ export const ActionsCell = ({ caseFile }: { caseFile: CaseFileType }) => {
 
         <DropdownMenuItem 
           onClick={handleAssignInvestigator}
-          className="space-x-1"
+          className="space-x-1 cursor-pointer"
         >
           <span><UserRoundCheck /></span>
           <span>Assign Investigator</span>
@@ -125,7 +125,7 @@ export const ActionsCell = ({ caseFile }: { caseFile: CaseFileType }) => {
 
         <DropdownMenuItem 
             onClick={handleDeleteClick}
-            className="space-x-1"
+            className="space-x-1 cursor-pointer"
         >
          <span><Trash2 /></span>
          <span>Remove</span>
