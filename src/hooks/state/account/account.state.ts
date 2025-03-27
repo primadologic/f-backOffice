@@ -22,9 +22,28 @@ export const useAccountAvatarStore = create<AccountStore>()(
         reset: () => set({ isOpen: false, selectedUser: null }),
       }),
       {
-        name: 'user-settings', // name of the item in the storage (must be unique)
+        name: 'account-avatar', // name of the item in the storage (must be unique)
         storage: createJSONStorage(() => localStorage), // (optional) default: localStorage
         partialize: (state) => ({ selectedUser: state.selectedUser }), // only persist selectedUser
       }
     )
   );
+
+
+export const useAccountInfoStore = create<AccountStore>()(
+
+    persist(
+      (set) => ({
+        isOpen: false,
+        selectedUser: null,
+        setIsOpen: (isOpen) => set({ isOpen }),
+        setSelectedUser: (userId) => set({ selectedUser: userId }),
+        reset: () => set({ isOpen: false, selectedUser: null }),
+      }),
+      {
+        name: 'account-info', // name of the item in the storage (must be unique)
+        storage: createJSONStorage(() => localStorage), // (optional) default: localStorage
+        partialize: (state) => ({ selectedUser: state.selectedUser }), // only persist selectedUser
+      }
+    )
+);

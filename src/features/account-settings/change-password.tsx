@@ -8,9 +8,9 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import { useChangePasswordService } from "@/service/accounts/service"
-import { Loader } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { ErrorMessage } from "@hookform/error-message"
+import Loader from "@/components/custom-ui/loader"
 
 
 

@@ -43,6 +43,7 @@ export function useCurrentUser() {
   return useQuery({
     queryKey: ["currentUser"],
     queryFn: () => fetchCurrentUser(access as string),
-    enabled: !!access, // Only run the query if accessToken exists
+    enabled: !!access, // Only run the query if accessToken exists,
+    refetchOnWindowFocus: false,
   });
 }

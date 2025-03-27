@@ -8,6 +8,7 @@ import UserInfoComponent from "./personal-info";
 import ChangePasswordComponent from "./change-password";
 import { useCurrentUser, UserResponse } from "@/service/accounts/fetchCurrentUser";
 import UpdateAvatarDialog from "./dialogs/profile-dialog";
+import AccountInfoDialog from "./dialogs/info-dialog";
 
 
 
@@ -49,11 +50,11 @@ export default function AccountSettingsComponent() {
     // Show skeleton if the routeis still loading
 
     return (
-       <div className="py-5">
+       <div className="pt-5">
             <TopNavBar pageName="My Profile" icon={UserRoundPen } />
             <UpdateAvatarDialog />
             <PageLayout>
-                <div className="space-y-10 mt-3">
+                <div className="space-y-10 py-5 pb-12">
                     
                     <div className="flex flex-col gap-y-6">
                         <div className="">
@@ -64,6 +65,7 @@ export default function AccountSettingsComponent() {
                         </div>
                         <div className="">
                             <ChangePasswordComponent />
+                            <AccountInfoDialog />
                         </div>
                     </div>
                 </div>

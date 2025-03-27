@@ -22,9 +22,10 @@ export default function UserAvatarComponent({ user }: {user: UserResponse} ) {
 
 
     const handleOpen = () => {
-        if (user?.data?.userId)
-        setIsOpen(true)
-        setSelectedUser(`${user?.data?.userId}`)
+        if (user?.data?.userId) {
+            setIsOpen(true)
+            setSelectedUser(`${user?.data?.userId}`)
+        }
     }
 
 

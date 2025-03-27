@@ -6,12 +6,23 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
+import { useAccountInfoStore } from "@/hooks/state/account/account.state";
 import { maskNumber } from "@/lib/custom";
 import { UserResponse } from "@/service/accounts/fetchCurrentUser";
 import { PencilLine } from "lucide-react";
 
 
 export default function UserInfoComponent({ user }: {user: UserResponse} ) {
+
+    const { setIsOpen, setSelectedUser } = useAccountInfoStore((state) => state);
+
+    const handleOPen = () => {
+        if (user?.data?.userId) {
+            console.log();
+            setSelectedUser(`${user?.data?.userId}`)
+            setIsOpen(true)
+        }
+    }
 
     return (
         <div className="">
@@ -21,6 +32,7 @@ export default function UserInfoComponent({ user }: {user: UserResponse} ) {
                     <Button
                         variant={"ghost"}
                         size={'sm'}
+                        onClick={handleOPen}
                         className="space-x-1 border px-4 !rounded-2xl"
                     >
                         <span>Edit</span>
