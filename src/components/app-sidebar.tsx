@@ -40,18 +40,18 @@ import { MenuItem } from "./menu-items"
 import Logo from "./custom-ui/logo"
 import NavBrand from "./custom-ui/navbar-brand"
 import { AccountItems } from "./account"
-
+import { useCurrentUser } from "@/service/accounts/fetchCurrentUser"
 
 
 
 // This is sample data.
 const data = {
-  user: {
-    name: "Prince Adimado",
-    email: "prince.adimado@afrilogicsolutions.com",
-    // avatar: "/avatars/shadcn.jpg",
-    avatar: "https://avatars.githubusercontent.com/u/149607045?v=4",
-  },
+  // user: {
+  //   name: "Prince Adimado",
+  //   email: "prince.adimado@afrilogicsolutions.com",
+  //   // avatar: "/avatars/shadcn.jpg",
+  //   avatar: "https://avatars.githubusercontent.com/u/149607045?v=4",
+  // },
   teams: [
     {
       name: "FraudWall",
@@ -246,6 +246,20 @@ const data = {
 
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+
+  const { data: userData   } = useCurrentUser();
+
+  const firstName = userData?.data?.firstName ?? '';
+  const lastName = userData?.data?.lastName ?? '';
+
+  const user = {
+    name: [firstName, lastName].filter(Boolean).join(' '),
+    firstName: firstName,
+    lastName: lastName,
+    email: userData?.data?.email ?? 'user@fraudwall.ai',
+    avatar: userData?.data?.avatarUrl ?? 'https://github.com/shadcn.png'
+  }
+
   return (
     <Sidebar collapsible="icon" {...props} >
       <SidebarHeader>
@@ -262,7 +276,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {/* <NavMain items={data.navMain} /> */}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

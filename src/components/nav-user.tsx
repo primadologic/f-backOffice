@@ -30,6 +30,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { useLogout } from "@/hooks/useLogout"
+import { useNavigate } from "@tanstack/react-router"
 
 
 
@@ -39,13 +40,16 @@ export function NavUser({
 }: {
   user: {
     name: string
+    firstName: string
+    lastName: string
     email: string
     avatar: string
   }
 }) {
 
-  const { isMobile } = useSidebar()
-  const logout = useLogout()
+  const { isMobile } = useSidebar();
+  const logout = useLogout();
+  const navigate = useNavigate();
 
   return (
     <SidebarMenu>
@@ -77,7 +81,7 @@ export function NavUser({
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  <AvatarFallback className="rounded-lg">{user.firstName.at(0)}{user.lastName.at(0)}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">{user.name}</span>
@@ -94,7 +98,10 @@ export function NavUser({
             </DropdownMenuGroup> */}
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem 
+                onClick={() => navigate({ to: '/accounts' })}
+                className="cursor-pointer"
+              >
                 <BadgeCheck />
                 Account
               </DropdownMenuItem>
