@@ -42,7 +42,8 @@ import { Input } from "@/components/ui/input"
 import { ChevronDown, ListFilter, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useRetrieveCaseFileService } from "@/service/case-files/service"
-import { useDetailCaseFile } from "@/hooks/state/case-files/case-file-store"
+import { useDetailCaseFileStore } from "@/hooks/state/case-files/case-file-store"
+
 
 
 
@@ -103,11 +104,12 @@ const [pagination, setPagination] = useState({
     },
   });
 
-  const { selectedCaseFile } = useDetailCaseFile();
+  const { selectedCaseFile } = useDetailCaseFileStore();
 
-  const caseId: string | null = selectedCaseFile?.caseId ?? ""
+  const caseId = selectedCaseFile ?? "undefined";
 
-  const retrieveQuery = useRetrieveCaseFileService(caseId)
+  const retrieveQuery = useRetrieveCaseFileService(caseId);
+
 
   return (
     <div className="">

@@ -219,7 +219,7 @@ export const useUpdateCaseFileService = (caseId: string | undefined) => {
 };
 
 
-export const useRetrieveCaseFileService = (caseFileId: string | null) => {
+export const useRetrieveCaseFileService = (caseFileId: string) => {
     const { token: access } = useAuth();
 
     const retrieveCaseFile = useQuery({
@@ -236,6 +236,8 @@ export const useRetrieveCaseFileService = (caseFileId: string | null) => {
             return response.data
         },
 
+        enabled: !!caseFileId
+
     });
 
     return retrieveCaseFile;
@@ -243,7 +245,7 @@ export const useRetrieveCaseFileService = (caseFileId: string | null) => {
 };
 
 
-export const useDeletCaseFileService = (caseFileId: string | null) => {
+export const useDeletCaseFileService = (caseFileId: string) => {
 
     const { token: access } = useAuth();
 
@@ -253,7 +255,7 @@ export const useDeletCaseFileService = (caseFileId: string | null) => {
 
     const deleteCaseFile = useMutation({
         mutationKey: ['delete-caseFile', caseFileId],
-        mutationFn: async (caseFileId: string | null) => {
+        mutationFn: async (caseFileId: string) => {
             const response = await axios.delete(`${API_BASE_URL}/api/case-file/${caseFileId}`, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -322,7 +324,7 @@ export const useDeletCaseFileService = (caseFileId: string | null) => {
 };
 
 
-export const useAssignInvestigatorService = (caseFileId: string | undefined) => {
+export const useAssignInvestigatorService = (caseFileId: string) => {
 
     const { token: access } = useAuth();
 
