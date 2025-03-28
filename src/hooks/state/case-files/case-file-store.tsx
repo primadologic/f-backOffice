@@ -9,14 +9,23 @@ interface CaseFileStore {
   reset: () => void
 }
 
-export const useCaseFileStore = create<CaseFileStore>((set) => ({
-  isOpen: false,
-  selectedCaseFile: null,
-  setIsOpen: (isOpen) => set({ isOpen }),
-  setSelectedCaseFile: (caseId) => set({ selectedCaseFile: caseId}),
-  
-  reset: () => set({ isOpen: false, selectedCaseFile: null })
-}))
+export const useCaseFileStore = create<CaseFileStore>()(
+  persist(
+      (set) => ({
+      isOpen: false,
+      selectedCaseFile: null,
+      setIsOpen: (isOpen) => set({ isOpen }),
+      setSelectedCaseFile: (caseId) => set({ selectedCaseFile: caseId}),
+      
+      reset: () => set({ isOpen: false, selectedCaseFile: null })
+    }),
+    {
+      name: 'caseFile-store'
+    }
+
+  )
+
+)
 
 
 export const useDetailCaseFileStore = create<CaseFileStore>() (

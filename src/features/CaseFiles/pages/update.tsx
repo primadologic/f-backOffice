@@ -25,12 +25,13 @@ import { ApiResponse } from "@/common/api-response.type"
 
 
 
-
-
 export default function UpdateCaseFileDialog() {
 
     const { isOpen, selectedCaseFile, setIsOpen } = useCaseFileStore();
-    const { data: caseFileData } = useRetrieveCaseFileService(selectedCaseFile ?? 'caseId');
+
+    const caseId = selectedCaseFile ?? 'undefined';
+
+    const { data: caseFileData, isLoading } = useRetrieveCaseFileService(caseId ?? 'caseId');
     
     const { register, handleSubmit, control, formState: { errors } } = useForm<EditCaseFileType & CaseFileType>({
         criteriaMode: 'all',
@@ -39,24 +40,35 @@ export default function UpdateCaseFileDialog() {
 
     const { data: caseFileStatusData } = useCaseFileStatusService() as {
         data: ApiResponse
-    }
+    };
     
     const response: CaseFileStatusType[] = caseFileStatusData?.data ?? [];
 
-
-
         // Patch Case File
-    const updateCaseFileMutation = useUpdateCaseFileService(selectedCaseFile ?? 'caseId')
-   
-
+    const updateCaseFileMutation = useUpdateCaseFileService(selectedCaseFile ?? 'caseId');
     
     const onSubmit = async (data: any) => {
         updateCaseFileMutation.mutateAsync({
             "statusId": data.statusId,
             "remark": data.remark,
         });
-      
-    }
+    };
+
+    if (isLoading || caseId === 'undefined') {
+        return (
+            <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+                <AlertDialogHeader>
+                    <AlertDialogTitle className="sr-only">Loading dialog</AlertDialogTitle>
+                </AlertDialogHeader>
+                <AlertDialogContent>
+                    <div className="flex justify-center items-center h-48">
+                    <Loader />
+                    </div>
+                </AlertDialogContent>
+            </AlertDialog>
+        );
+    };
+
 
     return (
         <>

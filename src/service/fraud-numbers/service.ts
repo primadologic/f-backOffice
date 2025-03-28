@@ -60,7 +60,7 @@ export const useRetrieveFraudNumber = (fraudNumberId: string) => {
 };
 
 
-export const useDeleteFraudNumberService = () => {
+export const useDeleteFraudNumberService = (fraudNumberId: string) => {
 
     const { setIsOpen } = useDeleteFraudNumberStore()
 
@@ -68,7 +68,7 @@ export const useDeleteFraudNumberService = () => {
     const queryClient = useQueryClient()
 
     const deleteFraudNumber = useMutation({
-        mutationKey: ['delete-fraudNumber'],
+        mutationKey: ['delete-fraudNumber', fraudNumberId],
         mutationFn: async (fraudNumberId: string) => {
             const response = await axios.delete(`${API_BASE_URL}/api/fraud-number/${fraudNumberId}`, {
                 headers: {

@@ -27,7 +27,6 @@ export default function FraudNumberListPage() {
     }
 
 
-
     return (
        <div className="pt-5">
             <TopNavBar pageName="Fraud Numbers" icon={Flag} />
