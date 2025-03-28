@@ -11,7 +11,7 @@ import {
 import Loader from "@/components/custom-ui/loader"
 import { CustomCloseButton } from "@/components/custom-ui/custom-buttons"
 import { useDeleteUserStore } from "@/hooks/state/users/user.state"
-import { useDeleteUserService } from "@/service/users/service"
+import { useDeleteUserService, useGetUserDetails } from "@/service/users/service"
 
 
 
@@ -20,13 +20,27 @@ export default function DeleteUserDialog() {
     const { isOpen, setIsOpen, selectedUser } = useDeleteUserStore();
 
     // Service Hooks
-    const userId: string = selectedUser?.userId ?? ""
+    const getUserData = useGetUserDetails(selectedUser || "defaultUser");
 
-    const deleteUserMutation = useDeleteUserService(userId)
+    const deleteUserMutation = useDeleteUserService(selectedUser ?? 'null')
 
     const deleteHandler = () => {
         deleteUserMutation.mutateAsync()  
     };
+
+    
+    if (getUserData.isLoading) {
+      return (
+        <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+          <AlertDialogContent>
+            <div className="flex justify-center items-center h-48">
+              <Loader />
+            </div>
+          </AlertDialogContent>
+        </AlertDialog>
+      );
+    }
+    
 
 
     return (
@@ -53,19 +67,19 @@ export default function DeleteUserDialog() {
                                 <div className="flex flex-row gap-3">
                                     <p className="form-label">Full Name:</p>
                                     <data 
-                                        value={selectedUser?.firstName + " " + selectedUser?.lastName || "N/A"}
+                                        value={getUserData?.data?.data?.firstName || "N/A" + " " + getUserData?.data?.data?.lastName || "N/A"}
                                         className="custom-txt"
                                     >
-                                        {selectedUser?.firstName + " " + selectedUser?.lastName || "N/A"} 
+                                        {getUserData?.data?.data?.firstName + " " + getUserData?.data?.data?.lastName || "N/A"} 
                                     </data>
                                 </div>
                                 <div className="flex flex-row gap-3">
                                     <p className="form-label">User's Role</p>
                                     <data 
-                                        value={selectedUser?.role?.roleName || "N/A"}
+                                        value={getUserData?.data?.role?.roleName || "N/A"}
                                         className="custom-txt capitalize"
                                     >
-                                        {selectedUser?.role?.roleName}
+                                        {getUserData?.data?.data?.role?.roleName || "N/A"}
                                     </data>
                                 </div>
                             </div>

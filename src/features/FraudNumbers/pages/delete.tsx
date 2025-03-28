@@ -11,9 +11,8 @@ import {
 import Loader from "@/components/custom-ui/loader"
 import { CustomCloseButton } from "@/components/custom-ui/custom-buttons"
 import { maskNumber } from "@/lib/custom"
-import { useDeleteFraudNumberService } from "@/service/fraud-numbers/service"
+import { useDeleteFraudNumberService, useRetrieveFraudNumber } from "@/service/fraud-numbers/service"
 import { useDeleteFraudNumberStore } from "@/hooks/state/fraud-numbers/fraudSheet.state"
-
 
 
 export default function DeleteFraudNumberDialog() {
@@ -23,19 +22,34 @@ export default function DeleteFraudNumberDialog() {
     // Service Hooks
 
         // Delete Case File
-    const currentFraudNumberId: string | undefined = selectedFraudNumber?.fraudNumberId ?? undefined
-    const deleteFraudNumberMutation = useDeleteFraudNumberService()
+    const fraudNumberId = selectedFraudNumber ?? 'undefined';
     
-   
+    const { data: fraudNumberData, isLoading } = useRetrieveFraudNumber(fraudNumberId);
+
+    const deleteFraudNumberMutation = useDeleteFraudNumberService(fraudNumberId);
 
 
     const deleteHandler = () => {
-        if (currentFraudNumberId) {
-            deleteFraudNumberMutation.mutateAsync(currentFraudNumberId)
+        if (fraudNumberId) {
+            deleteFraudNumberMutation.mutateAsync(fraudNumberId)
         }
     };
-    
-    
+
+    if (isLoading || fraudNumberId === 'undefined') {
+        return (
+            <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+                <AlertDialogHeader>
+                    <AlertDialogTitle className="sr-only">Loading dialog</AlertDialogTitle>
+                </AlertDialogHeader>
+              <AlertDialogContent>
+                <div className="flex justify-center items-center h-48">
+                  <Loader />
+                </div>
+              </AlertDialogContent>
+            </AlertDialog>
+        );
+    }
+
 
     return (
         <>
@@ -44,7 +58,7 @@ export default function DeleteFraudNumberDialog() {
                 onOpenChange={setIsOpen}
             >
                 <AlertDialogTrigger className="sr-only">
-                    Edit
+                    Delete FraudNumber
                 </AlertDialogTrigger>
                 <AlertDialogContent className="">
                     <AlertDialogHeader className="w-full flex flex-col space-y-1 !justify-start !items-start">
@@ -61,10 +75,10 @@ export default function DeleteFraudNumberDialog() {
                                     <div className="flex flex-row gap-3">
                                         <p className="form-label">Suspect Number:</p>
                                         <data 
-                                            value={maskNumber(selectedFraudNumber?.fraudNumber) || "Fraud Number"}
+                                            value={maskNumber(fraudNumberData?.data?.fraudNumber ) || ""}
                                             className="custom-txt"
                                         >
-                                            {selectedFraudNumber?.fraudNumber || "N/A"} 
+                                            {maskNumber(fraudNumberData?.data?.fraudNumber ) || "N/A"} 
                                         </data>
                                     </div>
                                 </div>
@@ -95,8 +109,6 @@ export default function DeleteFraudNumberDialog() {
                        
                 </AlertDialogContent>
             </AlertDialog>
-            
         </>
     )
-    
 };

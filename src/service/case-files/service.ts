@@ -20,7 +20,7 @@ export const useCaseFileListService = () => {
             const response = await axios.get(`${API_BASE_URL}/api/case-file`, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${ access }`,
+                    Authorization: `Bearer ${ access }`,
                     'X-API-KEY': `${API_KEY}`
                 }
             });
@@ -52,7 +52,7 @@ export const useCreateCaseFileService = () => {
             const response = await axios.post(`${API_BASE_URL}/api/case-file`, data, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${ access }`,
+                    Authorization: `Bearer ${ access }`,
                     'X-API-KEY': `${API_KEY}`
                 }
             });
@@ -75,27 +75,42 @@ export const useCreateCaseFileService = () => {
 
         onError: (error) => {
             if (axios.isAxiosError(error)) {
-                const code = error.response?.status ?? null
-
-                if (code === 400) {
-                    toast.error(`Oops an error occured`, {
-                        description: `${error.response?.data?.message}`
-                    })
-                };
-                if (code === 401) {
-                    toast.error(`Oops an error occured`, {
-                        description: `${error.response?.data?.message}`
-                    })
-                };
-                if (code === 404) {
-                    toast.error(`${error.response?.data?.message}`)
-                };
-                if (code === 500) {
-                    toast.error(`Sorry an unexpected error occured.`, {
-                        description: `${error.response?.data?.message}`
-                    })
-                };
-            }
+                if (error.code === "ERR_NETWORK") {
+                    toast.error("Network error. Please check your internet connection.");
+                } else if (error.code === "ECONNABORTED") {
+                    toast.error("Request timed out. Please try again.");
+                } else if (error.code === "ECONNREFUSED") {
+                    toast.error("Connection refused. Please try again later.");
+                } else if(error.code === "ENOTFOUND") {
+                    toast.error("Server not found, please check your url.");
+                } else {
+                    const code = error.response?.status ?? null;
+        
+                    switch (code) {
+                        case 400:
+                            toast.error(`${error.response?.data?.message}`);
+                            break;
+                        case 401:
+                            toast.error(`${error.response?.data?.message}`);
+                            break;
+                        case 403:
+                            toast.error(`${error.response?.data?.message}`)
+                            break;
+                        case 404:
+                            toast.error(`${error.response?.data?.message}`)
+                            break;
+                        case 500:
+                            toast.error(`Sorry an unexpected error occured.`, {
+                                description: `${error.response?.data?.message}`
+                            });
+                            break;
+                        default:
+                            toast.info("An unexpected error occurred, please try again.");
+                    }
+                }
+            } else {
+                toast.error("An unexpected error occurred."); // handle non-axios errors
+            };
         }
     })
 
@@ -113,7 +128,7 @@ export const useCaseFileStatusService = () => {
             const response = await axios.get(`${API_BASE_URL}/api/case-file-status`, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${ access }`,
+                    Authorization: `Bearer ${ access }`,
                     'X-API-KEY': `${API_KEY}`
                 }
             });
@@ -144,7 +159,7 @@ export const useUpdateCaseFileService = (caseId: string | undefined) => {
             const response = await axios.patch(`${API_BASE_URL}/api/case-file/${caseId}`, formData, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${ access }`,
+                    Authorization: `Bearer ${ access }`,
                     'X-API-KEY': `${API_KEY}`
                 }
             });
@@ -160,20 +175,42 @@ export const useUpdateCaseFileService = (caseId: string | undefined) => {
 
         onError: (error) => {
             if (axios.isAxiosError(error)) {
-                const code = error.response?.status ?? null
-
-                if (code === 400) {
-                    toast.error(`Oops an error occured`, {
-                        description: `${error.response?.data?.message}`
-                    })
-                };
-
-                if (code === 401) {
-                    toast.error(`Oops an error occured`, {
-                        description: `${error.response?.data?.message}`
-                    })
-                };
-            }
+                if (error.code === "ERR_NETWORK") {
+                    toast.error("Network error. Please check your internet connection.");
+                } else if (error.code === "ECONNABORTED") {
+                    toast.error("Request timed out. Please try again.");
+                } else if (error.code === "ECONNREFUSED") {
+                    toast.error("Connection refused. Please try again later.");
+                } else if(error.code === "ENOTFOUND") {
+                    toast.error("Server not found, please check your url.");
+                } else {
+                    const code = error.response?.status ?? null;
+        
+                    switch (code) {
+                        case 400:
+                            toast.error(`${error.response?.data?.message}`);
+                            break;
+                        case 401:
+                            toast.error(`${error.response?.data?.message}`);
+                            break;
+                        case 403:
+                            toast.error(`${error.response?.data?.message}`)
+                            break;
+                        case 404:
+                            toast.error(`${error.response?.data?.message}`)
+                            break;
+                        case 500:
+                            toast.error(`Sorry an unexpected error occured.`, {
+                                description: `${error.response?.data?.message}`
+                            });
+                            break;
+                        default:
+                            toast.info("An unexpected error occurred, please try again.");
+                    }
+                }
+            } else {
+                toast.error("An unexpected error occurred."); // handle non-axios errors
+            };
         }
     })
     
@@ -182,7 +219,7 @@ export const useUpdateCaseFileService = (caseId: string | undefined) => {
 };
 
 
-export const useRetrieveCaseFileService = (caseFileId: string | null) => {
+export const useRetrieveCaseFileService = (caseFileId: string) => {
     const { token: access } = useAuth();
 
     const retrieveCaseFile = useQuery({
@@ -191,13 +228,15 @@ export const useRetrieveCaseFileService = (caseFileId: string | null) => {
             const response = await axios.get(`${API_BASE_URL}/api/case-file/${caseFileId}`, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${ access }`,
+                    Authorization: `Bearer ${ access }`,
                     'X-API-KEY': `${API_KEY}`
                 }
             });
 
             return response.data
         },
+
+        enabled: !!caseFileId
 
     });
 
@@ -206,7 +245,7 @@ export const useRetrieveCaseFileService = (caseFileId: string | null) => {
 };
 
 
-export const useDeletCaseFileService = (caseFileId: string | null) => {
+export const useDeletCaseFileService = (caseFileId: string) => {
 
     const { token: access } = useAuth();
 
@@ -216,11 +255,11 @@ export const useDeletCaseFileService = (caseFileId: string | null) => {
 
     const deleteCaseFile = useMutation({
         mutationKey: ['delete-caseFile', caseFileId],
-        mutationFn: async (caseFileId: string | null) => {
+        mutationFn: async (caseFileId: string) => {
             const response = await axios.delete(`${API_BASE_URL}/api/case-file/${caseFileId}`, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${ access }`,
+                    Authorization: `Bearer ${ access }`,
                     'X-API-KEY': `${API_KEY}`
                 }
             });
@@ -239,30 +278,44 @@ export const useDeletCaseFileService = (caseFileId: string | null) => {
 
         onError: (error) => {
             if (axios.isAxiosError(error)) {
-                const code = error.response?.status ?? null
-
-                if (code === 400) {
-                    toast.error(`Oops an error occured`, {
-                        description: `${error.response?.data?.message}`
-                    })
-                };
-                if (code === 401) {
-                    toast.error(`Oops an error occured`, {
-                        description: `${error.response?.data?.message}`
-                    })
-                };
-
-                if (code === 404) {
-                    toast.error(`Sorry, this case file does not exist.`, {
-                        description: `${error.response?.data?.message}`
-                    })
-                };
-                if (code === 500) {
-                    toast.error(`Sorry an unexpected error occured.`, {
-                        description: `${error.response?.data?.message}`
-                    })
-                };
-            }
+                if (error.code === "ERR_NETWORK") {
+                    toast.error("Network error. Please check your internet connection.");
+                } else if (error.code === "ECONNABORTED") {
+                    toast.error("Request timed out. Please try again.");
+                } else if (error.code === "ECONNREFUSED") {
+                    toast.error("Connection refused. Please try again later.");
+                } else if(error.code === "ENOTFOUND") {
+                    toast.error("Server not found, please check your url.");
+                } else {
+                    const code = error.response?.status ?? null;
+        
+                    switch (code) {
+                        case 400:
+                            toast.error(`${error.response?.data?.message}`);
+                            break;
+                        case 401:
+                            toast.error(`${error.response?.data?.message}`);
+                            break;
+                        case 403:
+                            toast.error(`${error.response?.data?.message}`)
+                            break;
+                        case 404:
+                            toast.error(`Sorry, this case file does not exist.`, {
+                                description: `${error.response?.data?.message}`
+                            });
+                            break;
+                        case 500:
+                            toast.error(`Sorry an unexpected error occured.`, {
+                                description: `${error.response?.data?.message}`
+                            });
+                            break;
+                        default:
+                            toast.info("An unexpected error occurred, please try again.");
+                    }
+                }
+            } else {
+                toast.error("An unexpected error occurred."); // handle non-axios errors
+            };
         }
     });
 
@@ -271,7 +324,7 @@ export const useDeletCaseFileService = (caseFileId: string | null) => {
 };
 
 
-export const useAssignInvestigatorService = (caseFileId: string | undefined) => {
+export const useAssignInvestigatorService = (caseFileId: string) => {
 
     const { token: access } = useAuth();
 
@@ -287,7 +340,7 @@ export const useAssignInvestigatorService = (caseFileId: string | undefined) => 
                     
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${ access }`,
+                    Authorization: `Bearer ${ access }`,
                     'X-API-KEY': `${API_KEY}`
                 }
             });
@@ -306,27 +359,42 @@ export const useAssignInvestigatorService = (caseFileId: string | undefined) => 
 
         onError: (error) => {
             if (axios.isAxiosError(error)) {
-                const code = error.response?.status ?? null
-
-                if (code === 400) {
-                    toast.error(`Oops an error occured`, {
-                        description: `${error.response?.data?.message}`
-                    })
-                };
-                if (code === 401) {
-                    toast.error(`Oops an error occured`, {
-                        description: `${error.response?.data?.message}`
-                    })
-                };
-                if (code === 404) {
-                    toast.error(`${error.response?.data?.message}`)
-                };
-                if (code === 500) {
-                    toast.error(`Sorry an unexpected error occured.`, {
-                        description: `${error.response?.data?.message}`
-                    })
-                };
-            }
+                if (error.code === "ERR_NETWORK") {
+                    toast.error("Network error. Please check your internet connection.");
+                } else if (error.code === "ECONNABORTED") {
+                    toast.error("Request timed out. Please try again.");
+                } else if (error.code === "ECONNREFUSED") {
+                    toast.error("Connection refused. Please try again later.");
+                } else if(error.code === "ENOTFOUND") {
+                    toast.error("Server not found, please check your url.");
+                } else {
+                    const code = error.response?.status ?? null;
+        
+                    switch (code) {
+                        case 400:
+                            toast.error(`${error.response?.data?.message}`);
+                            break;
+                        case 401:
+                            toast.error(`${error.response?.data?.message}`);
+                            break;
+                        case 403:
+                            toast.error(`${error.response?.data?.message}`)
+                            break;
+                        case 404:
+                            toast.error(`${error.response?.data?.message}`)
+                            break;
+                        case 500:
+                            toast.error(`Sorry an unexpected error occured.`, {
+                                description: `${error.response?.data?.message}`
+                            });
+                            break;
+                        default:
+                            toast.info("An unexpected error occurred, please try again.");
+                    }
+                }
+            } else {
+                toast.error("An unexpected error occurred."); // handle non-axios errors
+            };
         }
     });
 

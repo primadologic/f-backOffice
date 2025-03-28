@@ -41,7 +41,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { ChevronDown, ListFilter, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { useReportListService } from "@/service/report/service"
+import { useUserRoleService } from "@/service/users/service"
 
 
 
@@ -103,15 +103,15 @@ const [pagination, setPagination] = useState({
   });
 
 
-  const reportListQuery = useReportListService()
+  const userRoleQuery = useUserRoleService()
 
   return (
     <div className="">
       <Card className="rounded-[1.8rem] border">
         <div className="w-full flex sm:flex-row flex-col justify-between items-center">
           <CardHeader className="">
-            <CardTitle className="font-semibold dark:text-custom_theme-primary_background">Report Numbers List</CardTitle>
-            <CardDescription className="dark:text-custom_theme-gray font-medium">Keep track of reported fraud incidents and other information</CardDescription>
+            <CardTitle className="font-semibold dark:text-custom_theme-primary_background">User Role List</CardTitle>
+            <CardDescription className="dark:text-custom_theme-gray font-medium">Keep track of user roles details</CardDescription>
           </CardHeader>
             <CardContent className="flex gap-3 ">
               <div className="flex items-center gap-4 py-4">
@@ -157,28 +157,28 @@ const [pagination, setPagination] = useState({
                           )
                         })}
                       </DropdownMenuGroup>
-                      <DropdownMenuGroup>
-                        <DropdownMenuLabel>Archived</DropdownMenuLabel>
-                        {[true, false].map((archiveOption) => {
-                          const column = table.getColumn("archived");
-                          const currentFilter = column?.getFilterValue() as boolean | undefined;
-                          const isChecked = currentFilter === archiveOption;
+                        <DropdownMenuGroup>
+                          <DropdownMenuLabel>Role Name</DropdownMenuLabel>
+                          {['admin', 'investigator', 'guest'].map((roleOption) => {
+                            const column = table.getColumn("roleName");
+                            const currentFilter = column?.getFilterValue() as string | undefined;
+                            const isChecked = currentFilter === roleOption;
 
                           return (
-                          <DropdownMenuCheckboxItem
-                            key={archiveOption.toString()}
-                            className="capitalize"
-                            checked={isChecked}
-                            onCheckedChange={(checked) => {
-                              if (!column) return;
-                              column.setFilterValue(checked ? archiveOption : undefined) // Set or Clear filter
-                            }}
-                            >
-                              { archiveOption.toString() }
-                            </DropdownMenuCheckboxItem>
-                          );
-                        })}
-                      </DropdownMenuGroup>
+                            <DropdownMenuCheckboxItem
+                              key={roleOption}
+                              className="capitalize"
+                              checked={isChecked}
+                              onCheckedChange={(checked) => {
+                                if (!column) return;
+                                column.setFilterValue(checked ? roleOption : undefined) // Set or Clear filter
+                              }}
+                              >
+                                { roleOption }
+                              </DropdownMenuCheckboxItem>
+                            );
+                          })}
+                        </DropdownMenuGroup>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
@@ -221,7 +221,7 @@ const [pagination, setPagination] = useState({
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                  {reportListQuery.isFetching ? "Loading..." : "No results."}
+                  {userRoleQuery.isFetching ? "Loading..." : "No results."}
                 </TableCell>
               </TableRow>
             )}

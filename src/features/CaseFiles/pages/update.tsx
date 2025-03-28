@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button"
-import { useUpdateCaseFileStore } from "@/hooks/state/case-files/case-file-store"
+import { useCaseFileStore } from "@/hooks/state/case-files/case-file-store"
 import {
     Select,
     SelectContent,
@@ -18,47 +18,57 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Controller, useForm } from "react-hook-form"
 import { CaseFileStatusType, CaseFileType, EditCaseFileType } from "@/common/Type/CaseFile/CaseFile.type"
-import { useCaseFileStatusService, useUpdateCaseFileService,  } from "@/service/case-files/service"
+import { useCaseFileStatusService, useRetrieveCaseFileService, useUpdateCaseFileService,  } from "@/service/case-files/service"
 import Loader from "@/components/custom-ui/loader"
 import { CustomCloseButton } from "@/components/custom-ui/custom-buttons"
 import { ApiResponse } from "@/common/api-response.type"
 
 
 
-
-
 export default function UpdateCaseFileDialog() {
+
+    const { isOpen, selectedCaseFile, setIsOpen } = useCaseFileStore();
+
+    const caseId = selectedCaseFile ?? 'undefined';
+
+    const { data: caseFileData, isLoading } = useRetrieveCaseFileService(caseId ?? 'caseId');
     
     const { register, handleSubmit, control, formState: { errors } } = useForm<EditCaseFileType & CaseFileType>({
         criteriaMode: 'all',
         mode: 'onChange'
-    })
-
-
-    const { isOpen, selectedCaseFile, setIsOpen } = useUpdateCaseFileStore()
-        
-    const statusId = selectedCaseFile?.status?.statusId
+    });
 
     const { data: caseFileStatusData } = useCaseFileStatusService() as {
         data: ApiResponse
-    }
+    };
     
     const response: CaseFileStatusType[] = caseFileStatusData?.data ?? [];
 
-    const currentStatusId: string | undefined = response.find((cf) => cf.statusId === statusId)?.statusId;
-
         // Patch Case File
-    const updateCaseFileMutation = useUpdateCaseFileService(currentStatusId)
-   
-
+    const updateCaseFileMutation = useUpdateCaseFileService(selectedCaseFile ?? 'caseId');
     
     const onSubmit = async (data: any) => {
         updateCaseFileMutation.mutateAsync({
             "statusId": data.statusId,
             "remark": data.remark,
         });
-      
-    }
+    };
+
+    if (isLoading || caseId === 'undefined') {
+        return (
+            <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+                <AlertDialogHeader>
+                    <AlertDialogTitle className="sr-only">Loading dialog</AlertDialogTitle>
+                </AlertDialogHeader>
+                <AlertDialogContent>
+                    <div className="flex justify-center items-center h-48">
+                    <Loader />
+                    </div>
+                </AlertDialogContent>
+            </AlertDialog>
+        );
+    };
+
 
     return (
         <>
@@ -83,7 +93,7 @@ export default function UpdateCaseFileDialog() {
                                         placeholder="Suspect Number"
                                         disabled={true}
                                         // {...register('suspectNumber')}
-                                        defaultValue={selectedCaseFile?.suspectNumber}
+                                        defaultValue={caseFileData?.data?.suspectNumber}
                                         className="form-input disabled:cursor-not-allowed"
                                     />
                                 </div>
@@ -94,7 +104,7 @@ export default function UpdateCaseFileDialog() {
                                     <Controller
                                         name="statusId"
                                         control={control}
-                                        defaultValue={selectedCaseFile?.status?.name}
+                                        defaultValue={caseFileData?.data?.status?.statusId}
                                         rules={{
                                             required: {
                                                 value: true,
@@ -104,7 +114,7 @@ export default function UpdateCaseFileDialog() {
                                         render={({ field: { onBlur, onChange } }) => (
                                       
                                         <Select
-                                            defaultValue={selectedCaseFile?.status?.statusId}
+                                            defaultValue={caseFileData?.data?.status?.statusId}
                                             onValueChange={onChange}
                                           >
                                             <SelectTrigger 
@@ -136,7 +146,7 @@ export default function UpdateCaseFileDialog() {
                                 <Controller
                                     name="investigator.userId"
                                     control={control}
-                                    defaultValue={selectedCaseFile?.investigator?.userId}
+                                    defaultValue={caseFileData?.data?.investigator?.userId}
                                     rules={{
                                         required: {
                                             value: true,
@@ -147,7 +157,7 @@ export default function UpdateCaseFileDialog() {
                                         <Select
                                             value={value?.userId}
                                             onValueChange={onChange}
-                                            defaultValue={selectedCaseFile?.investigator?.userId}
+                                            defaultValue={caseFileData?.data?.investigator?.userId}
                                         >
                                             <SelectTrigger 
                                                     onBlur={onBlur}
@@ -164,11 +174,11 @@ export default function UpdateCaseFileDialog() {
                                                 ))} */}
                                                 
                                                 <SelectItem 
-                                                    key={selectedCaseFile?.investigator?.userId}
-                                                    value={selectedCaseFile?.investigator?.userId}
+                                                    key={caseFileData?.data?.investigator?.userId}
+                                                    value={caseFileData?.data?.investigator?.userId}
                                                 >
-                                                    {selectedCaseFile?.investigator?.firstName} {' '} {selectedCaseFile?.investigator?.firstName} 
-                                                    </SelectItem>
+                                                    {caseFileData?.data?.investigator?.firstName} {' '} {caseFileData?.data?.investigator?.lastName} 
+                                                </SelectItem>
 
                                             </SelectContent>
                                         </Select>
@@ -191,7 +201,7 @@ export default function UpdateCaseFileDialog() {
                                     })}
                                     className="w-full rounded-md border form-input"
                                     placeholder="Give your remarks"
-                                    defaultValue={selectedCaseFile?.remark}
+                                    defaultValue={caseFileData?.data?.remark}
                                     {...register('remark', {
                                         required: {
                                             value: true,

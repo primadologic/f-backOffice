@@ -11,7 +11,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { FraudNumberNewType } from "@/common/Type/FraudNumber/fraud-numbers";
 import { useDeleteFraudNumberStore, useFraudNumberStore } from "@/hooks/state/fraud-numbers/fraudSheet.state";
-import { useFraudNumberListService } from "@/service/fraud-numbers/service";
 import { toast } from "sonner";
 
 
@@ -19,30 +18,28 @@ export const ActionsCell = ({ fraudNumber }: { fraudNumber: FraudNumberNewType }
     
   const { setIsOpen, setSelectedFraudNumber } = useFraudNumberStore();
 
-  const { setIsOpen: setIsDeleteOpen, setSelectedFraudNumber: setDeletedFraudNumber } = useDeleteFraudNumberStore()
+  const { setIsOpen: setIsDeleteOpen, setSelectedFraudNumber: setDeletedFraudNumber } = useDeleteFraudNumberStore();
 
-  const fraudNumberData = useFraudNumberListService();
-  const response: FraudNumberNewType[] = fraudNumberData.data?.data ?? [];
-
-  const currentFraudNumber = response.find((cf) => cf.fraudNumberId === fraudNumber.fraudNumberId);
-  
+  const fraudNumberId = fraudNumber?.fraudNumberId ?? 'undefined';
 
 
   const handleEditClick = () => {
-    if (currentFraudNumber) {
-      setSelectedFraudNumber(currentFraudNumber)
+    if (fraudNumberId === 'undefined') {
+      setIsOpen(false)
+    } else {
+      setSelectedFraudNumber(fraudNumberId)
       setIsOpen(true)
     }
   }
 
-
   
   const handleDeleteClick = () => {
-    if (currentFraudNumber) {
-      setDeletedFraudNumber(currentFraudNumber);
-      setIsDeleteOpen(true);
+    if (fraudNumberId === 'undefined') {
+      setIsDeleteOpen(false);
+    } else {
+      setDeletedFraudNumber(fraudNumberId);
+      setIsDeleteOpen(true)
     }
-  
   };
 
   return (
@@ -60,7 +57,7 @@ export const ActionsCell = ({ fraudNumber }: { fraudNumber: FraudNumberNewType }
             navigator.clipboard.writeText(fraudNumber.fraudNumber);
             toast.info("Copied", {duration: 2000})
           }}
-          className="space-x-1"
+          className="space-x-1 cursor-pointer"
         >
           <span><Copy /></span>
           <span>Copy fraud number</span>
@@ -68,14 +65,14 @@ export const ActionsCell = ({ fraudNumber }: { fraudNumber: FraudNumberNewType }
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem onClick={handleEditClick} className="space-x-1">
+        <DropdownMenuItem onClick={handleEditClick} className="space-x- cursor-pointer">
           <span><SquarePen /></span>
           <span>Edit</span>
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem onClick={handleDeleteClick} className="space-x-1">
+        <DropdownMenuItem onClick={handleDeleteClick} className="space-x-1 cursor-pointer">
           <span><Trash2 /></span>
           <span>Remove</span>
         </DropdownMenuItem>

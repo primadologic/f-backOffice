@@ -11,18 +11,65 @@ import { CustomBackButton } from "@/components/custom-ui/custom-buttons";
 import { useRetrieveCaseFileService } from "@/service/case-files/service";
 import { CaseFileType } from "@/common/Type/CaseFile/CaseFile.type";
 import { useParams } from "@tanstack/react-router";
+import { Skeleton } from "@/components/ui/skeleton";
+import PageLayout from "@/features/layout/PagesLayout";
+import { useDetailCaseFileStore } from "@/hooks/state/case-files/case-file-store";
 
 
 export default function CaseFileDetail() {
 
     const { caseId } = useParams({ from: "/dashboard/case-files/$caseId" });  // Get caseId from URL
 
-    const caseFileData = useRetrieveCaseFileService(caseId); 
-    const response: CaseFileType = caseFileData.data?.data;
+    const { selectedCaseFile }  = useDetailCaseFileStore();
 
-    const createdAt = response?.createdAt
-    ? formatDateTime(response?.createdAt)
-    : "N/A";
+    const isCaseId = caseId 
+
+    let _caseId 
+
+    if (isCaseId === selectedCaseFile) {
+        _caseId = selectedCaseFile
+    }
+
+    const { data: caseFileData, isLoading } = useRetrieveCaseFileService(_caseId ?? 'undefined'); 
+    const response: CaseFileType = caseFileData?.data ?? {}; 
+
+    // const createdAt = response?.createdAt
+    // ? formatDateTime(response?.createdAt)
+    // : "N/A";
+
+     // Loading Skeleton
+
+     if (isLoading ||  _caseId === 'undefined') {
+        return (
+            <div className="pt-10 pb-12">
+                {/* <TopNavBar pageName="Update User" icon={UserRoundPen} /> */}
+                <Skeleton className="h-5 w-32" />
+                <PageLayout>
+                    <div className="pt-7"/>
+                    <Card className="rounded-[1.8rem] border">
+                        <CardHeader>
+                            <CustomBackButton />
+                            <Skeleton className="h-5 w-32" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="space-y-4">
+                                <div className="flex gap-5">
+                                    <Skeleton className="h-12 w-full" />
+                                    <Skeleton className="h-12 w-full" />
+                                </div>
+                                <div className="flex gap-5">
+                                    <Skeleton className="h-12 w-full" />
+                                    <Skeleton className="h-12 w-full" />
+                                </div>
+                                <Skeleton className="h-12 w-full" />
+                                <Skeleton className="h-12 w-full" />
+                            </div>
+                        </CardContent>
+                    </Card>
+                </PageLayout>
+            </div>
+        );
+    };
 
 
     return (
@@ -80,7 +127,7 @@ export default function CaseFileDetail() {
                                             type="text"
                                             disabled={true}
                                             className="form-input" 
-                                            defaultValue={createdAt}
+                                            defaultValue={formatDateTime(`${response?.createdAt}`) || 'N/A'}
                                         />
                                     </div>
                                 </div>

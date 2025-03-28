@@ -1,5 +1,5 @@
 
-import { MoreHorizontal } from "lucide-react";
+import { Copy, MoreHorizontal, SquarePen, Trash2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,21 +9,35 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { ReportNumberType } from "@/data/ReportNumbers/ReportNumbers.type";
-import { useReportNumberStore } from "@/hooks/state/reports/report-store";
 import { toast } from "sonner";
+import { useUserRoleDeleteStore, useUserRoleStore } from "@/hooks/state/users/role.state";
+import { UserRole } from "@/common/Type/UserRole.type";
+import { useUserRoleDetailService } from "@/service/users/service";
 
 
-export const ActionsCell = ({ reportNumber }: { reportNumber: ReportNumberType }) => {
+
+export const ActionsCell = ({ userRole }: { userRole: UserRole }) => {
     
-  const { setIsOpen, setSelectedReportNumber } = useReportNumberStore()
 
-    
-  
+  const { setIsOpen, setSelectedRoleId, selectedRoleId } = useUserRoleStore();
+  const { setIsOpen: setIsOpenDelete, setSelectedRoleId: setSelectedRoleIdDelete, selectedRoleId: SelectedRoleIdDelete } = useUserRoleDeleteStore();
+  const selectedRole = useUserRoleDetailService(selectedRoleId ?? 'null'); // Ensure null fallback
+
   const handleEditClick = () => {
-    setSelectedReportNumber(reportNumber)
-    setIsOpen(true)
-  }
+    if (selectedRoleId) {
+      setSelectedRoleId(userRole.id ?? null); // Ensure null fallback
+      setIsOpen(true);
+    }
+  };
+
+  const handleDeleteClick = () => {
+    if (SelectedRoleIdDelete) {
+      setSelectedRoleIdDelete(userRole.id ?? null); // Ensure null fallback
+      setIsOpenDelete(true);
+    }
+  };
+
+
 
   return (
     <DropdownMenu>
@@ -37,17 +51,29 @@ export const ActionsCell = ({ reportNumber }: { reportNumber: ReportNumberType }
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <DropdownMenuItem
           onClick={() => {
-            navigator.clipboard.writeText(reportNumber.reporterNumber);
+            navigator.clipboard.writeText(selectedRole.data?.data?.roleName || "");
             toast.info("Copied", {duration: 2000})
           }}
+          className="space-x-1"
         >
-          Copy reporter number
+          <span><Copy /></span>
+         <span>Copy role name</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem 
-            onClick={handleEditClick}
+          onClick={handleEditClick}
+          className="space-x-1"
         >
-          View
+          <span><SquarePen /></span>
+          <span>Edit</span>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem 
+          onClick={handleDeleteClick}
+          className="space-x-1"
+        >
+          <span><Trash2 /></span>
+          <span>Delete</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

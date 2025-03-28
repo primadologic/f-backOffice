@@ -15,7 +15,7 @@ export const useReportListService = () => {
             const response = await axios.get(`${API_BASE_URL}/api/report`, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${ access }`,
+                    Authorization: `Bearer ${ access }`,
                     'X-API-KEY': `${API_KEY}`
                 }
             });

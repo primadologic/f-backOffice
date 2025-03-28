@@ -40,7 +40,7 @@ export const ActionsCell = ({ reportNumber }: { reportNumber: ReportNumberType }
             navigator.clipboard.writeText(reportNumber.reporterNumber);
             toast.info("Copied", {duration: 2000})
           }}
-          className="space-x-1"
+          className="space-x-1 cursor-pointer"
         >
           <span><Copy /></span>
           <span>Copy fraud number</span>
@@ -48,6 +48,7 @@ export const ActionsCell = ({ reportNumber }: { reportNumber: ReportNumberType }
         <DropdownMenuSeparator />
         <DropdownMenuItem 
             onClick={handleEditClick}
+            className="cursor-pointer space-x-1"
         >
           <span><Eye /></span>
           <span>View</span>

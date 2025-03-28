@@ -9,7 +9,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { useDeletCaseFileService } from "@/service/case-files/service"
+import { useDeletCaseFileService, useRetrieveCaseFileService } from "@/service/case-files/service"
 import Loader from "@/components/custom-ui/loader"
 import { CustomCloseButton } from "@/components/custom-ui/custom-buttons"
 import { maskNumber } from "@/lib/custom"
@@ -18,38 +18,49 @@ import { maskNumber } from "@/lib/custom"
 
 export default function DeleteCaseFileDialog() {
 
-    const { isOpen: isDeleteOpen, selectedCaseFile: deleteSeletedCaseFile, setIsOpen: setIsDeleteOpen } = useDeleteCaseFileStore();
+    const { isOpen, selectedCaseFile, setIsOpen } = useDeleteCaseFileStore();
 
     // Service Hooks
 
         // Delete Case File
-    const caseId: string | null = deleteSeletedCaseFile?.caseId ?? null
+    const caseId: string = selectedCaseFile ?? 'undefined'
     const deleteCaseFileMutation = useDeletCaseFileService(caseId)
     
-    // Selectors
-    const investigator: string | null = deleteSeletedCaseFile?.investigator?.firstName + " " + deleteSeletedCaseFile?.investigator?.lastName
-    
-    const suspectNumber: string | null = deleteSeletedCaseFile?.suspectNumber ?? null
 
-    const remark: string | null = deleteSeletedCaseFile?.remark ?? null
-   
-    const status: string | null = deleteSeletedCaseFile?.status?.name ?? null
+    // Selectors
+    const { data: caseFileData, isLoading } = useRetrieveCaseFileService(caseId)
 
 
     const deleteHandler = () => {
         deleteCaseFileMutation.mutateAsync(caseId)
     };
     
+    const firstName = caseFileData?.data?.investigator.firstName ?? '';
+    const lastName  = caseFileData?.data?.investigator?.lastName ?? '';
+
+    const fullName = firstName + " " + lastName
     
+    
+    if (isLoading || caseId === 'undefined') {
+        return (
+            <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+              <AlertDialogContent>
+                <div className="flex justify-center items-center h-48">
+                  <Loader />
+                </div>
+              </AlertDialogContent>
+            </AlertDialog>
+        );
+    }
 
     return (
         <>
             <AlertDialog
-                open={isDeleteOpen}
-                onOpenChange={setIsDeleteOpen}
+                open={isOpen}
+                onOpenChange={setIsOpen}
             >
                 <AlertDialogTrigger className="sr-only">
-                    Edit
+                    Delete Case File
                 </AlertDialogTrigger>
                 <AlertDialogContent className="">
                     <AlertDialogHeader className="w-full flex flex-col space-y-1 !justify-start !items-start">
@@ -66,39 +77,39 @@ export default function DeleteCaseFileDialog() {
                                     <div className="flex flex-row gap-3">
                                         <p className="form-label">Suspect Number:</p>
                                         <data 
-                                            value={suspectNumber || "Suspect Number"}
+                                            value={ caseFileData?.data?.suspectNumber || "Suspect Number"}
                                             className="custom-txt"
                                         >
-                                            {suspectNumber || "N/A"} 
+                                            {maskNumber(`${caseFileData?.data?.suspectNumber}`) ?? 'N?A'}
                                         </data>
                                     </div>
                                     <div className="flex flex-row gap-3">
                                         <p className="form-label">Investigator:</p>
                                         <data 
-                                            value={investigator || "investigator"}
+                                            value={ `${fullName}` || "investigator"}
                                             className="custom-txt capitalize"
                                         >
-                                            {maskNumber(investigator) || "N/A"}
+                                            {maskNumber(fullName) || "N/A"}
                                         </data>
                                     </div>
                                     <div className="flex flex-row gap-3">
                                         <p className="form-label">Status:</p>
                                         <data 
-                                            value={status || "status"}
+                                            value={caseFileData?.data?.status?.name || "status"}
                                             className="custom-txt capitalize"
                                         >
-                                            {status || "N/A"} 
+                                            {caseFileData?.data?.status?.name || "N/A"} 
                                         </data>
                                     </div>
-                                    <div className="flex flex-row gap-3">
+                                    {/* <div className="flex flex-row gap-3">
                                         <p className="form-label">Remark:</p>
                                         <data 
-                                            value={remark || "remark"}
+                                            value={caseFileData?.data?.remark || "remark"}
                                             className="custom-txt "
                                         >
-                                            {remark || "N/A"} 
+                                            {caseFileData?.data?.remark || "N/A"} 
                                         </data>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>
