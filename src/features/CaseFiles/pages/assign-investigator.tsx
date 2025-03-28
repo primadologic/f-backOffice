@@ -19,9 +19,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-  
 import { useAssignInvestigatorStore } from "@/hooks/state/case-files/case-file-store"
-import { useAssignInvestigatorService } from "@/service/case-files/service"
+import { useAssignInvestigatorService, useRetrieveCaseFileService } from "@/service/case-files/service"
 import { useUsers } from "@/service/users/service"
 import { Controller, useForm } from "react-hook-form"
 
@@ -37,10 +36,14 @@ export default function AssignInvestigatorDialog() {
 
     const { isOpen, setIsOpen, selectedCaseFile } = useAssignInvestigatorStore();
 
-    const caseId = selectedCaseFile?.caseId ?? ""; // Ensures caseId is always a string
- 
-    const userService = useUsers()
+    const caseId = selectedCaseFile ?? 'caseFile undefined';  // Ensures caseId is always a string
+    const { data: detailData } = useRetrieveCaseFileService(caseId);
+
+    const investigatorUserId = detailData?.data?.investigatorId ?? 'assignInvestigator undefined';
+
+    const userService = useUsers();
     const users: UserDetailType[] = userService.data?.data || [];
+
 
     const assignInvestigatorMutation = useAssignInvestigatorService(caseId)
 
@@ -48,9 +51,21 @@ export default function AssignInvestigatorDialog() {
         // console.log("Assign investigator", {
         //     "investigator": data.investigatorId
         // });
-
         assignInvestigatorMutation.mutateAsync(data.investigatorId)
     }
+
+    if (userService.isLoading || investigatorUserId === 'assignInvestigator undefined') {
+        return (
+            <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+              <AlertDialogContent>
+                <div className="flex justify-center items-center h-48">
+                  <Loader />
+                </div>
+              </AlertDialogContent>
+            </AlertDialog>
+        );
+    }
+        
 
     return (
         <div className="">
@@ -79,7 +94,7 @@ export default function AssignInvestigatorDialog() {
                                 <Controller
                                     name="investigatorId"
                                     control={control}
-                                    defaultValue={selectedCaseFile?.investigator?.userId}
+                                    defaultValue={investigatorUserId}
                                     rules={{
                                         required: {
                                             value: true,
@@ -90,23 +105,23 @@ export default function AssignInvestigatorDialog() {
                                         <Select
                                             value={value}
                                             onValueChange={onChange}
-                                            defaultValue={selectedCaseFile?.investigator?.userId}
+                                            defaultValue={investigatorUserId}
                                         >
                                             <SelectTrigger 
                                                     onBlur={onBlur}
-                                                    className={` outline-none border py-3 px-3 !w-full  text-sm font-medium text-custom_theme-primary_foreground dark:bg-custom_theme-dark_gray_1 dark:text-custom_theme-primary_background focus:ring-1 focus:ring-gray-400 dark:focus:ring-custom_theme-gray delay-150 transition ease-in-out duration-300
+                                                    className={`outline-none border py-3 px-3 !w-full  text-sm font-medium text-custom_theme-primary_foreground dark:bg-custom_theme-dark_gray_1 dark:text-custom_theme-primary_background focus:ring-1 focus:ring-gray-400 dark:focus:ring-custom_theme-gray delay-150 transition ease-in-out duration-300
                                                     ${errors.investigatorId ? "form-validerr-ring " : "form-valid-ring"}
                                                 `}>
                                                <SelectValue placeholder="Select investigator" />
                                             </SelectTrigger>
                                             <SelectContent>
                                                 {userService.isFetched ?  
-                                                users.map((user) => (
-                                                    <SelectItem key={user.userId} value={user.userId}>
-                                                        {user.firstName} {user.lastName}
-                                                    </SelectItem>
-                                                )): (
-                                                    <SelectItem value="no-users">no available users</SelectItem>
+                                                    users.map((user) => (
+                                                        <SelectItem key={user.userId} value={user.userId}>
+                                                            {user.firstName} {user.lastName}
+                                                        </SelectItem>
+                                                    )): (
+                                                        <SelectItem value="no-users">no available users</SelectItem>
                                                 )}
                                             </SelectContent>
                                         </Select>

@@ -15,7 +15,7 @@ export const useStatReportDashboard = () => {
                 headers: {
                     'Content-Type': 'application/json',
                     'X-API-KEY': `${API_KEY}`,
-                    'Authorization': `Bearer ${ access }`
+                    Authorization: `Bearer ${ access }`
                 }
             })
 

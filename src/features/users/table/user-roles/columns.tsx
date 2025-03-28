@@ -1,29 +1,33 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { Checkbox } from "@/components/ui/checkbox"
-import { ReportNumberType } from "@/data/ReportNumbers/ReportNumbers.type"
 import { ArrowUpDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ActionsCell } from "./actions"
-import { formatDate, formatDateTime, maskNumber } from "@/lib/custom"
+import { formatDateTime } from "@/lib/custom"
+import { UserRole } from "@/common/Type/UserRole.type"
 
 
 
 
-type ArchivedType = "true" | "false" 
+type RoleType = "admin" | "investigator" | "guest"
 
-const archivedStyles: Record<ArchivedType, {bg: string, text: string}> = {
-  true: {
-    bg: "bg-status-success_500",
-    text: "text-[#ffffff]"    
-  }, 
-  false: {
-    bg: "bg-status-primary_500",
-    text: "text-[#ffffff]"
-  }
+const roleStyles: Record<RoleType, {bg: string, text: string}> = {
+    admin: {
+        bg: "bg-red-600",
+        text: "text-white",
+      },
+    investigator: {
+      bg: "bg-blue-600",
+      text: "text-white",
+    },
+    guest: {
+      bg: "bg-gray-400",
+      text: "text-black",
+    },
 
 }
 
-export const columns: ColumnDef<ReportNumberType>[] = [
+export const columns: ColumnDef<UserRole>[] = [
 
     {
         id: "select",
@@ -50,23 +54,33 @@ export const columns: ColumnDef<ReportNumberType>[] = [
     },
 
     {
-        accessorKey: "reportPlatform",
-        header: "Platform",
-        cell: ({ row }) => row.original.reportPlatForm?.displayName ?? "N/A",
-        // filterFn: (row, columnId, filterValue) => {
-        //     const reportPlatform = row.original.reportPlatForm?.displayName ?? "";
-        //     // const archived = row.original.archived ?? "";
-        //     return (
-        //         reportPlatform.toLowerCase().includes(filterValue.toLowerCase())
-        //         // archived
-        //     )
-        // },
-      
+        id: "roleName",
+        accessorFn: (row) => row.roleName,
+        header: "Role",
+        cell: ({ row }) => {
+            const role = row.original.roleName.toString() as RoleType
 
+            if (!role) return "N/A";
+
+            return (
+                <div className="flex justify-start w-full min-w-[120px]">
+                    <div className={`
+                        inline-flex items-center justify-center px-2.5 py-0.5
+                        rounded-full text-xs font-semibold whitespace-nowrap
+                        ${roleStyles[role]?.bg || ""}
+                        ${roleStyles[role]?.text || ""}
+                    `}>
+                        <span className="mr-1">&#9679;</span>
+                        <span className="capitalize">{role}</span>
+                    </div>
+
+                </div>
+            )
+        }
     },
 
     {
-        accessorKey: "suspectNumber",
+        accessorKey: "description",
         header: ({ column }) => {
             return (
               <Button
@@ -74,7 +88,7 @@ export const columns: ColumnDef<ReportNumberType>[] = [
                 onClick={() => {column.toggleSorting(column.getIsSorted() === "asc") }}
                 
               >
-                    Suspect Number
+                    Desciption
                     <ArrowUpDown size={18} /> 
               </Button>
             )
@@ -82,29 +96,31 @@ export const columns: ColumnDef<ReportNumberType>[] = [
         
         cell: ({ getValue }) => {
 
-            const suspectNumber = maskNumber(getValue() as string) as string
+            const description = (getValue() as string) as string
+
+            if (description === null) return "-";
 
             return (
-                <span className="">{suspectNumber.substring(0, 12)}</span>
+                <span className="">{description}</span>
             )
         }
     },
     {
-        accessorKey: "reporterNumber",
-        header: "Reporter Number",
+        accessorKey: "dateCreated",
+        header: "Date Created",
         cell: ({ getValue }) => {
 
-            const reporterNumber = maskNumber(getValue() as string)
+            const dateCreated = formatDateTime(getValue() as string)
 
             return (
-                <span>{reporterNumber.substring(0, 12)}</span>
+                <span>{dateCreated}</span>
             )
         }
     },
     {
-        accessorKey: "incidentDate",
-        header: "Incident Date",
-        cell: ({ getValue }) => formatDate(getValue() as string)
+        accessorKey: "dateUpdated",
+        header: "Date Updated",
+        cell: ({ getValue }) => formatDateTime(getValue() as string)
     },
     {
         accessorKey: "createdAt",
@@ -112,6 +128,12 @@ export const columns: ColumnDef<ReportNumberType>[] = [
         cell: ({ getValue }) => formatDateTime(getValue() as string)
     },
     {
+        accessorKey: "dateDeleted",
+        header: "Date Deleted",
+        cell: ({ getValue }) => formatDateTime(getValue() as string)
+    },
+
+   /*  {
         accessorKey: "archived",
         header: "Archived",
         cell: ({ row }) => {
@@ -134,12 +156,12 @@ export const columns: ColumnDef<ReportNumberType>[] = [
                 </div>
             )
         }
-    },
+    }, */
     {
         header: "Actions",
         id: "actions",
         enableHiding: false,
-        cell: ({ row }) => <ActionsCell reportNumber={row.original} />,
+        cell: ({ row }) => <ActionsCell userRole={row.original } />,
     }
    
 ]

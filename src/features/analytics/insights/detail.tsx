@@ -13,8 +13,7 @@ export default function InsightsMainTab() {
     return (
         <>
             <AnalyticsLayout>
-                <br />
-                <div className="w-full">
+                <div className="w-full pt-10 pb-12">
                     {/* <div className=" sm:gap-3 sm:flex sm:flex-row justify-evenly items-center flex flex-col w-full gap-6">
                         <ModelNameDistributionChartComponent />
                         <VerificationbyOriginReportChart />

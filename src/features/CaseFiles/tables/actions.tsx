@@ -9,10 +9,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { useAssignInvestigatorStore, useUpdateCaseFileStore, useDeleteCaseFileStore, useDetailCaseFile,  } from "@/hooks/state/case-files/case-file-store";
-
+import { useAssignInvestigatorStore, useDeleteCaseFileStore, useCaseFileStore, useDetailCaseFileStore,  } from "@/hooks/state/case-files/case-file-store";
 import { useNavigate } from "@tanstack/react-router";
-import { useCaseFileListService } from "@/service/case-files/service";
 import { CaseFileType } from "@/common/Type/CaseFile/CaseFile.type";
 import { toast } from "sonner";
 
@@ -20,50 +18,51 @@ import { toast } from "sonner";
 
 export const ActionsCell = ({ caseFile }: { caseFile: CaseFileType }) => {
     
-  const { setIsOpen, setSelectedCaseFile } = useUpdateCaseFileStore();
-  const navigate = useNavigate()
+  const { setIsOpen, setSelectedCaseFile } = useCaseFileStore();  
+  const navigate = useNavigate();
   
   const { setIsOpen: setIsDeleteOpen, setSelectedCaseFile: setSelectedDeleteCaseFile } = useDeleteCaseFileStore();
   const { setIsOpen: setIsAssignOpen, setSelectedCaseFile: setSelectedAssignCaseFile } = useAssignInvestigatorStore();
 
-  const {  setSelectedCaseFile: setDetailSelectedCaseFile } = useDetailCaseFile();
+  const {  setSelectedCaseFile: setDetailSelectedCaseFile } = useDetailCaseFileStore();
 
-  // Fetch case file list data
-  const caseFileListData = useCaseFileListService();
-  const caseFileData: CaseFileType[] = caseFileListData.data?.data ?? [];
-
-  // Find the matching case file in the list
-  const currentCaseFile = caseFileData.find((cf) => cf.caseId === caseFile.caseId);
-
+  const caseId = caseFile.caseId ?? 'undefined'
   
   const handleEditClick = () => {
-    if (currentCaseFile) {
-      setSelectedCaseFile(currentCaseFile);
+    if (caseId === "undefined") {
+      toast.info("Sorry, an error occurred");
+    } else {
+      setSelectedCaseFile(caseFile?.caseId);
       setIsOpen(true);
     }
-   
   };
 
+
   const handleDeleteClick = () => {
-    if (currentCaseFile) {
-      setSelectedDeleteCaseFile(currentCaseFile);
+    if (!caseFile?.caseId) {
+      toast.info("Sorry, an error occurred")
+    } else {
+      setSelectedDeleteCaseFile(caseFile?.caseId);
       setIsDeleteOpen(true);
     }
-  
   };
 
   const handleAssignInvestigator = () => {
-    if (currentCaseFile) {
-      setSelectedAssignCaseFile(caseFile);
+    if (!caseFile?.caseId) {
+      toast.info("Sorry, an error occurred");
+    } else {
+      setSelectedAssignCaseFile(caseFile?.caseId);
       setIsAssignOpen(true)
     }
   }
 
   
   const handleNavigate = () => {
-    if (currentCaseFile) {
-      setDetailSelectedCaseFile(currentCaseFile);
-      navigate({ to: `/dashboard/case-files/${currentCaseFile.caseId}` });
+    if (!caseFile?.caseId) {
+      toast.info("Sorry, an error occurred");
+    } else {
+      setDetailSelectedCaseFile(caseFile?.caseId);
+      navigate({ to: `/dashboard/case-files/$caseId`, params: { caseId: caseFile?.caseId } });
     }
   };
 
@@ -85,7 +84,7 @@ export const ActionsCell = ({ caseFile }: { caseFile: CaseFileType }) => {
             navigator.clipboard.writeText(caseFile.suspectNumber)
               toast.info("Copied", {duration: 2000})
           }}
-          className="space-x-1"
+          className="space-x-1 cursor-pointer"
         >
           <span><Copy /></span>
           <span>Copy suspect number</span>
@@ -95,7 +94,7 @@ export const ActionsCell = ({ caseFile }: { caseFile: CaseFileType }) => {
 
         <DropdownMenuItem 
           onClick={handleEditClick}
-          className="space-x-1"
+          className="space-x-1 cursor-pointer"
         >
           <span><SquarePen /></span>
           <span>Edit</span>
@@ -105,7 +104,7 @@ export const ActionsCell = ({ caseFile }: { caseFile: CaseFileType }) => {
 
         <DropdownMenuItem 
           onClick={handleNavigate}
-          className="space-x-1"
+          className="space-x- cursor-pointer"
         >
           <span><Eye /></span>
           <span>View</span>
@@ -115,7 +114,7 @@ export const ActionsCell = ({ caseFile }: { caseFile: CaseFileType }) => {
 
         <DropdownMenuItem 
           onClick={handleAssignInvestigator}
-          className="space-x-1"
+          className="space-x-1 cursor-pointer"
         >
           <span><UserRoundCheck /></span>
           <span>Assign Investigator</span>
@@ -125,7 +124,7 @@ export const ActionsCell = ({ caseFile }: { caseFile: CaseFileType }) => {
 
         <DropdownMenuItem 
             onClick={handleDeleteClick}
-            className="space-x-1"
+            className="space-x-1 cursor-pointer"
         >
          <span><Trash2 /></span>
          <span>Remove</span>

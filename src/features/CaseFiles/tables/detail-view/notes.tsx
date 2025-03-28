@@ -10,7 +10,11 @@ import {
     CardHeader,
     CardTitle,
   } from "@/components/ui/card"
-
+  import {
+    Avatar,
+    AvatarFallback,
+    AvatarImage,
+} from "@/components/ui/avatar"
 
 export default function DetailViewCommentTab() {
 
@@ -61,11 +65,16 @@ export default function DetailViewCommentTab() {
                             </CardContent>
                             <CardFooter>
                             {data.user.avatarUrl && (
-                                <img
-                                src={data.user.avatarUrl}
-                                alt="User Avatar"
-                                className="w-8 h-8 rounded-full"
-                                />
+                                <div className="">
+                                      <Avatar className="w-8 h-8 rounded-full">
+                                        <AvatarImage 
+                                            src={data.user.avatarUrl|| 'https://github.com/shadcn.png'}
+                                            className="w-full h-full object-cover"
+                                        />
+                                        <AvatarFallback className="uppercase text-lg"></AvatarFallback>
+                                    </Avatar>
+                                </div>
+                              
                             )}
                             </CardFooter>
                         </Card>

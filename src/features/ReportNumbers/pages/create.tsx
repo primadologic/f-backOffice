@@ -205,10 +205,10 @@ export default function ReportNumberCreatePage() {
 
 
     return (
-       <div className="">
+       <div className="pt-5">
             <TopNavBar pageName="Reported Number" />
             <PageLayout>
-                <div className="pt-7"/>
+                <div className="py-5 pb-12"/>
                  <Card className="rounded-[1.8rem] border">
                     <div className="w-full flex flex-row justify-between items-center">
                         <CardHeader className="flex flex-row justify-start items-center gap-x-5">

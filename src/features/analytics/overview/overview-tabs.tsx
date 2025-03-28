@@ -8,8 +8,7 @@ import {
 } from "@/components/ui/tabs"
 import OverviewPageAnalytics from "./details"
 import InsightsMainTab from "../insights/detail"
-
-
+import RequireRole from "@/service/RBAC/RequireRole"
 
 
 
@@ -18,17 +17,21 @@ export default function OverviewTabs() {
     return (
         
         <Tabs defaultValue="overview">
-            <TabsList className="grid w-[25rem] grid-cols-2">
+            <TabsList className="grid sm:w-[25rem] w-full grid-cols-2">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="insights">Insights</TabsTrigger>
             </TabsList>
-            <TabsContent value="overview">
-                <OverviewPageAnalytics />
-            </TabsContent>
+            <RequireRole allowedRoles={["admin"]} message="You need admin or investigator access to view this page.">
+                <TabsContent value="overview">
+                    <OverviewPageAnalytics />
+                </TabsContent>
+            </RequireRole>
             
-            <TabsContent value="insights">
-               <InsightsMainTab />
-            </TabsContent>
+            <RequireRole allowedRoles={["admin"]} message="You need admin access to view this page.">
+                <TabsContent value="insights">
+                    <InsightsMainTab />
+                </TabsContent>
+            </RequireRole>
         </Tabs>
     
     )

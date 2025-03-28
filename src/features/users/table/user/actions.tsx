@@ -1,4 +1,3 @@
-
 import { Copy, MoreHorizontal, SquarePen, Trash2 } from "lucide-react";
 import {
   DropdownMenu,
@@ -10,29 +9,39 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { useGetUserDetails } from "@/service/users/service";
+import { useDeleteUserStore, useUserStore } from "@/hooks/state/users/user.state";
 import { UserType } from "@/common/Type/UserRole.type";
-import { useDeleteUserStore, useUpdateUserStore } from "@/hooks/state/users/user.state";
 import { useNavigate } from "@tanstack/react-router";
 
+export const ActionsCell = ({ user }: { user: UserType }) => {
+  const { setSelectedUser, selectedUser } = useUserStore();
+  const { setIsOpen: setIsOpenDelete, setSelectedUser: setSelectedDeleteUser } = useDeleteUserStore();
+  const selectedUserId = useGetUserDetails(selectedUser ?? "defaultUserId");
 
-export const ActionsCell = ({ userId }: { userId: UserType }) => {
-    
-  const { setSelectedUser} = useUpdateUserStore();
-  const { setSelectedUser: setSelectDeletedUser, setIsOpen: setIsOpenDeletedUser} = useDeleteUserStore();
   const navigate = useNavigate()
-  
+
   const handleEditClick = () => {
-    if (userId.userId) {
-      setSelectedUser(userId)
-      navigate({ to: `/users/edit/${userId.userId}` });
+    setSelectedUser(user.userId);
+    navigate({ to: `/users/edit/${user.userId}`, params: { userId: user.userId } });
+  };
+
+  const handleCopyClick = () => {
+    if (selectedUserId.data?.data?.userId) {
+      navigator.clipboard.writeText(
+        selectedUserId.data?.data?.firstName +
+          " " +
+          selectedUserId.data?.data?.lastName
+      );
+      toast.info("Copied", { duration: 2000 });
+    } else {
+      toast.error("User unavailable", { duration: 2000 });
     }
-  }
+  };
 
   const handleDeleteClick = () => {
-    if (userId.userId) {
-      setSelectDeletedUser(userId)
-      setIsOpenDeletedUser(true)
-    }
+    setSelectedDeleteUser(user.userId)
+    setIsOpenDelete(true)
   }
 
   return (
@@ -40,37 +49,36 @@ export const ActionsCell = ({ userId }: { userId: UserType }) => {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="h-8 w-8 p-0">
           <span className="sr-only">Open menu</span>
-          <MoreHorizontal />
+          <MoreHorizontal className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        <DropdownMenuItem
-          onClick={() => {
-            navigator.clipboard.writeText(userId?.firstName + " " + userId?.lastName);
-            toast.info("Copied", {duration: 2000})
-          }}
-        >
-          <span><Copy /></span>
-          Copy Full name
+        <DropdownMenuItem 
+          onClick={handleCopyClick} 
+          className="space-x-1"
+      >
+          <Copy className="h-4 w-4" />
+          Copy full name
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem 
-            onClick={handleEditClick}
-            className="space-x-1"
+          onClick={handleEditClick} 
+          className="space-x-1"
         >
-          <span><SquarePen /></span>
-          <span>Edit</span>
+          <SquarePen className="h-4 w-4" />
+          Edit
         </DropdownMenuItem>
-        <DropdownMenuSeparator />
         <DropdownMenuItem 
-            onClick={handleDeleteClick}
-            className="space-x-1"
+          onClick={handleDeleteClick} 
+          className="space-x-1"
         >
-          <span><Trash2 /></span>
-          <span>Delete</span>
+          <Trash2 className="h-4 w-4" />
+          Delete
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
 };
+
+// ... (Your zustand store remains the same)

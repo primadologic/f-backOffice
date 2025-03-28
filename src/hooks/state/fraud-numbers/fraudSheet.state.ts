@@ -1,13 +1,12 @@
 import { create } from 'zustand'
-import { FraudNumberNewType } from '@/common/Type/FraudNumber/fraud-numbers'
 import { persist } from "zustand/middleware";
 
 
 interface FraudNumberStore {
   isOpen: boolean
-  selectedFraudNumber: FraudNumberNewType | null
+  selectedFraudNumber: string | null
   setIsOpen: (isOpen: boolean) => void
-  setSelectedFraudNumber: (fraudNumber: FraudNumberNewType | null) => void
+  setSelectedFraudNumber: (fraudNumber: string | null) => void
   reset: () => void
 }
 

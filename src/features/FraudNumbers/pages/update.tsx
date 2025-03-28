@@ -12,26 +12,23 @@ import { Switch } from "@/components/ui/switch"
 import { useFraudNumberStore } from "@/hooks/state/fraud-numbers/fraudSheet.state"
 import { useForm } from "react-hook-form"
 import { CustomCloseButton } from "@/components/custom-ui/custom-buttons"
+import { useRetrieveFraudNumber } from "@/service/fraud-numbers/service"
+import Loader from "@/components/custom-ui/loader"
 
+
+type ChangeVisibiltyType = {
+    approve: boolean;
+    visibility: boolean;
+}
 
 
 export default function FraudNumberUpdatePage() {
     
     const { isOpen, selectedFraudNumber, setIsOpen } = useFraudNumberStore()
 
+    const fraudNumberId = selectedFraudNumber ?? 'undefined';
 
-    // const fraudNumber = selectedFraudNumber?.fraudNumberId
-
-    // const fraudNumberData = useFraudNumberListService();
-    // const response: FraudNumberNewType[] = fraudNumberData.data?.data ?? [];
-
-    // const currentFraudNumber = response.find((cf) => cf.fraudNumberId === fraudNumber)
-
-    // const safeFraudNumber = currentFraudNumber?.fraudNumberId ?? ""; // Always a string
-
-    // const retrievefraudNumberData = useRetrieveFraudNumber(safeFraudNumber);
-    
-    // const fraudNumberResponse: FraudNumberGetType = retrievefraudNumberData?.data?.data ?? {};
+    const { data: fraudNumberData, isLoading } = useRetrieveFraudNumber(fraudNumberId);
 
 
     // Initialize React Hook Form
@@ -40,11 +37,11 @@ export default function FraudNumberUpdatePage() {
         handleSubmit,
         setValue,
         formState: { errors },
-    } = useForm({
+    } = useForm<ChangeVisibiltyType>({
         defaultValues: {
             // fraudNumber: fraudNumberResponse?.fraudNumber || "",
-            approveCase: selectedFraudNumber?.approved || false,
-            visibility: selectedFraudNumber?.visibility || false,
+            approve: fraudNumberData?.data?.approved || false,
+            visibility: fraudNumberData?.data?.visibility || false,
         },
 
         criteriaMode: "all"
@@ -52,8 +49,25 @@ export default function FraudNumberUpdatePage() {
     });
 
 
-    const onSubmit = (data: any) => {
-        console.log("Edit Fraud Number", data);
+    const onSubmit = (data: ChangeVisibiltyType) => {
+        // console.log("Edit Fraud Number", data);
+        alert(data)
+    };
+
+
+    if (isLoading || fraudNumberId === 'undefined') {
+        return (
+            <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+                <AlertDialogHeader>
+                    <AlertDialogTitle className="sr-only">Loading dialog</AlertDialogTitle>
+                </AlertDialogHeader>
+                <AlertDialogContent>
+                    <div className="flex justify-center items-center h-48">
+                    <Loader />
+                    </div>
+                </AlertDialogContent>
+            </AlertDialog>
+        );
     }
 
 
@@ -80,7 +94,7 @@ export default function FraudNumberUpdatePage() {
                                     </label>
                                     <input type="text" placeholder="Fraud Number" 
                                         // {...register("fraudNumber")}
-                                        defaultValue={selectedFraudNumber?.fraudNumber}
+                                        defaultValue={fraudNumberData?.data?.fraudNumber}
                                         className="form-input disabled:cursor-not-allowed"
                                     />
                                     {/* {errors.fraudNumber && <p className="form-error-msg">{errors.fraudNumber.message}</p>} */}
@@ -91,12 +105,12 @@ export default function FraudNumberUpdatePage() {
                                         <label htmlFor="approveCase" className="form-label">Approve Investigation</label>
                                         <Switch 
                                             id="approveCase" 
-                                            {...register('visibility')}
-                                            onCheckedChange={(checked) => setValue("approveCase", checked)}
+                                            {...register('approve')}
+                                            onCheckedChange={(checked) => setValue("approve", checked)}
                                             className="text-base font-medium text-custom_theme-primary_foreground dark:bg-custom_theme-dark_gray_1 dark:text-custom_theme-primary_background"
                                             // defaultChecked={fraudNumberResponse?.visibility}
                                         />
-                                        {errors.approveCase && <p className="form-error-msg">{errors.approveCase.message}</p>}
+                                        {errors.approve && <p className="form-error-msg">{errors.approve.message}</p>}
                                 </div>
                                 </div>
                                 <div className="flex flex-col gap-2">
@@ -127,7 +141,7 @@ export default function FraudNumberUpdatePage() {
                                              <span>Save Changes</span>
                                          )} */}
 
-                                        Save Changes
+                                        <span>Save Changes</span>
 
                                     </Button>
                                 </div>
